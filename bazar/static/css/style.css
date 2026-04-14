@@ -1,0 +1,63 @@
+/* Estilos personalizados para o Conexão Solidária */
+
+/* Garante que o corpo da página ocupe sempre a altura total */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex: 1;
+}
+
+/* Ajuste para imagens de doação ficarem uniformes */
+.card-img-top {
+    height: 200px;
+    object-fit: cover;
+    width: 100%;
+}
+
+/* --- Novas Animações (Migradas do Home.tsx/Tailwind Config) --- */
+
+/* Animação dos Blobs decorativos no fundo do Hero */
+@keyframes blob {
+    0% { transform: translate(0px, 0px) scale(1); }
+    33% { transform: translate(30px, -50px) scale(1.1); }
+    66% { transform: translate(-20px, 20px) scale(0.9); }
+    100% { transform: translate(0px, 0px) scale(1); }
+}
+
+.animate-blob {
+    animation: blob 7s infinite;
+}
+
+/* Animação de entrada suave dos elementos */
+.fade-in-element {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeIn 0.8s ease-out forwards;
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Delay opcional para itens da lista (stagger effect) */
+.fade-in-element:nth-child(2) { animation-delay: 0.2s; }
+.fade-in-element:nth-child(3) { animation-delay: 0.4s; }
+
+/* Estilização da scrollbar para o campo de e-mail no detalhe */
+.scrollbar-thin::-webkit-scrollbar {
+    height: 4px;
+}
+.scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb {
+    background: #e2e8f0;
+    border-radius: 10px;
+}

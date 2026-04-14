@@ -1,0 +1,34 @@
+{% extends 'bazar/base.html' %}
+
+{% block title %}Doação Confirmada - Conexão Solidária{% endblock %}
+
+{% block content %}
+<div class="pt-32 pb-20 bg-slate-50 flex-grow w-full">
+    <div class="container mx-auto px-6 max-w-3xl">
+        
+        {% if messages %}
+            {% for message in messages %}
+                <div class="mb-6 p-4 rounded-2xl {% if message.tags == 'success' %}bg-green-50 text-green-700 border border-green-100{% else %}bg-red-50 text-red-700 border border-red-100{% endif %} font-bold text-sm text-center">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <div class="bg-white rounded-3xl border border-slate-100 shadow-xl p-8 md:p-12 text-center">
+            <div class="mx-auto mb-6 w-16 h-16 rounded-2xl bg-green-100 text-green-700 flex items-center justify-center">
+                <svg class="w-9 h-9" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+            </div>
+            <h1 class="text-3xl font-black text-slate-900 uppercase tracking-tighter">Doação Registrada</h1>
+            <p class="mt-4 text-slate-600 font-medium">
+                Sua doação foi registrada com sucesso! Nossa equipe entrará em contato se necessário.
+            </p>
+            <div class="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
+                <a href="{% url 'index' %}" class="px-8 py-3 rounded-xl bg-blue-600 text-white font-black uppercase text-sm tracking-[0.16em] hover:bg-blue-700 transition-colors shadow-lg shadow-blue-500/30">Voltar para o Início</a>
+                <a href="{% url 'cadastrar_doacao' %}" class="px-6 py-3 rounded-xl bg-slate-100 text-slate-800 font-black uppercase text-sm tracking-wider hover:bg-slate-200 transition-colors">Nova Doação</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
