@@ -44,6 +44,7 @@ def contato(request):
     return render(request, 'bazar/contato.html')
 
 @login_required
+@user_passes_test(lambda u: u.is_staff)
 def doacoes_list(request):
     query = request.GET.get('q')
     todas_doacoes = Doacao.objects.select_related('doador', 'agendamento').order_by('-data_criacao')
@@ -58,20 +59,15 @@ def doacoes_list(request):
         'query': query
     })
 
+@login_required
+@user_passes_test(lambda u: u.is_staff)
 def doacao_detalhe(request, id):
-    can_view_sensitive = request.user.is_authenticated and request.user.is_staff
+    can_view_sensitive = True
 
-    if can_view_sensitive:
-        doacao = get_object_or_404(
-            Doacao.objects.select_related('doador', 'agendamento'),
-            id=id,
-        )
-    else:
-        # Público só pode acessar doações disponíveis no catálogo público.
-        doacao = get_object_or_404(
-            Doacao.objects.select_related('doador', 'agendamento').filter(status='PENDENTE'),
-            id=id,
-        )
+    doacao = get_object_or_404(
+        Doacao.objects.select_related('doador', 'agendamento'),
+        id=id,
+    )
 
     return render(
         request,

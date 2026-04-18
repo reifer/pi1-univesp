@@ -14,8 +14,17 @@ def env_bool(name, default=False):
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+from django.core.exceptions import ImproperlyConfigured
+
+def get_env_variable(var_name):
+    try:
+        return os.environ[var_name]
+    except KeyError:
+        error_msg = f"ImproperlyConfigured: Set the {var_name} environment variable"
+        raise ImproperlyConfigured(error_msg)
+
 # Chave de segurança
-SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-change-me')
+SECRET_KEY = get_env_variable('SECRET_KEY')
 
 DEBUG = env_bool('DEBUG', False)
 
@@ -80,9 +89,9 @@ else:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.getenv('DB_NAME', 'pi_univesp'),
-            'USER': os.getenv('DB_USER', 'postgres'),
-            'PASSWORD': os.getenv('DB_PASS', 'admin'),
+            'NAME': get_env_variable('DB_NAME'),
+            'USER': get_env_variable('DB_USER'),
+            'PASSWORD': get_env_variable('DB_PASS'),
             'HOST': os.getenv('DB_HOST', 'localhost'),
             'PORT': os.getenv('DB_PORT', '5432'),
         }
