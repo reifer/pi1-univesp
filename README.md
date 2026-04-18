@@ -15,6 +15,46 @@ Aplicacao principal:
 - App: bazar
 - Configuracao central: core/settings.py
 
+---
+
+## 🛡️ Guia de Inicialização e Auditoria (Hardening & Produção)
+
+O projeto "Bazar Solidário" passou por um processo rigoroso de Hardening de Segurança e transição para arquitetura de produção via **Gunicorn/WSGI**. Leia isso com atenção antes de mexer no código.
+
+### ⚠️ Travas de Ambiente (`.env`)
+
+- **`SECRET_KEY` Validada no Boot:** A chave secreta agora tem verificação de integridade antes do Django subir. **Se a chave possuir menos de 50 caracteres ou o prefixo padrão `django-insecure-`, a aplicação crasha imediatamente com `ImproperlyConfigured`** e se recusa a expor a porta.
+- **Desenvolvimento Local:** Lembre-se de configurar obrigatoriamente `DEBUG=True` no seu `.env` para rodar na sua máquina local, senão o sistema bloqueará acessos sob ausência de SSL. Se `DEBUG=False`, o host curinga (`*`) é estritamente proibido.
+
+### 🔄 Fluxo de Comandos para Revisão de Código (Post-Pull)
+
+Se você acabou de dar um `git pull`, seu ambiente local precisa sincronizar com as novas diretrizes. Execute em ordem:
+
+```bash
+# 1. Atualize o ambiente (Necessário para o Gunicorn e novas bibliotecas base)
+pip install -r requirements.txt
+
+# 2. Sincronize sua base com as novas constraints de segurança
+python manage.py migrate
+
+# 3. Auditoria de Produção (O comando que o revisor DEVE rodar para validar o código)
+python manage.py check --deploy
+```
+
+### 🔒 Destaques da Seção de Segurança
+Liste as melhorias arquiteturais entregues na última fase:
+- 🛡️ **Proteção contra IDOR e Segregação**: Uso reforçado de bloqueios nas Views com os decoradores de staff (`@user_passes_test`). Impossível acesso direto ou "chute" de IDs numéricos para visualização do fluxo de doação sem estrita autorização da coordenação.
+- 👁️ **Blindagem de PII (Personal Identifiable Information)**: Remoção de URLs auto-montadas de rastreamento (ex: Links embutidos do Google Maps). A visualização do endereço do doador foi substituída pela injeção sob demanda com a **Clipboard API** nativa dos browsers. Os dados não trafegam em histórico.
+- 🔐 **Cabeçalhos Autônomos de Segurança**: A arquitetura liga proteções profundas de HSTS (preload de 1 ano), restrição estrita via `SSL Redirect`, e cookies confinados `SECURE` e `HTTPOnly` autonomamente quando detecta o modo de produção.
+
+### 🐳 Execução Exclusiva do Banco via Docker
+
+Se você for rodar tudo local (Opção B abaixo), mas não tiver o banco PostgreSQL instalado na máquina de forma nativa e não quiser usar SQLite, suba o contêiner apenas de banco de dados rodando:
+
+```bash
+docker compose up -d db
+```
+
 ## 2. Pre-Requisitos
 
 Para qualquer opcao:

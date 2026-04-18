@@ -26,9 +26,15 @@ def get_env_variable(var_name):
 # Chave de segurança
 SECRET_KEY = get_env_variable('SECRET_KEY')
 
+if len(SECRET_KEY) < 50 or 'django-insecure-' in SECRET_KEY:
+    raise ImproperlyConfigured("A SECRET_KEY deve ter pelo menos 50 caracteres e não conter 'django-insecure-'.")
+
 DEBUG = env_bool('DEBUG', False)
 
 ALLOWED_HOSTS = [host.strip() for host in os.getenv('ALLOWED_HOSTS', '').split(',') if host.strip()]
+
+if not DEBUG and '*' in ALLOWED_HOSTS:
+    raise ImproperlyConfigured("ALLOWED_HOSTS não deve aceitar '*' quando o DEBUG estiver desligado (em produção).")
 
 # Lista de aplicativos instalados
 INSTALLED_APPS = [
@@ -110,11 +116,27 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles') # Adicionado para melhor ges
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# --- CONFIGURAÇÕES DE SEGURANÇA (PRODUÇÃO) ---
-SECURE_BROWSER_XSS_FILTER = env_bool('SECURE_BROWSER_XSS_FILTER', True)
-SECURE_CONTENT_TYPE_NOSNIFF = env_bool('SECURE_CONTENT_TYPE_NOSNIFF', True)
-SESSION_COOKIE_SECURE = env_bool('SESSION_COOKIE_SECURE', not DEBUG)
-CSRF_COOKIE_SECURE = env_bool('CSRF_COOKIE_SECURE', not DEBUG)
+# --- CONFIGURAÇÕES DE SEGURANÇA (PRODUÇÃO E DESENVOLVIMENTO) ---
+if not DEBUG:
+    # --- Produção Blindada ---
+    SECURE_BROWSER_XSS_FILTER = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_SSL_REDIRECT = True
+    SECURE_HSTS_SECONDS = 31536000  # 1 ano
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+else:
+    # --- Ambiente Local ---
+    SECURE_BROWSER_XSS_FILTER = False
+    SECURE_CONTENT_TYPE_NOSNIFF = False
+    SESSION_COOKIE_SECURE = False
+    CSRF_COOKIE_SECURE = False
+    SECURE_SSL_REDIRECT = False
+    SECURE_HSTS_SECONDS = 0
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = False
+    SECURE_HSTS_PRELOAD = False
 
 # --- CONFIGURAÇÕES DE AUTENTICAÇÃO ---
 LOGIN_REDIRECT_URL = 'admin_dashboard'
