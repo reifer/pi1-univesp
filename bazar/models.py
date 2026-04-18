@@ -37,13 +37,13 @@ class Doacao(models.Model):
     descricao = models.TextField(verbose_name="Descrição")
     quantidade = models.PositiveIntegerField(default=1, verbose_name="Quantidade")
     tipo_entrega = models.CharField(max_length=20, choices=TIPO_ENTREGA_CHOICES, default='RETIRADA', verbose_name="Tipo de Entrega")
-    endereco_cep = models.CharField(max_length=9, blank=True, null=True, verbose_name="CEP de Retirada")
-    endereco_logradouro = models.CharField(max_length=255, blank=True, null=True, verbose_name="Logradouro")
-    endereco_numero = models.CharField(max_length=20, blank=True, null=True, verbose_name="Número")
-    endereco_complemento = models.CharField(max_length=120, blank=True, null=True, verbose_name="Complemento")
-    endereco_bairro = models.CharField(max_length=120, blank=True, null=True, verbose_name="Bairro")
-    endereco_cidade = models.CharField(max_length=120, blank=True, null=True, verbose_name="Cidade")
-    endereco_uf = models.CharField(max_length=2, blank=True, null=True, verbose_name="UF")
+    endereco_cep = models.CharField(max_length=9, blank=False, null=False, default='', verbose_name="CEP de Retirada")
+    endereco_logradouro = models.CharField(max_length=255, blank=False, null=False, default='', verbose_name="Logradouro")
+    endereco_numero = models.CharField(max_length=20, blank=False, null=False, default='', verbose_name="Número")
+    endereco_complemento = models.CharField(max_length=120, blank=True, null=False, default='', verbose_name="Complemento")
+    endereco_bairro = models.CharField(max_length=120, blank=False, null=False, default='', verbose_name="Bairro")
+    endereco_cidade = models.CharField(max_length=120, blank=False, null=False, default='', verbose_name="Cidade")
+    endereco_uf = models.CharField(max_length=2, blank=False, null=False, default='', verbose_name="UF")
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='PENDENTE', verbose_name="Status")
     data_criacao = models.DateTimeField(auto_now_add=True)
 
@@ -54,6 +54,22 @@ class Doacao(models.Model):
         verbose_name = "Doação"
         verbose_name_plural = "Doações"
         ordering = ['-data_criacao']
+        constraints = [
+            models.CheckConstraint(
+                name='retirada_endereco_obrigatorio',
+                condition=(
+                    ~models.Q(tipo_entrega='RETIRADA')
+                    | (
+                        ~models.Q(endereco_cep='')
+                        & ~models.Q(endereco_logradouro='')
+                        & ~models.Q(endereco_numero='')
+                        & ~models.Q(endereco_bairro='')
+                        & ~models.Q(endereco_cidade='')
+                        & ~models.Q(endereco_uf='')
+                    )
+                ),
+            ),
+        ]
 
 
 class Agendamento(models.Model):
@@ -66,8 +82,6 @@ class Agendamento(models.Model):
     data = models.DateField(blank=True, null=True, verbose_name="Data")
     horario = models.TimeField(blank=True, null=True, verbose_name="Horário")
     tipo = models.CharField(max_length=20, choices=TIPO_CHOICES, verbose_name="Tipo")
-    endereco = models.CharField(max_length=255, blank=True, null=True, verbose_name="Endereço")
-    cep_retirada = models.CharField(max_length=9, blank=True, null=True, verbose_name="CEP de Retirada")
     horario_retirada = models.TimeField(blank=True, null=True, verbose_name="Horário de Retirada")
 
     def __str__(self):

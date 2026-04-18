@@ -5,14 +5,21 @@ from dotenv import load_dotenv
 # Carrega as variáveis do seu arquivo .env que já existe na raiz
 load_dotenv()
 
+
+def env_bool(name, default=False):
+    value = os.getenv(name)
+    if value is None:
+        return default
+    return value.strip().lower() in ('1', 'true', 't', 'yes', 'y', 'on')
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Chave de segurança
-SECRET_KEY = 'django-insecure-pi-univesp-key'
+SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-change-me')
 
-DEBUG = True
+DEBUG = env_bool('DEBUG', False)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [host.strip() for host in os.getenv('ALLOWED_HOSTS', '').split(',') if host.strip()]
 
 # Lista de aplicativos instalados
 INSTALLED_APPS = [
@@ -83,6 +90,12 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'bazar', 'static')]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles') # Adicionado para melhor gestão de estáticos
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# --- CONFIGURAÇÕES DE SEGURANÇA (PRODUÇÃO) ---
+SECURE_BROWSER_XSS_FILTER = env_bool('SECURE_BROWSER_XSS_FILTER', True)
+SECURE_CONTENT_TYPE_NOSNIFF = env_bool('SECURE_CONTENT_TYPE_NOSNIFF', True)
+SESSION_COOKIE_SECURE = env_bool('SESSION_COOKIE_SECURE', not DEBUG)
+CSRF_COOKIE_SECURE = env_bool('CSRF_COOKIE_SECURE', not DEBUG)
 
 # --- CONFIGURAÇÕES DE AUTENTICAÇÃO ---
 LOGIN_REDIRECT_URL = 'admin_dashboard'

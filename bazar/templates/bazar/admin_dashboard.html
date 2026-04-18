@@ -71,13 +71,13 @@
                                 <td class="px-4 py-3 text-slate-700 font-semibold">{{ d.agendamento.horario_retirada|time:'H:i'|default:'-' }}</td>
                                 <td class="px-4 py-3 text-slate-700">
                                     <div class="font-semibold text-slate-800">
-                                        {{ d.endereco_logradouro|default:d.agendamento.endereco|default:'Endereço não informado' }}{% if d.endereco_numero %}, nº {{ d.endereco_numero }}{% endif %}{% if d.endereco_bairro %} - {{ d.endereco_bairro }}{% endif %}
+                                        {{ d.endereco_logradouro|default:'Endereço não informado' }}{% if d.endereco_numero %}, nº {{ d.endereco_numero }}{% endif %}{% if d.endereco_bairro %} - {{ d.endereco_bairro }}{% endif %}
                                     </div>
                                     <div class="text-xs font-bold text-slate-500 mt-1">
-                                        CEP: {{ d.endereco_cep|default:d.agendamento.cep_retirada|default:'-' }} | Tel: {{ d.doador.telefone|default:'-' }}
+                                        CEP: {{ d.endereco_cep|default:'-' }} | Tel: {{ d.doador.telefone|default:'-' }}
                                     </div>
                                     <a
-                                        href="https://www.google.com/maps/search/?api=1&query={{ d.endereco_logradouro|default:d.agendamento.endereco|urlencode }}%2C+{{ d.endereco_numero|default:''|urlencode }}%2C+{{ d.endereco_bairro|default:''|urlencode }}%2C+{{ d.endereco_cidade|default:''|urlencode }}-{{ d.endereco_uf|default:''|urlencode }}%2C+{{ d.endereco_cep|default:d.agendamento.cep_retirada|urlencode }}"
+                                        href="https://www.google.com/maps/search/?api=1&query={{ d.endereco_logradouro|default:''|urlencode }}%2C+{{ d.endereco_numero|default:''|urlencode }}%2C+{{ d.endereco_bairro|default:''|urlencode }}%2C+{{ d.endereco_cidade|default:''|urlencode }}-{{ d.endereco_uf|default:''|urlencode }}%2C+{{ d.endereco_cep|default:''|urlencode }}"
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         class="hidden md:inline-flex items-center gap-1 mt-2 text-xs font-black uppercase tracking-wide text-blue-700 hover:text-blue-900"
@@ -259,13 +259,13 @@
                                     <td class="px-4 py-3 text-slate-700">
                                         {% if d.tipo_entrega == 'RETIRADA' %}
                                             <div class="font-semibold text-slate-800">
-                                                {{ d.endereco_logradouro|default:d.agendamento.endereco|default:'Endereço não informado' }}{% if d.endereco_numero %}, nº {{ d.endereco_numero }}{% endif %}{% if d.endereco_bairro %} - {{ d.endereco_bairro }}{% endif %}
+                                                {{ d.endereco_logradouro|default:'Endereço não informado' }}{% if d.endereco_numero %}, nº {{ d.endereco_numero }}{% endif %}{% if d.endereco_bairro %} - {{ d.endereco_bairro }}{% endif %}
                                             </div>
                                             <div class="text-xs font-bold text-slate-500 mt-1">
-                                                CEP: {{ d.endereco_cep|default:d.agendamento.cep_retirada|default:'-' }}
+                                                CEP: {{ d.endereco_cep|default:'-' }}
                                             </div>
                                             <a
-                                                href="https://www.google.com/maps/search/?api=1&query={{ d.endereco_logradouro|default:d.agendamento.endereco|urlencode }}%2C+{{ d.endereco_numero|default:''|urlencode }}%2C+{{ d.endereco_bairro|default:''|urlencode }}%2C+{{ d.endereco_cidade|default:''|urlencode }}-{{ d.endereco_uf|default:''|urlencode }}%2C+{{ d.endereco_cep|default:d.agendamento.cep_retirada|urlencode }}"
+                                                href="https://www.google.com/maps/search/?api=1&query={{ d.endereco_logradouro|default:''|urlencode }}%2C+{{ d.endereco_numero|default:''|urlencode }}%2C+{{ d.endereco_bairro|default:''|urlencode }}%2C+{{ d.endereco_cidade|default:''|urlencode }}-{{ d.endereco_uf|default:''|urlencode }}%2C+{{ d.endereco_cep|default:''|urlencode }}"
                                                 target="_blank"
                                                 rel="noopener noreferrer"
                                                 class="hidden md:inline-flex items-center gap-1 mt-2 text-xs font-black uppercase tracking-wide text-blue-700 hover:text-blue-900"

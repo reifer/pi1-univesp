@@ -38,7 +38,7 @@ class DoadorAdmin(admin.ModelAdmin):
 
 @admin.register(Agendamento)
 class AgendamentoAdmin(admin.ModelAdmin):
-    list_display = ('doacao', 'tipo', 'data', 'horario', 'endereco')
+    list_display = ('doacao', 'tipo', 'data', 'horario', 'horario_retirada')
     list_filter = ('tipo', 'data')
-    search_fields = ('doacao__doador__nome', 'doacao__doador__email', 'endereco')
+    search_fields = ('doacao__doador__nome', 'doacao__doador__email', 'doacao__endereco_logradouro')
 

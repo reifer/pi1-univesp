@@ -1,10 +1,12 @@
 from datetime import datetime
 
 from django.shortcuts import render, get_object_or_404, redirect
+from django.db import transaction
 from django.db.models import Q, Sum, Max
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
 from .models import Doador, Doacao, Agendamento
+from .forms import DoadorForm, DoacaoForm
 
 
 def parse_horario_sugerido(raw_value):
@@ -26,6 +28,19 @@ def sobre(request):
 
 
 def contato(request):
+    if request.method == 'POST':
+        nome = (request.POST.get('nome') or '').strip()
+        email = (request.POST.get('email') or '').strip()
+        assunto = (request.POST.get('assunto') or '').strip()
+        mensagem = (request.POST.get('mensagem') or '').strip()
+
+        if not all([nome, email, assunto, mensagem]):
+            messages.error(request, 'Preencha todos os campos obrigatórios para enviar sua mensagem.')
+            return render(request, 'bazar/contato.html')
+
+        messages.success(request, 'Mensagem enviada! Entraremos em contato em breve.')
+        return redirect('contato')
+
     return render(request, 'bazar/contato.html')
 
 @login_required
@@ -44,8 +59,28 @@ def doacoes_list(request):
     })
 
 def doacao_detalhe(request, id):
-    doacao = get_object_or_404(Doacao, id=id)
-    return render(request, 'bazar/doacao_detalhes.html', {'doacao': doacao})
+    can_view_sensitive = request.user.is_authenticated and request.user.is_staff
+
+    if can_view_sensitive:
+        doacao = get_object_or_404(
+            Doacao.objects.select_related('doador', 'agendamento'),
+            id=id,
+        )
+    else:
+        # Público só pode acessar doações disponíveis no catálogo público.
+        doacao = get_object_or_404(
+            Doacao.objects.select_related('doador', 'agendamento').filter(status='PENDENTE'),
+            id=id,
+        )
+
+    return render(
+        request,
+        'bazar/doacao_detalhes.html',
+        {
+            'doacao': doacao,
+            'can_view_sensitive': can_view_sensitive,
+        },
+    )
 
 
 def doacao_confirmacao(request):
@@ -59,28 +94,53 @@ def cadastrar_doacao(request):
     Para retirada, coleta endereço estruturado via CEP, data e horário.
     Para entrega, valida janela da igreja (terça, quinta e domingo).
     """
+    doador_form = DoadorForm()
+    doacao_form = DoacaoForm()
+
     if request.method == 'POST':
         tipo_entrega = request.POST.get('metodo_entrega', 'RETIRADA')
 
         nome_doador = (request.POST.get('nome_doador') or '').strip()
-        email_doador = (request.POST.get('email_doador') or '').strip()
+        email_doador = (request.POST.get('email_doador') or '').strip().lower()
         telefone_doador = (request.POST.get('telefone_doador') or request.POST.get('whatsapp') or '').strip()
         nome_item = (request.POST.get('nome_item') or '').strip()
-        # Captura múltiplas categorias via checkboxes e une com vírgula
         categorias_selecionadas = request.POST.getlist('categoria')
         categoria_item = ', '.join(categorias_selecionadas) if categorias_selecionadas else ''
         tamanho_item = (request.POST.get('tamanho_item') or '').strip()
         descricao = (request.POST.get('descricao') or '').strip()
 
-        if not all([nome_doador, email_doador, descricao]):
-            messages.error(request, 'Preencha todos os campos obrigatórios.')
-            return render(request, 'bazar/cadastrar_doacao.html')
+        doador_form = DoadorForm(data={
+            'nome': nome_doador,
+            'email': email_doador,
+            'telefone': telefone_doador,
+        })
 
-        quantidade_bruta = request.POST.get('quantidade', '1')
-        try:
-            quantidade = max(1, int(quantidade_bruta))
-        except (TypeError, ValueError):
-            quantidade = 1
+        descricao_completa = f"{nome_item} - {descricao}" if nome_item else descricao
+        doacao_form = DoacaoForm(data={
+            'nome_item': nome_item,
+            'categoria': categoria_item,
+            'tamanho': tamanho_item,
+            'descricao': descricao_completa,
+            'quantidade': request.POST.get('quantidade', '1'),
+            'tipo_entrega': tipo_entrega,
+            'endereco_cep': (request.POST.get('cep_retirada') or '').strip(),
+            'endereco_logradouro': (request.POST.get('endereco_retirada') or '').strip(),
+            'endereco_numero': (request.POST.get('numero_retirada') or '').strip(),
+            'endereco_complemento': (request.POST.get('complemento_retirada') or '').strip(),
+            'endereco_bairro': (request.POST.get('bairro_retirada') or '').strip(),
+            'endereco_cidade': (request.POST.get('cidade_retirada') or '').strip(),
+            'endereco_uf': (request.POST.get('uf_retirada') or '').strip(),
+        })
+
+        if not (doador_form.is_valid() and doacao_form.is_valid()):
+            messages.error(request, 'Preencha corretamente os campos obrigatórios.')
+            for erros in doador_form.errors.values():
+                for erro in erros:
+                    messages.error(request, erro)
+            for erros in doacao_form.errors.values():
+                for erro in erros:
+                    messages.error(request, erro)
+            return render(request, 'bazar/cadastrar_doacao.html', {'doador_form': doador_form, 'doacao_form': doacao_form})
 
         endereco = None
         cep_retirada = None
@@ -176,53 +236,47 @@ def cadastrar_doacao(request):
                 )
                 return render(request, 'bazar/cadastrar_doacao.html')
 
-        descricao_completa = f"{nome_item} - {descricao}" if nome_item else descricao
+        doador_data = doador_form.cleaned_data
+        doacao_data = doacao_form.cleaned_data
 
-        doador, _ = Doador.objects.get_or_create(
-            email=email_doador,
-            defaults={
-                'nome': nome_doador,
-                'telefone': telefone_doador or None,
-            }
-        )
+        with transaction.atomic():
+            doador, _ = Doador.objects.get_or_create(
+                email=doador_data['email'],
+                defaults={
+                    'nome': doador_data['nome'],
+                    'telefone': doador_data.get('telefone'),
+                }
+            )
 
-        if doador.nome != nome_doador or doador.telefone != (telefone_doador or None):
-            doador.nome = nome_doador
-            doador.telefone = telefone_doador or None
-            doador.save(update_fields=['nome', 'telefone'])
+            if doador.nome != doador_data['nome'] or doador.telefone != doador_data.get('telefone'):
+                doador.nome = doador_data['nome']
+                doador.telefone = doador_data.get('telefone')
+                doador.save(update_fields=['nome', 'telefone'])
 
-        doacao = Doacao.objects.create(
-            doador=doador,
-            nome_item=nome_item or None,
-            categoria=categoria_item or None,
-            tamanho=tamanho_item or None,
-            descricao=descricao_completa,
-            quantidade=quantidade,
-            tipo_entrega=tipo_entrega,
-            endereco_cep=cep_retirada or None,
-            endereco_logradouro=endereco_logradouro or None,
-            endereco_numero=endereco_numero or None,
-            endereco_complemento=endereco_complemento or None,
-            endereco_bairro=endereco_bairro or None,
-            endereco_cidade=endereco_cidade or None,
-            endereco_uf=endereco_uf or None,
-            status='PENDENTE',
-        )
+            doacao = doacao_form.save(commit=False)
+            doacao.doador = doador
+            doacao.status = 'PENDENTE'
+            doacao.endereco_cep = cep_retirada or doacao_data.get('endereco_cep')
+            doacao.endereco_logradouro = endereco_logradouro or doacao_data.get('endereco_logradouro')
+            doacao.endereco_numero = endereco_numero or doacao_data.get('endereco_numero')
+            doacao.endereco_complemento = endereco_complemento or doacao_data.get('endereco_complemento')
+            doacao.endereco_bairro = endereco_bairro or doacao_data.get('endereco_bairro')
+            doacao.endereco_cidade = endereco_cidade or doacao_data.get('endereco_cidade')
+            doacao.endereco_uf = endereco_uf or doacao_data.get('endereco_uf')
+            doacao.save()
 
-        Agendamento.objects.create(
-            doacao=doacao,
-            tipo=tipo_entrega,
-            endereco=endereco or None,
-            cep_retirada=cep_retirada or None,
-            horario_retirada=horario_retirada,
-            data=data_agendamento,
-            horario=horario_agendamento,
-        )
+            Agendamento.objects.create(
+                doacao=doacao,
+                tipo=tipo_entrega,
+                horario_retirada=horario_retirada,
+                data=data_agendamento,
+                horario=horario_agendamento,
+            )
 
         messages.success(request, 'Doação cadastrada com sucesso!')
         return redirect('doacao_confirmacao')
-    
-    return render(request, 'bazar/cadastrar_doacao.html')
+
+    return render(request, 'bazar/cadastrar_doacao.html', {'doador_form': doador_form, 'doacao_form': doacao_form})
 
 # Função helper para verificar se é staff
 def user_is_staff(user):

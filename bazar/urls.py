@@ -1,5 +1,4 @@
 from django.urls import path
-from django.contrib.auth import views as auth_views
 from . import views
 
 urlpatterns = [
@@ -13,10 +12,6 @@ urlpatterns = [
     path('doacoes/<int:id>/', views.doacao_detalhe, name='doacao_detalhe'),
     path('doar/', views.cadastrar_doacao, name='cadastrar_doacao'),  # Novo: cadastro público
     path('doar/confirmacao/', views.doacao_confirmacao, name='doacao_confirmacao'),
-
-    # Autenticação
-    path('login/', auth_views.LoginView.as_view(), name='login'),
-    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
 
     # Admin/Painel (protegido)
     path('painel/', views.admin_dashboard, name='admin_dashboard'),
