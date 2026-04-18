@@ -257,4 +257,25 @@ Migracoes fora de sincronia:
 python manage.py makemigrations --check --dry-run
 ```
 
+---
+
+## 🛠️ Solução de Problemas (Troubleshooting)
+
+### 🔒 O navegador força HTTPS no localhost (Erro `SSL_ERROR_RX_RECORD_TOO_LONG`)
+
+> [!IMPORTANT]
+> Isso não é um defeito, é um **comportamento esperado** da segurança robusta que implementamos! Isso ocorre porque o protocolo HSTS foi ativado em algum momento (quando você testou o sistema com `DEBUG=False`). O navegador memoriza que o seu `localhost` só pode ser acessado via fluxo criptografado (`https://`).
+
+Se você voltar o ambiente para Desenvolvimento (`DEBUG=True`) e tentar acessar `http://localhost:8000`, o navegador bloqueará o acesso. Para corrigir esse conflito de cache SSL:
+
+1. **Aba Anônima (Rápido):** Acesse a aplicação por uma janela anônima. O cache HSTS não é persistente nela.
+2. **Limpar Transporte de Segurança (Chrome/Edge):** Digite `chrome://net-internals/#hsts` na URL, role até **"Delete domain security policies"**, digite `localhost` e clique em *Delete*.
+3. **Limpeza de Cache Geral (Firefox/Safari):** Limpe o histórico recente com foco em "Imagens e Arquivos em Cache" e use a funcionalidade "Esquecer este site" no histórico.
+
+💡 **Dica Proativa de Desenvolvimento:**
+Alterne os endereços IP. O navegador trata os domínios de forma separada para o cache de segurança HSTS.
+* Se bloqueou em `http://localhost:8000` ➡️ Acesse via `http://127.0.0.1:8000`.
+
+---
+
 Se voce seguir uma das opcoes acima, o projeto deve subir em menos de 10 minutos.
