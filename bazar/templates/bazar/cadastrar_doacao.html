@@ -344,7 +344,7 @@
         return `${digits.slice(0, 5)}-${digits.slice(5)}`;
     }
 
-    function clearAutoAddressFields() {
+    function clearAddressFields() {
         if (inputEndereco) inputEndereco.value = '';
         if (inputBairroRetirada) inputBairroRetirada.value = '';
         if (inputCidadeRetirada) inputCidadeRetirada.value = '';
@@ -399,14 +399,14 @@
 
         const cepDigits = inputCepRetirada.value.replace(/\D/g, '');
         if (cepDigits.length === 0) {
-            clearAutoAddressFields();
+            clearAddressFields();
             return;
         }
 
         if (cepDigits.length !== 8) {
             inputCepRetirada.setCustomValidity('CEP deve conter exatamente 8 dígitos numéricos.');
             inputCepRetirada.reportValidity();
-            clearAutoAddressFields();
+            clearAddressFields();
             return;
         }
 
@@ -417,6 +417,12 @@
             inputBairroRetirada.value = 'Buscando...';
             inputCidadeRetirada.value = 'Buscando...';
             inputUfRetirada.value = '...';
+            
+            // UX de Feedback: desabilita campos temporariamente
+            inputEndereco.disabled = true;
+            inputBairroRetirada.disabled = true;
+            inputCidadeRetirada.disabled = true;
+            inputUfRetirada.disabled = true;
         }
 
         try {
@@ -427,7 +433,9 @@
 
             const data = await response.json();
             if (data.erro) {
-                throw new Error('CEP nao encontrado.');
+                showAlert('CEP não encontrado. Por favor, verifique o número.');
+                clearAddressFields();
+                return;
             }
 
             if (inputEndereco) inputEndereco.value = data.logradouro || '';
@@ -437,8 +445,16 @@
 
             hideAlert();
         } catch (error) {
-            clearAutoAddressFields();
-            showAlert('Nao foi possivel buscar o endereco pelo CEP. Verifique e tente novamente.');
+            clearAddressFields();
+            showAlert('Não foi possível buscar o endereço pelo CEP. Verifique e tente novamente.');
+        } finally {
+            // Reabilita os campos após o fetch
+            if (inputEndereco) {
+                inputEndereco.disabled = false;
+                inputBairroRetirada.disabled = false;
+                inputCidadeRetirada.disabled = false;
+                inputUfRetirada.disabled = false;
+            }
         }
     }
 
@@ -645,6 +661,11 @@
             inputCepRetirada.value = formatCep(inputCepRetirada.value);
 
             const cepDigits = inputCepRetirada.value.replace(/\D/g, '');
+            
+            if (cepDigits.length === 0) {
+                clearAddressFields();
+            }
+
             if (cepDigits.length === 0 || cepDigits.length === 8) {
                 inputCepRetirada.setCustomValidity('');
             } else {
