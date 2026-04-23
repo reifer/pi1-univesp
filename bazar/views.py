@@ -136,7 +136,12 @@ def cadastrar_doacao(request):
             for erros in doacao_form.errors.values():
                 for erro in erros:
                     messages.error(request, erro)
-            return render(request, 'bazar/cadastrar_doacao.html', {'doador_form': doador_form, 'doacao_form': doacao_form})
+            context = {
+                'doador_form': doador_form, 
+                'doacao_form': doacao_form,
+                'form_data': request.POST,
+            }
+            return render(request, 'bazar/cadastrar_doacao.html', context)
 
         endereco = None
         cep_retirada = None
@@ -172,39 +177,40 @@ def cadastrar_doacao(request):
                 horario_retirada_str,
             ]):
                 messages.error(request, 'Para retirada, informe CEP, logradouro, número, bairro, cidade/UF, data e horário para coleta.')
-                return render(request, 'bazar/cadastrar_doacao.html')
+                return render(request, 'bazar/cadastrar_doacao.html', {'doador_form': doador_form, 'doacao_form': doacao_form, 'form_data': request.POST})
 
             if len(cep_retirada) != 9 or cep_retirada[5] != '-':
                 messages.error(request, 'CEP inválido. Use o formato 00000-000.')
-                return render(request, 'bazar/cadastrar_doacao.html')
+                return render(request, 'bazar/cadastrar_doacao.html', {'doador_form': doador_form, 'doacao_form': doacao_form, 'form_data': request.POST})
 
             if len(endereco_uf) != 2:
                 messages.error(request, 'UF inválida para retirada.')
-                return render(request, 'bazar/cadastrar_doacao.html')
+                return render(request, 'bazar/cadastrar_doacao.html', {'doador_form': doador_form, 'doacao_form': doacao_form, 'form_data': request.POST})
 
             try:
                 data_agendamento = datetime.strptime(data_retirada_str, '%Y-%m-%d').date()
             except ValueError:
                 messages.error(request, 'Formato de data de retirada inválido.')
-                return render(request, 'bazar/cadastrar_doacao.html')
+                return render(request, 'bazar/cadastrar_doacao.html', {'doador_form': doador_form, 'doacao_form': doacao_form, 'form_data': request.POST})
 
-            if data_agendamento < datetime.today().date():
-                messages.error(request, 'Não é permitido selecionar datas passadas para retirada.')
-                return render(request, 'bazar/cadastrar_doacao.html')
+            from datetime import timedelta
+            if data_agendamento < (datetime.today().date() + timedelta(days=1)):
+                messages.error(request, 'Para preparo da equipe, a retirada deve ser agendada para pelo menos amanhã (D+1).')
+                return render(request, 'bazar/cadastrar_doacao.html', {'doador_form': doador_form, 'doacao_form': doacao_form, 'form_data': request.POST})
 
             if data_agendamento.weekday() not in {0, 2}:
                 messages.error(request, 'Nossa equipe realiza coletas apenas às Segundas e Quartas-feiras.')
-                return render(request, 'bazar/cadastrar_doacao.html')
+                return render(request, 'bazar/cadastrar_doacao.html', {'doador_form': doador_form, 'doacao_form': doacao_form, 'form_data': request.POST})
 
             try:
                 horario_retirada = datetime.strptime(horario_retirada_str, '%H:%M').time()
             except ValueError:
                 messages.error(request, 'Formato de horário de retirada inválido.')
-                return render(request, 'bazar/cadastrar_doacao.html')
+                return render(request, 'bazar/cadastrar_doacao.html', {'doador_form': doador_form, 'doacao_form': doacao_form, 'form_data': request.POST})
 
             if not (datetime.strptime('09:00', '%H:%M').time() <= horario_retirada <= datetime.strptime('17:00', '%H:%M').time()):
                 messages.error(request, 'Para retirada, o horário deve estar entre 09:00 e 17:00.')
-                return render(request, 'bazar/cadastrar_doacao.html')
+                return render(request, 'bazar/cadastrar_doacao.html', {'doador_form': doador_form, 'doacao_form': doacao_form, 'form_data': request.POST})
 
             endereco = f"{endereco_logradouro}, {endereco_numero}"
             if endereco_complemento:
@@ -215,14 +221,14 @@ def cadastrar_doacao(request):
 
             if not all([data_sugerida_str, horario_sugerido_str]):
                 messages.error(request, 'Para entrega, informe data e horário.')
-                return render(request, 'bazar/cadastrar_doacao.html')
+                return render(request, 'bazar/cadastrar_doacao.html', {'doador_form': doador_form, 'doacao_form': doacao_form, 'form_data': request.POST})
 
             try:
                 data_agendamento = datetime.strptime(data_sugerida_str, '%Y-%m-%d').date()
                 horario_agendamento = parse_horario_sugerido(horario_sugerido_str)
             except ValueError:
                 messages.error(request, 'Formato de data/horário inválido.')
-                return render(request, 'bazar/cadastrar_doacao.html')
+                return render(request, 'bazar/cadastrar_doacao.html', {'doador_form': doador_form, 'doacao_form': doacao_form, 'form_data': request.POST})
 
             # Segurança contra bypass de frontend: apenas terça, quinta e domingo.
             if data_agendamento.weekday() not in {1, 3, 6}:
@@ -230,7 +236,7 @@ def cadastrar_doacao(request):
                     request,
                     'Ops! Entregas apenas às Terças, Quintas e Domingos. Por favor, escolha um desses dias no calendário.'
                 )
-                return render(request, 'bazar/cadastrar_doacao.html')
+                return render(request, 'bazar/cadastrar_doacao.html', {'doador_form': doador_form, 'doacao_form': doacao_form, 'form_data': request.POST})
 
         doador_data = doador_form.cleaned_data
         doacao_data = doacao_form.cleaned_data

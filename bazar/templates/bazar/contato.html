@@ -61,7 +61,7 @@
                                         </div>
                                         <input type="tel" name="telefone" id="telefone"
                                             class="w-full pl-12 pr-5 h-12 md:h-14 rounded-xl border-2 border-slate-200 focus:border-green-800 focus:ring-4 focus:ring-green-800/10 bg-slate-50 text-slate-900 outline-none text-base transition-all placeholder:text-slate-400"
-                                            placeholder="(11) 00000-0000">
+                                            placeholder="(11) 00000-0000" maxlength="15" oninput="maskPhone(this)">
                                     </div>
                                 </div>
 
@@ -109,4 +109,18 @@
         </div>
     </div>
 </div>
+
+<script>
+    function maskPhone(input) {
+        let value = input.value.replace(/\D/g, '');
+        if (value.length > 11) value = value.slice(0, 11);
+        if (value.length > 2) {
+            value = '(' + value.substring(0, 2) + ') ' + value.substring(2);
+        }
+        if (value.length > 10) {
+            value = value.substring(0, 10) + '-' + value.substring(10);
+        }
+        input.value = value;
+    }
+</script>
 {% endblock %}

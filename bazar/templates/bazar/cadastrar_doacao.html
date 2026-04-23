@@ -40,17 +40,17 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div class="space-y-2">
                             <label class="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Nome Completo *</label>
-                            <input type="text" name="nome_doador" required class="w-full p-4 rounded-2xl bg-slate-50 border border-slate-100 focus:ring-4 focus:ring-green-500/10 font-bold" placeholder="Seu nome completo">
+                            <input type="text" name="nome_doador" value="{{ form_data.nome_doador|default_if_none:'' }}" required class="w-full p-4 rounded-2xl bg-slate-50 border border-slate-100 focus:ring-4 focus:ring-green-500/10 font-bold" placeholder="Seu nome completo">
                         </div>
 
                         <div class="space-y-2">
                             <label class="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">E-mail *</label>
-                            <input type="email" name="email_doador" required class="w-full p-4 rounded-2xl bg-slate-50 border border-slate-100 focus:ring-4 focus:ring-green-500/10 font-bold" placeholder="seu@email.com">
+                            <input type="email" name="email_doador" value="{{ form_data.email_doador|default_if_none:'' }}" required class="w-full p-4 rounded-2xl bg-slate-50 border border-slate-100 focus:ring-4 focus:ring-green-500/10 font-bold" placeholder="seu@email.com">
                         </div>
 
                         <div class="space-y-2">
                             <label class="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Telefone</label>
-                            <input type="tel" name="telefone_doador" class="w-full p-4 rounded-2xl bg-slate-50 border border-slate-100 focus:ring-4 focus:ring-green-500/10 font-bold" placeholder="(11) 98765-4321" inputmode="tel">
+                            <input type="tel" name="telefone_doador" value="{{ form_data.telefone_doador|default_if_none:'' }}" class="w-full p-4 rounded-2xl bg-slate-50 border border-slate-100 focus:ring-4 focus:ring-green-500/10 font-bold" placeholder="(11) 98765-4321" inputmode="tel" maxlength="15">
                         </div>
                     </div>
                 </fieldset>
@@ -65,7 +65,7 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div class="space-y-2">
                             <label class="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Nome do Item *</label>
-                            <input type="text" name="nome_item" required class="w-full p-4 rounded-2xl bg-slate-50 border border-slate-100 focus:ring-4 focus:ring-green-500/10 font-bold" placeholder="Ex: Camiseta branca">
+                            <input type="text" name="nome_item" value="{{ form_data.nome_item|default_if_none:'' }}" required class="w-full p-4 rounded-2xl bg-slate-50 border border-slate-100 focus:ring-4 focus:ring-green-500/10 font-bold" placeholder="Ex: Camiseta branca">
                         </div>
 
                         <div class="space-y-3">
@@ -97,17 +97,17 @@
 
                         <div class="space-y-2">
                             <label class="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Tamanho</label>
-                            <input type="text" name="tamanho_item" class="w-full p-4 rounded-2xl bg-slate-50 border border-slate-100 focus:ring-4 focus:ring-green-500/10 font-bold" placeholder="Ex: 40, M, G">
+                            <input type="text" name="tamanho_item" value="{{ form_data.tamanho_item|default_if_none:'' }}" class="w-full p-4 rounded-2xl bg-slate-50 border border-slate-100 focus:ring-4 focus:ring-green-500/10 font-bold" placeholder="Ex: 40, M, G">
                         </div>
 
                         <div class="space-y-2">
                             <label class="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Quantidade *</label>
-                            <input type="number" name="quantidade" value="1" min="1" required class="w-full p-4 rounded-2xl bg-slate-50 border border-slate-100 focus:ring-4 focus:ring-green-500/10 font-bold">
+                            <input type="number" name="quantidade" value="{{ form_data.quantidade|default:'1' }}" min="1" required class="w-full p-4 rounded-2xl bg-slate-50 border border-slate-100 focus:ring-4 focus:ring-green-500/10 font-bold">
                         </div>
 
                         <div class="md:col-span-2 space-y-2">
                             <label class="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Descrição do Item *</label>
-                            <textarea name="descricao" rows="3" required class="w-full p-4 rounded-2xl bg-slate-50 border border-slate-100 focus:ring-4 focus:ring-green-500/10 font-bold" placeholder="Descreva o estado, tamanho, cor e outras características do item..."></textarea>
+                            <textarea name="descricao" rows="3" required class="w-full p-4 rounded-2xl bg-slate-50 border border-slate-100 focus:ring-4 focus:ring-green-500/10 font-bold" placeholder="Descreva o estado, tamanho, cor e outras características do item...">{{ form_data.descricao|default_if_none:'' }}</textarea>
                         </div>
 
                     </div>
@@ -122,7 +122,7 @@
 
                     <div class="space-y-4">
                         <label id="label-retirada" class="flex items-center gap-4 p-4 rounded-2xl border-2 border-slate-200 has-[:checked]:border-green-800 hover:border-green-800 cursor-pointer transition-all">
-                            <input type="radio" name="metodo_entrega" value="RETIRADA" checked class="w-5 h-5 accent-green-800">
+                            <input type="radio" name="metodo_entrega" value="RETIRADA" {% if form_data.metodo_entrega == 'RETIRADA' or not form_data.metodo_entrega %}checked{% endif %} class="w-5 h-5 accent-green-800">
                             <div class="flex-grow">
                                 <p class="font-black text-green-800 text-slate-900 uppercase tracking-tight">Retirada no Local</p>
                                 <p class="text-sm text-slate-500 font-medium">Você nos fornece o endereço e data/hora, e o beneficiário retira o item</p>
@@ -130,7 +130,7 @@
                         </label>
 
                         <label id="label-entrega" class="flex items-center gap-4 p-4 rounded-2xl border-2 border-slate-200 has-[:checked]:border-green-800 hover:border-green-800 cursor-pointer transition-all">
-                            <input type="radio" name="metodo_entrega" value="ENTREGA" class="w-5 h-5 accent-green-800">
+                            <input type="radio" name="metodo_entrega" value="ENTREGA" {% if form_data.metodo_entrega == 'ENTREGA' %}checked{% endif %} class="w-5 h-5 accent-green-800">
                             <div class="flex-grow">
                                 <p class="font-black text-green-800 text-slate-900 uppercase tracking-tight">Entrega na Igreja</p>
                                 <p class="text-sm text-slate-500 font-medium">Você entrega o item pessoalmente em um de nossos horários de atendimento</p>
@@ -148,40 +148,40 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div class="space-y-2">
                                 <label class="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">CEP (Busca)</label>
-                                <input id="cep-retirada" type="text" name="cep_retirada" maxlength="9" inputmode="numeric" autocomplete="postal-code" class="w-full p-4 rounded-2xl bg-slate-50 border border-slate-100 focus:ring-4 focus:ring-green-500/10 font-bold" placeholder="00000-000">
+                                <input id="cep-retirada" type="text" name="cep_retirada" value="{{ form_data.cep_retirada|default_if_none:'' }}" maxlength="9" inputmode="numeric" autocomplete="postal-code" class="w-full p-4 rounded-2xl bg-slate-50 border border-slate-100 focus:ring-4 focus:ring-green-500/10 font-bold" placeholder="00000-000">
                             </div>
 
                             <div class="space-y-2">
                                 <label class="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Endereço (Auto)</label>
-                                <input id="endereco-retirada" type="text" name="endereco_retirada" readonly class="w-full p-4 rounded-2xl bg-slate-100 border border-slate-200 focus:ring-4 focus:ring-green-500/10 font-bold" placeholder="Preenchido automaticamente pelo CEP">
+                                <input id="endereco-retirada" type="text" name="endereco_retirada" value="{{ form_data.endereco_retirada|default_if_none:'' }}" readonly class="w-full p-4 rounded-2xl bg-slate-100 border border-slate-200 focus:ring-4 focus:ring-green-500/10 font-bold" placeholder="Preenchido automaticamente pelo CEP">
                             </div>
 
                             <div class="space-y-2">
                                 <label class="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Número</label>
-                                <input id="numero-retirada" type="text" name="numero_retirada" class="w-full p-4 rounded-2xl bg-slate-50 border border-slate-100 focus:ring-4 focus:ring-green-500/10 font-bold" placeholder="Ex: 123">
+                                <input id="numero-retirada" type="text" name="numero_retirada" value="{{ form_data.numero_retirada|default_if_none:'' }}" class="w-full p-4 rounded-2xl bg-slate-50 border border-slate-100 focus:ring-4 focus:ring-green-500/10 font-bold" placeholder="Ex: 123">
                             </div>
 
                             <div class="space-y-2">
                                 <label class="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Complemento</label>
-                                <input id="complemento-retirada" type="text" name="complemento_retirada" class="w-full p-4 rounded-2xl bg-slate-50 border border-slate-100 focus:ring-4 focus:ring-green-500/10 font-bold" placeholder="Ex: Apto 201 (opcional)">
+                                <input id="complemento-retirada" type="text" name="complemento_retirada" value="{{ form_data.complemento_retirada|default_if_none:'' }}" class="w-full p-4 rounded-2xl bg-slate-50 border border-slate-100 focus:ring-4 focus:ring-green-500/10 font-bold" placeholder="Ex: Apto 201 (opcional)">
                             </div>
 
                             <div class="space-y-2">
                                 <label class="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Bairro (Auto)</label>
-                                <input id="bairro-retirada" type="text" name="bairro_retirada" readonly class="w-full p-4 rounded-2xl bg-slate-100 border border-slate-200 focus:ring-4 focus:ring-green-500/10 font-bold" placeholder="Preenchido automaticamente pelo CEP">
+                                <input id="bairro-retirada" type="text" name="bairro_retirada" value="{{ form_data.bairro_retirada|default_if_none:'' }}" readonly class="w-full p-4 rounded-2xl bg-slate-100 border border-slate-200 focus:ring-4 focus:ring-green-500/10 font-bold" placeholder="Preenchido automaticamente pelo CEP">
                             </div>
 
                             <div class="space-y-2">
                                 <label class="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Cidade/UF (Auto)</label>
                                 <div class="grid grid-cols-3 gap-3">
-                                    <input id="cidade-retirada" type="text" name="cidade_retirada" readonly class="col-span-2 w-full p-4 rounded-2xl bg-slate-100 border border-slate-200 focus:ring-4 focus:ring-green-500/10 font-bold" placeholder="Cidade">
-                                    <input id="uf-retirada" type="text" name="uf_retirada" readonly class="w-full p-4 rounded-2xl bg-slate-100 border border-slate-200 focus:ring-4 focus:ring-green-500/10 font-bold text-center" placeholder="UF">
+                                    <input id="cidade-retirada" type="text" name="cidade_retirada" value="{{ form_data.cidade_retirada|default_if_none:'' }}" readonly class="col-span-2 w-full p-4 rounded-2xl bg-slate-100 border border-slate-200 focus:ring-4 focus:ring-green-500/10 font-bold" placeholder="Cidade">
+                                    <input id="uf-retirada" type="text" name="uf_retirada" value="{{ form_data.uf_retirada|default_if_none:'' }}" readonly class="w-full p-4 rounded-2xl bg-slate-100 border border-slate-200 focus:ring-4 focus:ring-green-500/10 font-bold text-center" placeholder="UF">
                                 </div>
                             </div>
 
                             <div class="space-y-2">
                                 <label class="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Data Sugerida da Coleta</label>
-                                <input id="data-retirada" type="date" name="data_retirada" class="w-full p-4 rounded-2xl bg-slate-50 border border-slate-100 focus:ring-4 focus:ring-green-500/10 font-bold">
+                                <input id="data-retirada" type="date" name="data_retirada" value="{{ form_data.data_retirada|default_if_none:'' }}" class="w-full p-4 rounded-2xl bg-slate-50 border border-slate-100 focus:ring-4 focus:ring-green-500/10 font-bold">
                                 <p id="pickup-day-feedback" class="hidden mt-2 rounded-xl border border-red-100 bg-red-50 px-3 py-2 text-sm font-semibold text-red-700">
                                     Nossa equipe realiza coletas apenas às Segundas e Quartas-feiras.
                                 </p>
@@ -189,7 +189,7 @@
 
                             <div class="space-y-2">
                                 <label class="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Horário para Coleta</label>
-                                <input id="horario-retirada" type="time" name="horario_retirada" min="09:00" max="17:00" class="w-full p-4 rounded-2xl bg-slate-50 border border-slate-100 focus:ring-4 focus:ring-green-500/10 font-bold">
+                                <input id="horario-retirada" type="time" name="horario_retirada" value="{{ form_data.horario_retirada|default_if_none:'' }}" min="09:00" max="17:00" class="w-full p-4 rounded-2xl bg-slate-50 border border-slate-100 focus:ring-4 focus:ring-green-500/10 font-bold">
                             </div>
                         </div>
                     </div>
@@ -207,7 +207,7 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div class="space-y-2">
                                 <label class="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Data Sugerida</label>
-                                <input id="data-sugerida" type="date" name="data_sugerida" class="w-full p-4 rounded-2xl bg-slate-50 border border-slate-100 focus:ring-4 focus:ring-green-500/10 font-bold">
+                                <input id="data-sugerida" type="date" name="data_sugerida" value="{{ form_data.data_sugerida|default_if_none:'' }}" class="w-full p-4 rounded-2xl bg-slate-50 border border-slate-100 focus:ring-4 focus:ring-green-500/10 font-bold">
                                 <p id="data-day-feedback" class="hidden mt-2 rounded-xl border border-red-100 bg-red-50 px-3 py-2 text-sm font-semibold text-red-700">
                                     Ops! Entregas apenas às Terças, Quintas e Domingos. Por favor, escolha um desses dias no calendário.
                                 </p>
@@ -216,10 +216,10 @@
                             <div class="space-y-2">
                                 <label class="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Horário Sugerido</label>
                                 <select id="horario-sugerido" name="horario_sugerido" class="w-full p-4 rounded-2xl bg-slate-50 border border-slate-100 focus:ring-4 focus:ring-green-500/10 font-bold">
-                                    <option value="">Selecione um horário</option>
-                                    <option value="20:00">Terças e Quintas: 20:00 - 21:30</option>
-                                    <option value="10:00">Domingos: 10:00 - 13:00</option>
-                                    <option value="18:00">Domingos: 18:00 - 21:30</option>
+                                    <option value="" {% if not form_data.horario_sugerido %}selected{% endif %}>Selecione um horário</option>
+                                    <option value="20:00" {% if form_data.horario_sugerido == '20:00' %}selected{% endif %}>Terças e Quintas: 20:00 - 21:30</option>
+                                    <option value="10:00" {% if form_data.horario_sugerido == '10:00' %}selected{% endif %}>Domingos: 10:00 - 13:00</option>
+                                    <option value="18:00" {% if form_data.horario_sugerido == '18:00' %}selected{% endif %}>Domingos: 18:00 - 21:30</option>
                                 </select>
                             </div>
                         </div>
@@ -243,7 +243,7 @@
                     </div>
                 </fieldset>
 
-                <div id="form-alert" class="hidden p-4 rounded-2xl border border-red-100 bg-red-50 text-red-700 font-bold text-sm text-center"></div>
+                <div id="form-alert" class="hidden my-4 p-4 rounded-2xl border border-red-100 bg-red-50 text-red-700 font-bold text-sm text-center"></div>
 
                 <!-- Botão de Submit -->
                 <button type="submit" class="w-full bg-green-800 hover:bg-green-950 text-white font-black py-5 rounded-2xl transition-all shadow-xl shadow-green-950/40 flex items-center justify-center gap-3 uppercase tracking-[0.2em] text-sm">
@@ -411,6 +411,13 @@
         }
 
         inputCepRetirada.setCustomValidity('');
+        
+        if (inputEndereco) {
+            inputEndereco.value = 'Buscando...';
+            inputBairroRetirada.value = 'Buscando...';
+            inputCidadeRetirada.value = 'Buscando...';
+            inputUfRetirada.value = '...';
+        }
 
         try {
             const response = await fetch(`https://viacep.com.br/ws/${cepDigits}/json/`);
@@ -531,11 +538,13 @@
     }
 
     function hideAlert() {
+        if (!formAlert) return;
         formAlert.classList.add('hidden');
         formAlert.textContent = '';
     }
 
     function showAlert(message) {
+        if (!formAlert) return;
         formAlert.textContent = message;
         formAlert.classList.remove('hidden');
     }
@@ -572,21 +581,22 @@
             entregaInfo.classList.add('hidden');
             entregaInfo.classList.remove('block');
 
-            if (inputData) inputData.value = '';
+            if (inputData) { inputData.value = ''; inputData.required = false; }
             hideDateFeedback();
             if (inputHorario) {
                 clearHorarioOptions('Selecione um horario');
                 inputHorario.disabled = false;
+                inputHorario.required = false;
             }
-            if (inputCepRetirada) inputCepRetirada.disabled = false;
-            if (inputEndereco) inputEndereco.disabled = false;
-            if (inputBairroRetirada) inputBairroRetirada.disabled = false;
-            if (inputCidadeRetirada) inputCidadeRetirada.disabled = false;
-            if (inputUfRetirada) inputUfRetirada.disabled = false;
-            if (inputNumeroRetirada) inputNumeroRetirada.disabled = false;
-            if (inputComplementoRetirada) inputComplementoRetirada.disabled = false;
-            if (inputDataRetirada) inputDataRetirada.disabled = false;
-            if (inputHorarioRetirada) inputHorarioRetirada.disabled = false;
+            if (inputCepRetirada) { inputCepRetirada.disabled = false; inputCepRetirada.required = true; }
+            if (inputEndereco) { inputEndereco.disabled = false; inputEndereco.required = true; }
+            if (inputBairroRetirada) { inputBairroRetirada.disabled = false; inputBairroRetirada.required = true; }
+            if (inputCidadeRetirada) { inputCidadeRetirada.disabled = false; inputCidadeRetirada.required = true; }
+            if (inputUfRetirada) { inputUfRetirada.disabled = false; inputUfRetirada.required = true; }
+            if (inputNumeroRetirada) { inputNumeroRetirada.disabled = false; inputNumeroRetirada.required = true; }
+            if (inputComplementoRetirada) { inputComplementoRetirada.disabled = false; inputComplementoRetirada.required = false; }
+            if (inputDataRetirada) { inputDataRetirada.disabled = false; inputDataRetirada.required = true; }
+            if (inputHorarioRetirada) { inputHorarioRetirada.disabled = false; inputHorarioRetirada.required = true; }
         } else {
             retiradaFields.classList.add('hidden');
             retiradaFields.classList.remove('block');
@@ -606,15 +616,19 @@
             if (inputUfRetirada) inputUfRetirada.value = '';
             if (inputDataRetirada) inputDataRetirada.value = '';
             if (inputHorarioRetirada) inputHorarioRetirada.value = '';
-            if (inputCepRetirada) inputCepRetirada.disabled = true;
-            if (inputEndereco) inputEndereco.disabled = true;
-            if (inputBairroRetirada) inputBairroRetirada.disabled = true;
-            if (inputCidadeRetirada) inputCidadeRetirada.disabled = true;
-            if (inputUfRetirada) inputUfRetirada.disabled = true;
-            if (inputNumeroRetirada) inputNumeroRetirada.disabled = true;
-            if (inputComplementoRetirada) inputComplementoRetirada.disabled = true;
-            if (inputDataRetirada) inputDataRetirada.disabled = true;
-            if (inputHorarioRetirada) inputHorarioRetirada.disabled = true;
+            
+            if (inputData) inputData.required = true;
+            if (inputHorario) inputHorario.required = true;
+
+            if (inputCepRetirada) { inputCepRetirada.disabled = true; inputCepRetirada.required = false; }
+            if (inputEndereco) { inputEndereco.disabled = true; inputEndereco.required = false; }
+            if (inputBairroRetirada) { inputBairroRetirada.disabled = true; inputBairroRetirada.required = false; }
+            if (inputCidadeRetirada) { inputCidadeRetirada.disabled = true; inputCidadeRetirada.required = false; }
+            if (inputUfRetirada) { inputUfRetirada.disabled = true; inputUfRetirada.required = false; }
+            if (inputNumeroRetirada) { inputNumeroRetirada.disabled = true; inputNumeroRetirada.required = false; }
+            if (inputComplementoRetirada) { inputComplementoRetirada.disabled = true; inputComplementoRetirada.required = false; }
+            if (inputDataRetirada) { inputDataRetirada.disabled = true; inputDataRetirada.required = false; }
+            if (inputHorarioRetirada) { inputHorarioRetirada.disabled = true; inputHorarioRetirada.required = false; }
             hidePickupDayFeedback();
             applyScheduleByDate();
         }
@@ -636,6 +650,10 @@
             } else {
                 inputCepRetirada.setCustomValidity('CEP deve conter exatamente 8 dígitos numéricos.');
             }
+
+            if (cepDigits.length === 8) {
+                fetchAddressByCep();
+            }
         });
 
         inputCepRetirada.addEventListener('blur', async function () {
@@ -645,8 +663,6 @@
                 inputCepRetirada.reportValidity();
                 return;
             }
-
-            await fetchAddressByCep();
         });
     }
 

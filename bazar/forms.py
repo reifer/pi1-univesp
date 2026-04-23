@@ -16,6 +16,8 @@ class DoadorForm(forms.ModelForm):
 
     def clean_telefone(self):
         telefone = (self.cleaned_data.get('telefone') or '').strip()
+        import re
+        telefone = re.sub(r'\D', '', telefone)
         return telefone or None
 
 

@@ -50,17 +50,10 @@
                         <button
                             type="button"
                             id="toggle-password"
-                            class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+                            class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors z-10 cursor-pointer p-2"
                             title="Alternar visibilidade da senha"
                         >
-                            <svg id="password-hidden-icon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
-                                <path d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-4.803m5.596-3.856a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0z"></path>
-                                <path d="M15.394 7.257A3.375 3.375 0 009 9.75m9.303 3.267l3.072 3.072m0 0l-3.072-3.071M18.375 15.018l3.072 3.072"></path>
-                            </svg>
-                            <svg id="password-visible-icon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
-                                <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                <path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7C7.523 19 3.732 16.057 2.458 12z"></path>
-                            </svg>
+                            <i id="password-icon" class="fa fa-eye-slash text-lg"></i>
                         </button>
                     </div>
                 </div>
@@ -87,8 +80,7 @@
     // Toggle de visibilidade de senha
     const passwordInput = document.getElementById('id_password');
     const toggleButton = document.getElementById('toggle-password');
-    const hiddenIcon = document.getElementById('password-hidden-icon');
-    const visibleIcon = document.getElementById('password-visible-icon');
+    const passwordIcon = document.getElementById('password-icon');
 
     toggleButton.addEventListener('click', function (e) {
         e.preventDefault();
@@ -97,12 +89,12 @@
         
         if (isPassword) {
             passwordInput.type = 'text';
-            hiddenIcon.classList.add('hidden');
-            visibleIcon.classList.remove('hidden');
+            passwordIcon.classList.remove('fa-eye-slash');
+            passwordIcon.classList.add('fa-eye');
         } else {
             passwordInput.type = 'password';
-            visibleIcon.classList.add('hidden');
-            hiddenIcon.classList.remove('hidden');
+            passwordIcon.classList.remove('fa-eye');
+            passwordIcon.classList.add('fa-eye-slash');
         }
     });
 </script>

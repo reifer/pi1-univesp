@@ -4,7 +4,7 @@ from django.db import models
 class Doador(models.Model):
     nome = models.CharField(max_length=150, verbose_name="Nome do Doador")
     telefone = models.CharField(max_length=20, blank=True, null=True, verbose_name="Telefone")
-    email = models.EmailField(unique=True, verbose_name="E-mail")
+    email = models.EmailField(verbose_name="E-mail")
     data_criacao = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
