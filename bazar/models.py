@@ -31,10 +31,9 @@ class Doacao(models.Model):
     ]
 
     doador = models.ForeignKey(Doador, on_delete=models.CASCADE, related_name='doacoes', verbose_name="Doador")
-    nome_item = models.CharField(max_length=150, blank=True, null=True, verbose_name="Item")
+    nome_item = models.CharField(max_length=100, blank=True, null=True, verbose_name="Item")
     categoria = models.CharField(max_length=80, blank=True, null=True, verbose_name="Categoria")
-    tamanho = models.CharField(max_length=30, blank=True, null=True, verbose_name="Tamanho")
-    descricao = models.TextField(verbose_name="Descrição")
+    descricao = models.CharField(max_length=200, verbose_name="Descrição")
     quantidade = models.PositiveIntegerField(default=1, verbose_name="Quantidade")
     tipo_entrega = models.CharField(max_length=20, choices=TIPO_ENTREGA_CHOICES, default='RETIRADA', verbose_name="Tipo de Entrega")
     endereco_cep = models.CharField(max_length=9, blank=False, null=False, default='', verbose_name="CEP de Retirada")

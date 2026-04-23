@@ -61,3 +61,9 @@ main {
     background: #e2e8f0;
     border-radius: 10px;
 }
+/* Padronizacao Visual (CSS/Tailwind) para Inputs */
+input:focus, textarea:focus, select:focus {
+    outline: none !important;
+    border-color: #166534 !important;
+    box-shadow: 0 0 0 2px #166534 !important;
+}

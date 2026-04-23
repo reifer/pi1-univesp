@@ -27,7 +27,6 @@ class DoacaoForm(forms.ModelForm):
         fields = [
             'nome_item',
             'categoria',
-            'tamanho',
             'descricao',
             'quantidade',
             'tipo_entrega',
@@ -61,10 +60,6 @@ class DoacaoForm(forms.ModelForm):
     def clean_categoria(self):
         categoria = (self.cleaned_data.get('categoria') or '').strip()
         return categoria or None
-
-    def clean_tamanho(self):
-        tamanho = (self.cleaned_data.get('tamanho') or '').strip()
-        return tamanho or None
 
     def clean_descricao(self):
         return (self.cleaned_data.get('descricao') or '').strip()

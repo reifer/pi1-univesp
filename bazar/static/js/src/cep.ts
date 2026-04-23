@@ -15,6 +15,7 @@
     const inputCidadeRetirada = document.getElementById('cidade-retirada') as HTMLInputElement | null;
     const inputUfRetirada = document.getElementById('uf-retirada') as HTMLInputElement | null;
     const formAlert = document.getElementById('form-alert') as HTMLDivElement | null;
+    const cepError = document.getElementById('cep-error') as HTMLSpanElement | null;
 
     function showAlert(message: string): void {
         if (!formAlert) return;
@@ -27,6 +28,22 @@
         formAlert.classList.add('hidden');
     }
 
+    function showCepError(): void {
+        if (cepError) cepError.classList.remove('hidden');
+        if (inputCepRetirada) {
+            inputCepRetirada.classList.add('border-red-500', 'ring-red-500');
+            inputCepRetirada.classList.remove('border-slate-100');
+        }
+    }
+
+    function hideCepError(): void {
+        if (cepError) cepError.classList.add('hidden');
+        if (inputCepRetirada) {
+            inputCepRetirada.classList.remove('border-red-500', 'ring-red-500');
+            inputCepRetirada.classList.add('border-slate-100');
+        }
+    }
+
     function clearAddressFields(): void {
         if (inputEndereco) inputEndereco.value = '';
         if (inputBairroRetirada) inputBairroRetirada.value = '';
@@ -35,6 +52,8 @@
     }
 
     async function fetchCep(cepDigits: string): Promise<void> {
+        hideCepError();
+
         if (inputEndereco && inputBairroRetirada && inputCidadeRetirada && inputUfRetirada) {
             inputEndereco.value = 'Buscando...';
             inputBairroRetirada.value = 'Buscando...';
@@ -48,12 +67,12 @@
         }
 
         try {
-            const response = await fetch(`https://viacep.com.br/ws/${cepDigits}/json/`);
-            if (!response.ok) throw new Error('Falha de comunicação com o ViaCEP.');
+            const response = await fetch('https://viacep.com.br/ws/' + cepDigits + '/json/');
+            if (!response.ok) throw new Error('Falha de comunicacao com o ViaCEP.');
             
             const data: ViaCepResponse = await response.json();
             if (data.erro) {
-                showAlert('CEP não encontrado. Por favor, verifique o número.');
+                showCepError();
                 clearAddressFields();
                 return;
             }
@@ -63,10 +82,9 @@
             if (inputCidadeRetirada) inputCidadeRetirada.value = data.localidade || '';
             if (inputUfRetirada) inputUfRetirada.value = (data.uf || '').toUpperCase();
 
-            hideAlert();
         } catch (error) {
             clearAddressFields();
-            showAlert('Não foi possível buscar o endereço pelo CEP. Verifique e tente novamente.');
+            showCepError();
         } finally {
             if (inputEndereco && inputBairroRetirada && inputCidadeRetirada && inputUfRetirada) {
                 inputEndereco.disabled = false;
@@ -93,13 +111,15 @@
             if (cepValue.length === 0) {
                 clearAddressFields();
                 inputCepRetirada.setCustomValidity('');
+                hideCepError();
             } else if (cepValue.length === 8) {
                 inputCepRetirada.setCustomValidity('');
                 debounceTimer = setTimeout(() => {
                     fetchCep(cepValue);
                 }, 300);
             } else {
-                inputCepRetirada.setCustomValidity('CEP deve conter exatamente 8 dígitos numéricos.');
+                inputCepRetirada.setCustomValidity('CEP deve conter exatamente 8 dÃgitos numÃ©ricos.');
+                if (cepValue.length < 8 && cepValue.length > 0) hideCepError();
             }
         });
     }

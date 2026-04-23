@@ -65,7 +65,7 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div class="space-y-2">
                             <label class="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Nome do Item *</label>
-                            <input type="text" name="nome_item" value="{{ form_data.nome_item|default_if_none:'' }}" required class="w-full p-4 rounded-2xl bg-slate-50 border border-slate-100 focus:ring-4 focus:ring-green-500/10 font-bold" placeholder="Ex: Camiseta branca">
+                            <input type="text" name="nome_item" maxlength="100" maxlength="100" value="{{ form_data.nome_item|default_if_none:'' }}" required class="w-full p-4 rounded-2xl bg-slate-50 border border-slate-100 focus:ring-4 focus:ring-green-500/10 font-bold" placeholder="Ex: Camiseta branca">
                         </div>
 
                         <div class="space-y-3">
@@ -95,19 +95,16 @@
                             <p class="text-xs text-slate-500 mt-2">💡 <strong>Dica:</strong> Selecione uma ou mais categorias marcando os checkboxes.</p>
                         </div>
 
-                        <div class="space-y-2">
-                            <label class="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Tamanho</label>
-                            <input type="text" name="tamanho_item" value="{{ form_data.tamanho_item|default_if_none:'' }}" class="w-full p-4 rounded-2xl bg-slate-50 border border-slate-100 focus:ring-4 focus:ring-green-500/10 font-bold" placeholder="Ex: 40, M, G">
-                        </div>
+                        
 
                         <div class="space-y-2">
                             <label class="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Quantidade *</label>
-                            <input type="number" name="quantidade" value="{{ form_data.quantidade|default:'1' }}" min="1" required class="w-full p-4 rounded-2xl bg-slate-50 border border-slate-100 focus:ring-4 focus:ring-green-500/10 font-bold">
+                            <input type="number" name="quantidade" min="1" max="999" oninput="this.value=this.value.slice(0,3)" min="1" max="999" oninput="this.value=this.value.slice(0,3)" value="{{ form_data.quantidade|default:'1' }}" min="1" required class="w-full p-4 rounded-2xl bg-slate-50 border border-slate-100 focus:ring-4 focus:ring-green-500/10 font-bold">
                         </div>
 
                         <div class="md:col-span-2 space-y-2">
                             <label class="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Descrição do Item *</label>
-                            <textarea name="descricao" rows="3" required class="w-full p-4 rounded-2xl bg-slate-50 border border-slate-100 focus:ring-4 focus:ring-green-500/10 font-bold" placeholder="Descreva o estado, tamanho, cor e outras características do item...">{{ form_data.descricao|default_if_none:'' }}</textarea>
+                            <textarea name="descricao" maxlength="200" maxlength="200" rows="3" required class="w-full p-4 rounded-2xl bg-slate-50 border border-slate-100 focus:ring-4 focus:ring-green-500/10 font-bold" placeholder="Descreva o estado, tamanho, cor e outras características do item...">{{ form_data.descricao|default_if_none:'' }}</textarea>
                         </div>
 
                     </div>
@@ -149,6 +146,7 @@
                             <div class="space-y-2">
                                 <label class="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">CEP (Busca)</label>
                                 <input id="cep-retirada" type="text" name="cep_retirada" value="{{ form_data.cep_retirada|default_if_none:'' }}" maxlength="9" inputmode="numeric" autocomplete="postal-code" class="w-full p-4 rounded-2xl bg-slate-50 border border-slate-100 focus:ring-4 focus:ring-green-500/10 font-bold" placeholder="00000-000">
+                                <span id=\"cep-error\" class=\"hidden text-red-500 text-xs mt-1\">CEP inválido</span>
                             </div>
 
                             <div class="space-y-2">
@@ -189,7 +187,7 @@
 
                             <div class="space-y-2">
                                 <label class="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Horário para Coleta</label>
-                                <input type="text" id="horario_coleta" name="horario_retirada" list="opcoes-horario" placeholder="Ex: 10:30 ou escolha..." value="{{ form_data.horario_retirada|default_if_none:'' }}" class="w-full p-4 rounded-2xl bg-slate-50 border border-slate-100 focus:ring-4 focus:ring-green-500/10 font-bold">
+                                <input type="text" id="horario_coleta" readonly readonly name="horario_retirada" list="opcoes-horario" placeholder="Ex: 10:30 ou escolha..." value="{{ form_data.horario_retirada|default_if_none:'' }}" class="w-full p-4 rounded-2xl bg-slate-50 border border-slate-100 focus:ring-4 focus:ring-green-500/10 font-bold">
                                 <datalist id="opcoes-horario"></datalist>
                             </div>
                         </div>

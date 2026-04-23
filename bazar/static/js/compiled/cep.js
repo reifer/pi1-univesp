@@ -15,6 +15,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     const inputCidadeRetirada = document.getElementById('cidade-retirada');
     const inputUfRetirada = document.getElementById('uf-retirada');
     const formAlert = document.getElementById('form-alert');
+    const cepError = document.getElementById('cep-error');
     function showAlert(message) {
         if (!formAlert)
             return;
@@ -25,6 +26,22 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         if (!formAlert)
             return;
         formAlert.classList.add('hidden');
+    }
+    function showCepError() {
+        if (cepError)
+            cepError.classList.remove('hidden');
+        if (inputCepRetirada) {
+            inputCepRetirada.classList.add('border-red-500', 'ring-red-500');
+            inputCepRetirada.classList.remove('border-slate-100');
+        }
+    }
+    function hideCepError() {
+        if (cepError)
+            cepError.classList.add('hidden');
+        if (inputCepRetirada) {
+            inputCepRetirada.classList.remove('border-red-500', 'ring-red-500');
+            inputCepRetirada.classList.add('border-slate-100');
+        }
     }
     function clearAddressFields() {
         if (inputEndereco)
@@ -38,6 +55,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     }
     function fetchCep(cepDigits) {
         return __awaiter(this, void 0, void 0, function* () {
+            hideCepError();
             if (inputEndereco && inputBairroRetirada && inputCidadeRetirada && inputUfRetirada) {
                 inputEndereco.value = 'Buscando...';
                 inputBairroRetirada.value = 'Buscando...';
@@ -49,12 +67,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
                 inputUfRetirada.disabled = true;
             }
             try {
-                const response = yield fetch(`https://viacep.com.br/ws/${cepDigits}/json/`);
+                const response = yield fetch('https://viacep.com.br/ws/' + cepDigits + '/json/');
                 if (!response.ok)
-                    throw new Error('Falha de comunicação com o ViaCEP.');
+                    throw new Error('Falha de comunicacao com o ViaCEP.');
                 const data = yield response.json();
                 if (data.erro) {
-                    showAlert('CEP não encontrado. Por favor, verifique o número.');
+                    showCepError();
                     clearAddressFields();
                     return;
                 }
@@ -66,11 +84,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
                     inputCidadeRetirada.value = data.localidade || '';
                 if (inputUfRetirada)
                     inputUfRetirada.value = (data.uf || '').toUpperCase();
-                hideAlert();
             }
             catch (error) {
                 clearAddressFields();
-                showAlert('Não foi possível buscar o endereço pelo CEP. Verifique e tente novamente.');
+                showCepError();
             }
             finally {
                 if (inputEndereco && inputBairroRetirada && inputCidadeRetirada && inputUfRetirada) {
@@ -97,6 +114,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
             if (cepValue.length === 0) {
                 clearAddressFields();
                 inputCepRetirada.setCustomValidity('');
+                hideCepError();
             }
             else if (cepValue.length === 8) {
                 inputCepRetirada.setCustomValidity('');
@@ -105,7 +123,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
                 }, 300);
             }
             else {
-                inputCepRetirada.setCustomValidity('CEP deve conter exatamente 8 dígitos numéricos.');
+                inputCepRetirada.setCustomValidity('CEP deve conter exatamente 8 dÃgitos numÃ©ricos.');
+                if (cepValue.length < 8 && cepValue.length > 0)
+                    hideCepError();
             }
         });
     }
