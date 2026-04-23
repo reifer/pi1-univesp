@@ -1,15 +1,23 @@
-# Bazar Solidário - Documentação Técnica e Onboarding
+import codecs
+
+content = """# Bazar Solidário - Documentação Técnica e Onboarding
 
 Este documento reflete a estrutura técnica exata do projeto de doações, detalhando as regras de negócios, tecnologias implementadas e infraestrutura, garantindo integração rápida para novos desenvolvedores.
 
-## 1. � Stack Principal
+## 1. 🛠️ Stack Tecnológica (Backend e Frontend)
 
-- **Backend:** Python 3.13+ e Django (Gunicorn em produção).
-- **Frontend:** TypeScript (Target ES2017 para o client-side) e Tailwind CSS (via CDN).
-- **Banco de Dados:** SQLite3 (Ambiente Dev) e PostgreSQL (via psycopg2 para Prod).
-- **DevOps/Infra:** Contêineres com Docker e orquestração Docker Compose.
-- **Ambientes:** Hierarquia controlada: Dev (local) -> Homologação -> Prod.
-- **Gerenciamento de Configuração:** `python-dotenv` para isolamento de senhas e travas de ambiente.
+### Backend
+- **Linguagem:** Python 3.13+
+- **Framework Principal:** Django (Servidor configurado para WSGI via Gunicorn em produção)
+- **Gerenciamento de Configuração:** `python-dotenv` para isolamento de credenciais e travas de segurança.
+- **ORM e Banco de Dados (Persistência de Dados):**
+  - **Produção/Homologação:** PostgreSQL (via adaptador `psycopg2-binary`).
+  - **Desenvolvimento Rápido:** SQLite3 (adaptado via flag `DB_ENGINE` no `.env`).
+
+### Frontend (Arquitetura Atual)
+- **Estruturação:** Server-Side Rendering via **Django Templates** (extensões `.html`).
+- **Estilização:** Tailwind CSS injetado de forma estática via *CDN*.
+- **Linguagem Nativa e Comportamento:** JavaScript Vanilla (manipulação de DOM, listeners de eventos `input/change/blur` e requisições HTTP assíncronas via `fetch`).
 
 ---
 
@@ -18,13 +26,12 @@ Este documento reflete a estrutura técnica exata do projeto de doações, detal
 A plataforma foi construída sob rigoroso controle transacional e experiência do usuário:
 
 ### Validação de Formulários e UX Dinâmica
-- **Busca Assíncrona de CEP (ViaCEP):** Ao preencher 8 dígitos no campo `inputCepRetirada`, o sistema desabilita os sub-campos de endereço, inicia um estado de "loading", pesquisa na API ViaCEP remotamente e trata retornos de erro (`data.erro`) com validação de existência de CEP no banco central, limpando os dados se inválido e emitindo alertas de fallback dinâmicos.
-- **Horários Flexíveis (Datalist):** O antigo select rigoroso foi substituído por uma arquitetura híbrida de `<input list="opcoes-horario">`, dando liberdade ao usuário para digitar o horário exato ou selecionar sugestões geradas via TypeScript de 30 em 30 minutos, mantendo compatibilidade e validação de limite.
+- **Busca Assíncrona de CEP (ViaCEP):** Ao preencher 8 dígitos no campo `inputCepRetirada`, o sistema desabilita os sub-campos de endereço, inicia um estado de "loading", pesquisa na API ViaCEP remotamente e trata retornos de erro (`data.erro`) ou limpezas dinâmicas se o usuário apagar o input (`clearAddressFields()`).
 - **Condicionais Dinâmicas (Toggles de UI):** A interface ativa/desativa requerimentos e exibições dependendo de escolhas do usuário (Ex: esconder campos de endereço quando marcado "ENTREGA" e exibi-los sob "RETIRADA").
 - **Tratativas de Data e Horário:** A interface impede visualmente seleção de datas defasadas e domingos, gerenciando arrays de feedback.
 
 ### Regras de Domínio e Persistência (Backend)
-- **Sanitização de PII (RegEx):** O método `clean_telefone` no `bazar/forms.py` limpa todos os caracteres não numéricos (`\D`) via expressões regulares, garantindo que o banco armazene apenas o formato telefônico bruto para evitar injeções.
+- **Sanitização de PII (RegEx):** O método `clean_telefone` no `bazar/forms.py` limpa todos os caracteres não numéricos (`\\D`) via expressões regulares, garantindo que o banco armazene apenas o formato telefônico bruto para evitar injeções.
 - **Modelos Condicionais e Proteção a Nível de Banco de Dados:** O cadastro valida ativamente o preenchimento de *Logradouro*, *Bairro* e *UF* na View e no Form **se, e somente se**, a modalidade for "RETIRADA". 
 - **Integridade Estrutural:** Uma constraint explícita (`CheckConstraint`) no model `Doacao` barra corrupção de dados garantindo que campos de retirada jamais entrem em brancos na tabela.
 
@@ -77,20 +84,7 @@ A plataforma foi construída sob rigoroso controle transacional e experiência d
    ```
 
 A porta padronizada do projeto servirá a requisição em `http://127.0.0.1:8000`.
+"""
 
----
-
-## 6. 💻 Desenvolvimento Frontend com TypeScript
-
-O projeto utiliza TypeScript para modernizar e trazer tipagem à lógica de *client-side*. Notou alguns arquivos duplos? Não é lixo ou código esquecido! Abaixo a explicação da organização:
-
-- **Pasta `src/`:** Contém o código-fonte original em TypeScript (`.ts`). **Toda a edição de lógica do frontend deve ser feita aqui.**
-- **Pasta `compiled/`:** Contém os arquivos distribuíveis em JavaScript puro (`.js`). Esses são os arquivos reais que o Django consome e serve para o navegador. **Eles não devem ser editados diretamente**, pois são gerados e sobrescritos automaticamente pelo compilador.
-
-### 🔄 Comando de Build (Sincronia TS ➔ JS)
-Para manter o fluxo de desenvolvimento ativo sem se preocupar com compilação manual a cada salvamento, deixe registrado este comando essencial rodando em um terminal à parte:
-
-```bash
-tsc --watch
-```
-Isso vai assegurar que qualquer update feito em `horario.ts` ou `cep.ts` reflita instantaneamente sobre os arquivos que o navegador vai enxergar.
+with codecs.open('README.md', 'w', encoding='utf-8') as f:
+    f.write(content)

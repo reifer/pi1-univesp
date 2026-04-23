@@ -189,7 +189,8 @@
 
                             <div class="space-y-2">
                                 <label class="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Horário para Coleta</label>
-                                <input id="horario-retirada" type="time" name="horario_retirada" value="{{ form_data.horario_retirada|default_if_none:'' }}" min="09:00" max="17:00" class="w-full p-4 rounded-2xl bg-slate-50 border border-slate-100 focus:ring-4 focus:ring-green-500/10 font-bold">
+                                <input type="text" id="horario_coleta" name="horario_retirada" list="opcoes-horario" placeholder="Ex: 10:30 ou escolha..." value="{{ form_data.horario_retirada|default_if_none:'' }}" class="w-full p-4 rounded-2xl bg-slate-50 border border-slate-100 focus:ring-4 focus:ring-green-500/10 font-bold">
+                                <datalist id="opcoes-horario"></datalist>
                             </div>
                         </div>
                     </div>
@@ -258,6 +259,10 @@
     </div>
 </div>
 
+<!-- Lógica Client-Side Refatorada via TypeScript -->
+<script src="{% static 'js/compiled/horario.js' %}"></script>
+<script src="{% static 'js/compiled/cep.js' %}"></script>
+
 <script>
     // Toggle campos condicionais de entrega
     const donationForm = document.querySelector('form[method="POST"]');
@@ -274,7 +279,7 @@
     const inputCidadeRetirada = document.getElementById('cidade-retirada');
     const inputUfRetirada = document.getElementById('uf-retirada');
     const inputDataRetirada = document.getElementById('data-retirada');
-    const inputHorarioRetirada = document.getElementById('horario-retirada');
+    const inputHorarioRetirada = document.getElementById('horario_coleta');
     const inputData = document.getElementById('data-sugerida');
     const inputHorario = document.getElementById('horario-sugerido');
     const inputTelefone = document.querySelector('input[name="telefone_doador"]');
