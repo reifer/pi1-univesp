@@ -1,0 +1,460 @@
+
+    const donationForm = document.querySelector('form[method="POST"]');
+
+    if (donationForm) {
+        const retiradaFields = document.getElementById('retirada-fields');
+        const entregaFields = document.getElementById('entrega-fields');
+        const entregaInfo = document.getElementById('entrega-info');
+        const labelRetirada = document.getElementById('label-retirada');
+        const labelEntrega = document.getElementById('label-entrega');
+
+        const inputNome = document.querySelector('input[name="nome_doador"]');
+        const inputEmail = document.querySelector('input[name="email_doador"]');
+        const inputQuantidade = document.querySelector('input[name="quantidade"]');
+        const inputTelefone = document.querySelector('input[name="telefone_doador"]');
+
+        const inputCepRetirada = document.getElementById('cep-retirada');
+        const inputEndereco = document.getElementById('endereco-retirada');
+        const inputNumeroRetirada = document.getElementById('numero-retirada');
+        const inputComplementoRetirada = document.getElementById('complemento-retirada');
+        const inputBairroRetirada = document.getElementById('bairro-retirada');
+        const inputCidadeRetirada = document.getElementById('cidade-retirada');
+        const inputUfRetirada = document.getElementById('uf-retirada');
+
+        const inputDataRetirada = document.getElementById('data-retirada');
+        const inputHorarioRetirada = document.getElementById('horario_coleta');
+        const inputData = document.getElementById('data-sugerida');
+        const inputHorario = document.getElementById('horario-sugerido');
+
+        const dateDayFeedback = document.getElementById('data-day-feedback');
+        const pickupDayFeedback = document.getElementById('pickup-day-feedback');
+
+        const nomeError = document.getElementById('nome-error');
+        const emailError = document.getElementById('email-error');
+        const quantidadeError = document.getElementById('quantidade-error');
+        const cepError = document.getElementById('cep-error');
+        const enderecoError = document.getElementById('endereco-error');
+        const numeroError = document.getElementById('numero-error');
+        const bairroError = document.getElementById('bairro-error');
+        const cidadeError = document.getElementById('cidade-error');
+        const ufError = document.getElementById('uf-error');
+        const dataRetiradaError = document.getElementById('data-retirada-error');
+        const horarioRetiradaError = document.getElementById('horario-retirada-error');
+        const dataSugeridaError = document.getElementById('data-sugerida-error');
+        const horarioSugeridoError = document.getElementById('horario-sugerido-error');
+
+        const metodoInputs = document.querySelectorAll('input[name="metodo_entrega"]');
+
+        function formatTelefone(value) {
+            const digits = value.replace(/\D/g, '').slice(0, 11);
+            if (!digits) return '';
+            if (digits.length <= 2) return `(${digits}`;
+
+            const isCell = digits[2] === '9';
+            const maxLength = isCell ? 11 : 10;
+            const limitedDigits = digits.slice(0, maxLength);
+
+            if (isCell) {
+                if (limitedDigits.length <= 2) return `(${limitedDigits}`;
+                if (limitedDigits.length <= 7) return `(${limitedDigits.slice(0, 2)}) ${limitedDigits.slice(2)}`;
+                return `(${limitedDigits.slice(0, 2)}) ${limitedDigits.slice(2, 7)}-${limitedDigits.slice(7)}`;
+            }
+
+            if (limitedDigits.length <= 2) return `(${limitedDigits}`;
+            if (limitedDigits.length <= 6) return `(${limitedDigits.slice(0, 2)}) ${limitedDigits.slice(2)}`;
+            return `(${limitedDigits.slice(0, 2)}) ${limitedDigits.slice(2, 6)}-${limitedDigits.slice(6)}`;
+        }
+
+        function normalizeToLocalDate(dateInputValue) {
+            const parts = dateInputValue.split('-').map(Number);
+            return new Date(parts[0], parts[1] - 1, parts[2]);
+        }
+
+        function clearAddressFields() {
+            if (inputEndereco) inputEndereco.value = '';
+            if (inputBairroRetirada) inputBairroRetirada.value = '';
+            if (inputCidadeRetirada) inputCidadeRetirada.value = '';
+            if (inputUfRetirada) inputUfRetirada.value = '';
+        }
+
+        function setBorderError(input) {
+            if (!input) return;
+            input.classList.add('border-red-500', 'ring-red-500');
+            input.classList.remove('border-slate-100');
+        }
+
+        function clearBorderError(input) {
+            if (!input) return;
+            input.classList.remove('border-red-500', 'ring-red-500');
+            input.classList.add('border-slate-100');
+        }
+
+        function setInlineError(input, errorElement, message) {
+            if (!input) return false;
+            input.setCustomValidity(message);
+            setBorderError(input);
+            if (errorElement) {
+                errorElement.textContent = message;
+                errorElement.classList.remove('hidden');
+            }
+            return false;
+        }
+
+        function clearInlineError(input, errorElement) {
+            if (!input) return;
+            input.setCustomValidity('');
+            clearBorderError(input);
+            if (errorElement) {
+                errorElement.textContent = '';
+                errorElement.classList.add('hidden');
+            }
+        }
+
+        function clearHorarioOptions(placeholderText) {
+            if (!inputHorario) return;
+            inputHorario.innerHTML = '';
+            const placeholderOption = document.createElement('option');
+            placeholderOption.value = '';
+            placeholderOption.textContent = placeholderText;
+            inputHorario.appendChild(placeholderOption);
+            inputHorario.value = '';
+        }
+
+        function hidePickupDayFeedback() {
+            if (pickupDayFeedback) pickupDayFeedback.classList.add('hidden');
+        }
+
+        function showPickupDayFeedback() {
+            if (pickupDayFeedback) pickupDayFeedback.classList.remove('hidden');
+        }
+
+        function hideDateFeedback() {
+            if (dateDayFeedback) dateDayFeedback.classList.add('hidden');
+        }
+
+        function showDateFeedback() {
+            if (dateDayFeedback) dateDayFeedback.classList.remove('hidden');
+        }
+
+        function applyPickupScheduleByDate() {
+            if (!inputDataRetirada) return true;
+
+            clearInlineError(inputDataRetirada, dataRetiradaError);
+
+            if (!inputDataRetirada.value) {
+                hidePickupDayFeedback();
+                return true;
+            }
+
+            const selectedDate = normalizeToLocalDate(inputDataRetirada.value);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            if (selectedDate < today) {
+                inputDataRetirada.value = '';
+                showPickupDayFeedback();
+                return setInlineError(inputDataRetirada, dataRetiradaError, 'Nao é permitido selecionar datas passadas para retirada.');
+            }
+
+            const weekDay = selectedDate.getDay();
+            const allowedDays = [1, 3];
+
+            if (!allowedDays.includes(weekDay)) {
+                inputDataRetirada.value = '';
+                showPickupDayFeedback();
+                return setInlineError(inputDataRetirada, dataRetiradaError, 'Nossa equipe realiza coletas apenas às Segundas e Quartas-feiras.');
+            }
+
+            hidePickupDayFeedback();
+            return true;
+        }
+
+        function applyScheduleByDate(keepSelectedHorario = false) {
+            if (!inputData || !inputHorario) return true;
+
+            clearInlineError(inputData, dataSugeridaError);
+            clearInlineError(inputHorario, horarioSugeridoError);
+
+            if (!inputData.value) {
+                hideDateFeedback();
+                clearHorarioOptions('Selecione uma data primeiro');
+                inputHorario.disabled = true;
+                return true;
+            }
+
+            const selectedDate = normalizeToLocalDate(inputData.value);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            if (selectedDate < today) {
+                inputData.value = '';
+                hideDateFeedback();
+                clearHorarioOptions('Selecione uma data primeiro');
+                inputHorario.disabled = true;
+                return setInlineError(inputData, dataSugeridaError, 'Nao e permitido selecionar datas passadas para entrega.');
+            }
+
+            const weekDay = selectedDate.getDay();
+            const allowedDays = [0, 2, 4];
+
+            if (!allowedDays.includes(weekDay)) {
+                inputData.value = '';
+                showDateFeedback();
+                clearHorarioOptions('Selecione uma data valida');
+                inputHorario.disabled = true;
+                return setInlineError(inputData, dataSugeridaError, 'Entrega apenas às Terças, Quintas e Domingos.');
+            }
+
+            const previousHorario = keepSelectedHorario ? inputHorario.value : '';
+
+            hideDateFeedback();
+            clearHorarioOptions('Selecione um horario');
+
+            if (weekDay === 2 || weekDay === 4) {
+                const weekdayOption = document.createElement('option');
+                weekdayOption.value = '20:00';
+                weekdayOption.textContent = '20:00 - 21:30';
+                inputHorario.appendChild(weekdayOption);
+                inputHorario.value = '20:00';
+                inputHorario.disabled = true;
+                return true;
+            }
+
+            const sundayMorning = document.createElement('option');
+            sundayMorning.value = '10:00';
+            sundayMorning.textContent = '10:00 - 13:00';
+
+            const sundayEvening = document.createElement('option');
+            sundayEvening.value = '18:00';
+            sundayEvening.textContent = '18:00 - 21:30';
+
+            inputHorario.appendChild(sundayMorning);
+            inputHorario.appendChild(sundayEvening);
+            inputHorario.disabled = false;
+
+            if (keepSelectedHorario && (previousHorario === '10:00' || previousHorario === '18:00')) {
+                inputHorario.value = previousHorario;
+            } else {
+                inputHorario.value = '';
+            }
+
+            return true;
+        }
+
+        function applyMetodoStyles(metodo) {
+            const activeClasses = ['border-green-500', 'ring-4', 'ring-green-500/10', 'shadow-md'];
+            if (labelRetirada) labelRetirada.classList.remove(...activeClasses);
+            if (labelEntrega) labelEntrega.classList.remove(...activeClasses);
+
+            if (metodo === 'RETIRADA' && labelRetirada) {
+                labelRetirada.classList.add(...activeClasses);
+            }
+
+            if (metodo === 'ENTREGA' && labelEntrega) {
+                labelEntrega.classList.add(...activeClasses);
+            }
+        }
+
+        function toggleMetodo() {
+            const selected = document.querySelector('input[name="metodo_entrega"]:checked');
+            if (!selected) return;
+
+            const metodo = selected.value;
+            applyMetodoStyles(metodo);
+
+            if (metodo === 'RETIRADA') {
+                if (retiradaFields) {
+                    retiradaFields.classList.remove('hidden');
+                    retiradaFields.classList.add('block');
+                }
+                if (entregaFields) {
+                    entregaFields.classList.add('hidden');
+                    entregaFields.classList.remove('block');
+                }
+                if (entregaInfo) {
+                    entregaInfo.classList.add('hidden');
+                    entregaInfo.classList.remove('block');
+                }
+
+                if (inputData) { inputData.value = ''; inputData.required = false; clearInlineError(inputData, dataSugeridaError); }
+                hideDateFeedback();
+
+                if (inputHorario) {
+                    clearHorarioOptions('Selecione um horario');
+                    inputHorario.disabled = false;
+                    inputHorario.required = false;
+                    clearInlineError(inputHorario, horarioSugeridoError);
+                }
+
+                if (inputCepRetirada) { inputCepRetirada.disabled = false; inputCepRetirada.required = true; }
+                if (inputEndereco) { inputEndereco.disabled = false; inputEndereco.required = true; }
+                if (inputBairroRetirada) { inputBairroRetirada.disabled = false; inputBairroRetirada.required = true; }
+                if (inputCidadeRetirada) { inputCidadeRetirada.disabled = false; inputCidadeRetirada.required = true; }
+                if (inputUfRetirada) { inputUfRetirada.disabled = false; inputUfRetirada.required = true; }
+                if (inputNumeroRetirada) { inputNumeroRetirada.disabled = false; inputNumeroRetirada.required = true; }
+                if (inputComplementoRetirada) { inputComplementoRetirada.disabled = false; inputComplementoRetirada.required = false; }
+                if (inputDataRetirada) { inputDataRetirada.disabled = false; inputDataRetirada.required = true; }
+                if (inputHorarioRetirada) { inputHorarioRetirada.disabled = false; inputHorarioRetirada.required = true; }
+
+                clearInlineError(inputCepRetirada, cepError);
+                clearInlineError(inputEndereco, enderecoError);
+                clearInlineError(inputNumeroRetirada, numeroError);
+                clearInlineError(inputBairroRetirada, bairroError);
+                clearInlineError(inputCidadeRetirada, cidadeError);
+                clearInlineError(inputUfRetirada, ufError);
+                clearInlineError(inputDataRetirada, dataRetiradaError);
+                clearInlineError(inputHorarioRetirada, horarioRetiradaError);
+            } else {
+                if (retiradaFields) {
+                    retiradaFields.classList.add('hidden');
+                    retiradaFields.classList.remove('block');
+                }
+                if (entregaFields) {
+                    entregaFields.classList.remove('hidden');
+                    entregaFields.classList.add('block');
+                }
+                if (entregaInfo) {
+                    entregaInfo.classList.remove('hidden');
+                    entregaInfo.classList.add('block');
+                }
+
+                if (inputCepRetirada) { inputCepRetirada.value = ''; inputCepRetirada.disabled = true; inputCepRetirada.required = false; clearInlineError(inputCepRetirada, cepError); }
+                if (inputEndereco) { inputEndereco.value = ''; inputEndereco.disabled = true; inputEndereco.required = false; clearInlineError(inputEndereco, enderecoError); }
+                if (inputNumeroRetirada) { inputNumeroRetirada.value = ''; inputNumeroRetirada.disabled = true; inputNumeroRetirada.required = false; clearInlineError(inputNumeroRetirada, numeroError); }
+                if (inputBairroRetirada) { inputBairroRetirada.value = ''; inputBairroRetirada.disabled = true; inputBairroRetirada.required = false; clearInlineError(inputBairroRetirada, bairroError); }
+                if (inputCidadeRetirada) { inputCidadeRetirada.value = ''; inputCidadeRetirada.disabled = true; inputCidadeRetirada.required = false; clearInlineError(inputCidadeRetirada, cidadeError); }
+                if (inputUfRetirada) { inputUfRetirada.value = ''; inputUfRetirada.disabled = true; inputUfRetirada.required = false; clearInlineError(inputUfRetirada, ufError); }
+                if (inputComplementoRetirada) { inputComplementoRetirada.value = ''; inputComplementoRetirada.disabled = true; inputComplementoRetirada.required = false; }
+                if (inputDataRetirada) { inputDataRetirada.value = ''; inputDataRetirada.disabled = true; inputDataRetirada.required = false; clearInlineError(inputDataRetirada, dataRetiradaError); }
+                if (inputHorarioRetirada) { inputHorarioRetirada.value = ''; inputHorarioRetirada.disabled = true; inputHorarioRetirada.required = false; clearInlineError(inputHorarioRetirada, horarioRetiradaError); }
+
+                if (inputData) inputData.required = true;
+                if (inputHorario) inputHorario.required = true;
+
+                hidePickupDayFeedback();
+                applyScheduleByDate();
+            }
+        }
+
+        function focusField(input) {
+            if (!input) return;
+            input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            input.focus({ preventScroll: true });
+        }
+
+        if (inputTelefone) {
+            inputTelefone.addEventListener('input', function () {
+                inputTelefone.value = formatTelefone(inputTelefone.value);
+            });
+        }
+
+        if (inputNome) inputNome.addEventListener('input', function () { clearInlineError(inputNome, nomeError); });
+        if (inputEmail) inputEmail.addEventListener('input', function () { clearInlineError(inputEmail, emailError); });
+        if (inputQuantidade) inputQuantidade.addEventListener('input', function () { clearInlineError(inputQuantidade, quantidadeError); });
+
+        if (inputCepRetirada) {
+            inputCepRetirada.addEventListener('input', function () {
+                clearInlineError(inputCepRetirada, cepError);
+                const cepDigits = inputCepRetirada.value.replace(/\D/g, '').slice(0, 8);
+                inputCepRetirada.value = cepDigits.length > 5 ? `${cepDigits.slice(0, 5)}-${cepDigits.slice(5)}` : cepDigits;
+
+                if (cepDigits.length !== 8) {
+                    clearAddressFields();
+                    clearInlineError(inputEndereco, enderecoError);
+                    clearInlineError(inputBairroRetirada, bairroError);
+                    clearInlineError(inputCidadeRetirada, cidadeError);
+                    clearInlineError(inputUfRetirada, ufError);
+                }
+            });
+        }
+
+        if (inputNumeroRetirada) inputNumeroRetirada.addEventListener('input', function () { clearInlineError(inputNumeroRetirada, numeroError); });
+        if (inputDataRetirada) inputDataRetirada.addEventListener('change', function () { clearInlineError(inputDataRetirada, dataRetiradaError); if (document.querySelector('input[name="metodo_entrega"]:checked')?.value === 'RETIRADA') applyPickupScheduleByDate(); });
+        if (inputData) inputData.addEventListener('change', function () { clearInlineError(inputData, dataSugeridaError); if (document.querySelector('input[name="metodo_entrega"]:checked')?.value === 'ENTREGA') applyScheduleByDate(); });
+        if (inputHorario) inputHorario.addEventListener('change', function () { clearInlineError(inputHorario, horarioSugeridoError); });
+        if (inputHorarioRetirada) inputHorarioRetirada.addEventListener('change', function () { clearInlineError(inputHorarioRetirada, horarioRetiradaError); });
+
+        metodoInputs.forEach(function (input) { input.addEventListener('change', toggleMetodo); });
+        toggleMetodo();
+
+        donationForm.addEventListener('submit', function (event) {
+            const selected = document.querySelector('input[name="metodo_entrega"]:checked');
+            if (!selected) {
+                event.preventDefault();
+                return;
+            }
+
+            const method = selected.value;
+            const firstInvalid = [];
+
+            clearInlineError(inputNome, nomeError);
+            clearInlineError(inputEmail, emailError);
+            clearInlineError(inputQuantidade, quantidadeError);
+            clearInlineError(inputCepRetirada, cepError);
+            clearInlineError(inputEndereco, enderecoError);
+            clearInlineError(inputNumeroRetirada, numeroError);
+            clearInlineError(inputBairroRetirada, bairroError);
+            clearInlineError(inputCidadeRetirada, cidadeError);
+            clearInlineError(inputUfRetirada, ufError);
+            clearInlineError(inputDataRetirada, dataRetiradaError);
+            clearInlineError(inputHorarioRetirada, horarioRetiradaError);
+            clearInlineError(inputData, dataSugeridaError);
+            clearInlineError(inputHorario, horarioSugeridoError);
+
+            if (!inputNome || !inputNome.value.trim()) {
+                firstInvalid.push({ input: inputNome, errorElement: nomeError, message: 'Informe o nome completo.' });
+            }
+
+            if (!inputEmail || !inputEmail.value.trim() || !inputEmail.checkValidity()) {
+                firstInvalid.push({ input: inputEmail, errorElement: emailError, message: 'Informe um e-mail válido.' });
+            }
+
+            if (!inputQuantidade || !inputQuantidade.value || Number(inputQuantidade.value) < 1) {
+                firstInvalid.push({ input: inputQuantidade, errorElement: quantidadeError, message: 'Informe uma quantidade válida.' });
+            }
+
+            if (method === 'RETIRADA') {
+                const cepDigits = inputCepRetirada ? inputCepRetirada.value.replace(/\D/g, '') : '';
+                if (!inputCepRetirada || cepDigits.length !== 8) {
+                    firstInvalid.push({ input: inputCepRetirada, errorElement: cepError, message: 'CEP deve conter exatamente 8 dígitos numéricos.' });
+                } else if (!inputEndereco || !inputEndereco.value.trim()) {
+                    firstInvalid.push({ input: inputCepRetirada, errorElement: cepError, message: 'CEP não encontrado. Por favor, verifique o número.' });
+                }
+
+                if (!inputNumeroRetirada || !inputNumeroRetirada.value.trim()) {
+                    firstInvalid.push({ input: inputNumeroRetirada, errorElement: numeroError, message: 'Informe o número do endereço.' });
+                }
+
+                if (!inputDataRetirada || !inputDataRetirada.value) {
+                    firstInvalid.push({ input: inputDataRetirada, errorElement: dataRetiradaError, message: 'Selecione a data sugerida da coleta.' });
+                } else if (!applyPickupScheduleByDate()) {
+                    firstInvalid.push({ input: inputDataRetirada, errorElement: dataRetiradaError, message: inputDataRetirada.validationMessage || 'Selecione a data sugerida da coleta.' });
+                }
+
+                if (!inputHorarioRetirada || !inputHorarioRetirada.value) {
+                    firstInvalid.push({ input: inputHorarioRetirada, errorElement: horarioRetiradaError, message: 'Informe um horário para coleta.' });
+                } else if (inputHorarioRetirada.value < '09:00' || inputHorarioRetirada.value > '17:00') {
+                    firstInvalid.push({ input: inputHorarioRetirada, errorElement: horarioRetiradaError, message: 'Para retirada, o horario deve estar entre 09:00 e 17:00.' });
+                }
+            }
+
+            if (method === 'ENTREGA') {
+                if (!inputData || !inputData.value) {
+                    firstInvalid.push({ input: inputData, errorElement: dataSugeridaError, message: 'Selecione a data sugerida.' });
+                } else if (!applyScheduleByDate(true)) {
+                    firstInvalid.push({ input: inputData, errorElement: dataSugeridaError, message: inputData.validationMessage || 'Selecione a data sugerida.' });
+                }
+
+                if (!inputHorario || !inputHorario.value) {
+                    firstInvalid.push({ input: inputHorario, errorElement: horarioSugeridoError, message: 'Selecione um horário disponível.' });
+                }
+            }
+
+            if (firstInvalid.length > 0) {
+                event.preventDefault();
+                const invalid = firstInvalid[0];
+                setInlineError(invalid.input, invalid.errorElement, invalid.message);
+                focusField(invalid.input);
+            }
+        });
+    }

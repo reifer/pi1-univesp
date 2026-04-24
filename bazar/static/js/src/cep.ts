@@ -9,38 +9,41 @@
         erro?: boolean;
     }
 
-    const inputCepRetirada = document.getElementById('cep-retirada') as HTMLInputElement | null;
+        console.log('Script de CEP carregado');
+
+        const inputCep = document.getElementById('cep-retirada') as HTMLInputElement | null;
     const inputEndereco = document.getElementById('endereco-retirada') as HTMLInputElement | null;
     const inputBairroRetirada = document.getElementById('bairro-retirada') as HTMLInputElement | null;
     const inputCidadeRetirada = document.getElementById('cidade-retirada') as HTMLInputElement | null;
     const inputUfRetirada = document.getElementById('uf-retirada') as HTMLInputElement | null;
-    const formAlert = document.getElementById('form-alert') as HTMLDivElement | null;
     const cepError = document.getElementById('cep-error') as HTMLSpanElement | null;
-
-    function showAlert(message: string): void {
-        if (!formAlert) return;
-        formAlert.textContent = message;
-        formAlert.classList.remove('hidden');
-    }
-
-    function hideAlert(): void {
-        if (!formAlert) return;
-        formAlert.classList.add('hidden');
-    }
+    let currentFetchToken = 0;
 
     function showCepError(): void {
-        if (cepError) cepError.classList.remove('hidden');
-        if (inputCepRetirada) {
-            inputCepRetirada.classList.add('border-red-500', 'ring-red-500');
-            inputCepRetirada.classList.remove('border-slate-100');
+            if (cepError) {
+                cepError.classList.remove('hidden');
+                cepError.classList.add('block');
+                cepError.style.setProperty('display', 'block', 'important');
+                cepError.style.setProperty('visibility', 'visible', 'important');
+                cepError.style.opacity = '1';
+            }
+            if (inputCep) {
+                inputCep.classList.add('border-red-500', 'ring-red-500');
+                inputCep.classList.remove('border-slate-100');
         }
     }
 
     function hideCepError(): void {
-        if (cepError) cepError.classList.add('hidden');
-        if (inputCepRetirada) {
-            inputCepRetirada.classList.remove('border-red-500', 'ring-red-500');
-            inputCepRetirada.classList.add('border-slate-100');
+            if (cepError) {
+                cepError.classList.add('hidden');
+                cepError.classList.remove('block');
+                cepError.style.removeProperty('display');
+                cepError.style.removeProperty('visibility');
+                cepError.style.opacity = '1';
+            }
+            if (inputCep) {
+                inputCep.classList.remove('border-red-500', 'ring-red-500');
+                inputCep.classList.add('border-slate-100');
         }
     }
 
@@ -51,7 +54,7 @@
         if (inputUfRetirada) inputUfRetirada.value = '';
     }
 
-    async function fetchCep(cepDigits: string): Promise<void> {
+    async function fetchCep(cepDigits: string, fetchToken: number): Promise<void> {
         hideCepError();
 
         if (inputEndereco && inputBairroRetirada && inputCidadeRetirada && inputUfRetirada) {
@@ -67,8 +70,14 @@
         }
 
         try {
-            const response = await fetch('https://viacep.com.br/ws/' + cepDigits + '/json/');
+            const response = await fetch(`https://viacep.com.br/ws/${cepDigits}/json/`);
             if (!response.ok) throw new Error('Falha de comunicacao com o ViaCEP.');
+
+            // Evita preencher campos com resposta antiga quando o CEP ja mudou.
+            const currentCepDigits = inputCep ? inputCep.value.replace(/\D/g, '') : '';
+            if (fetchToken !== currentFetchToken || currentCepDigits !== cepDigits) {
+                return;
+            }
             
             const data: ViaCepResponse = await response.json();
             if (data.erro) {
@@ -81,8 +90,13 @@
             if (inputBairroRetirada) inputBairroRetirada.value = data.bairro || '';
             if (inputCidadeRetirada) inputCidadeRetirada.value = data.localidade || '';
             if (inputUfRetirada) inputUfRetirada.value = (data.uf || '').toUpperCase();
+            hideCepError();
 
         } catch (error) {
+            const currentCepDigits = inputCep ? inputCep.value.replace(/\D/g, '') : '';
+            if (fetchToken !== currentFetchToken || currentCepDigits !== cepDigits) {
+                return;
+            }
             clearAddressFields();
             showCepError();
         } finally {
@@ -95,31 +109,32 @@
         }
     }
 
-    if (inputCepRetirada) {
-        let debounceTimer: ReturnType<typeof setTimeout>;
-        inputCepRetirada.addEventListener('input', function (event: Event): void {
-            clearTimeout(debounceTimer);
-            let cepValue = inputCepRetirada.value.replace(/\D/g, '');
+    if (inputCep) {
+        inputCep.addEventListener('input', function (event: Event): void {
+            hideCepError();
+            
+            let cepValue = inputCep.value.replace(/\D/g, '');
             
             // Aplica mascara visual
             if (cepValue.length > 5) {
-                inputCepRetirada.value = cepValue.slice(0, 5) + '-' + cepValue.slice(5, 8);
+                inputCep.value = cepValue.slice(0, 5) + '-' + cepValue.slice(5, 8);
             } else {
-                inputCepRetirada.value = cepValue;
+                inputCep.value = cepValue;
+            }
+
+            if (cepValue.length !== 8) {
+                currentFetchToken += 1;
+                clearAddressFields();
+                inputCep.setCustomValidity('CEP deve conter exatamente 8 dígitos numéricos.');
+            } else {
+                inputCep.setCustomValidity('');
+                const fetchToken = currentFetchToken + 1;
+                currentFetchToken = fetchToken;
+                fetchCep(cepValue, fetchToken);
             }
 
             if (cepValue.length === 0) {
-                clearAddressFields();
-                inputCepRetirada.setCustomValidity('');
-                hideCepError();
-            } else if (cepValue.length === 8) {
-                inputCepRetirada.setCustomValidity('');
-                debounceTimer = setTimeout(() => {
-                    fetchCep(cepValue);
-                }, 300);
-            } else {
-                inputCepRetirada.setCustomValidity('CEP deve conter exatamente 8 dÃgitos numÃ©ricos.');
-                if (cepValue.length < 8 && cepValue.length > 0) hideCepError();
+                inputCep.setCustomValidity('');
             }
         });
     }
