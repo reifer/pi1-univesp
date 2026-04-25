@@ -164,7 +164,7 @@ def cadastrar_doacao(request):
             endereco_uf = (request.POST.get('uf_retirada') or '').strip().upper()
             cep_retirada = (request.POST.get('cep_retirada') or '').strip()
             data_retirada_str = (request.POST.get('data_retirada') or '').strip()
-            horario_retirada_str = (request.POST.get('horario_retirada') or '').strip()
+            horario_retirada_str = (request.POST.get('horario_coleta') or request.POST.get('horario_retirada') or '').strip()
 
             if not all([
                 endereco_logradouro,

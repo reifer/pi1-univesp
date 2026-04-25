@@ -196,9 +196,10 @@
 
                             <div class="space-y-2">
                                 <label class="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Horário para Coleta</label>
-                                <input type="text" id="horario_coleta" readonly name="horario_retirada" list="opcoes-horario" placeholder="Ex: 10:30 ou escolha..." value="{{ form_data.horario_retirada|default_if_none:'' }}" class="w-full p-4 rounded-2xl bg-slate-50 border border-slate-100 focus:ring-4 focus:ring-green-500/10 font-bold">
+                                <select id="horario_coleta" name="horario_coleta" class="w-full p-4 rounded-2xl bg-slate-50 border border-slate-100 focus:ring-4 focus:ring-green-500/10 font-bold">
+                                    <option value="">Selecione um horário</option>
+                                </select>
                                 <span id="horario-retirada-error" class="hidden text-red-600 font-bold text-xs mt-1"></span>
-                                <datalist id="opcoes-horario"></datalist>
                             </div>
                         </div>
                     </div>

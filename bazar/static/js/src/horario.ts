@@ -1,15 +1,20 @@
-// Script para manipulação e tipagem do select de horário (09:00 as 17:00)
+// Script para popular o select de horário de coleta (09:00 as 17:00)
 document.addEventListener('DOMContentLoaded', (event: Event): void => {
-    const dataList = document.getElementById('opcoes-horario') as HTMLDataListElement | null;
+    const horarioSelect = document.getElementById('horario_coleta') as HTMLSelectElement | null;
     
-    if (!dataList) return;
+    if (!horarioSelect) return;
 
     // Configurando horário de início e fim
     const startHour = 9; // 09:00
     const endHour = 17;  // 17:00
-    const stepMinutes = 30; // 30 minutos de intervalo
+    const stepMinutes = 60; // 60 minutos de intervalo
 
-    dataList.innerHTML = '';
+    horarioSelect.innerHTML = '';
+
+    const placeholderOption = document.createElement('option');
+    placeholderOption.value = '';
+    placeholderOption.textContent = 'Selecione um horário';
+    horarioSelect.appendChild(placeholderOption);
 
     // Geração dinâmica de opções
     for (let hour = startHour; hour <= endHour; hour++) {
@@ -23,7 +28,8 @@ document.addEventListener('DOMContentLoaded', (event: Event): void => {
 
             const option = document.createElement('option');
             option.value = timeString;
-            dataList.appendChild(option);
+            option.textContent = timeString;
+            horarioSelect.appendChild(option);
         }
     }
 });
