@@ -143,4 +143,4 @@ LOGIN_REDIRECT_URL = 'admin_dashboard'
 LOGOUT_REDIRECT_URL = 'index'
 LOGIN_URL = 'login'
 
-TEST_RUNNER = 'core.test_runner.ExecutorDeTestesAuditoria'
+TEST_RUNNER = 'bazar.test_runner.ExecutorDeTestesAuditoria'
