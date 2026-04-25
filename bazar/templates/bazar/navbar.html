@@ -43,7 +43,8 @@
     </div>
 </nav>
 
-<div id="mobile-menu" class="fixed top-20 left-0 w-full bottom-0 z-40 overflow-y-auto hidden md:hidden border-t border-slate-100 bg-white/95 backdrop-blur-md">
+<div id="mobile-menu" class="fixed top-20 left-0 w-full bottom-0 z-40 overflow-y-auto md:hidden border-t border-slate-100 bg-white/95 backdrop-blur-md 
+opacity-0 -translate-y-5 pointer-events-none transition-all duration-300 ease-out">
     <div class="container mx-auto px-8 py-4 flex flex-col gap-3">
 
         <a href="{% url 'index' %}" 
@@ -89,17 +90,28 @@
 </div>
 
 <script>
-    (function () {
-        const mobileMenuButton = document.getElementById('mobile-menu-button');
-        const mobileMenu = document.getElementById('mobile-menu');
+(function () {
+    const button = document.getElementById('mobile-menu-button');
+    const menu = document.getElementById('mobile-menu');
 
-        if (!mobileMenuButton || !mobileMenu) return;
+    if (!button || !menu) return;
 
-        mobileMenuButton.addEventListener('click', function () {
-            mobileMenu.classList.toggle('hidden');
-            document.body.classList.toggle('overflow-hidden');
-            const isExpanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
-            mobileMenuButton.setAttribute('aria-expanded', String(!isExpanded));
-        });
-    })();
+    button.addEventListener('click', function () {
+        const isOpen = menu.classList.contains('opacity-100');
+
+        if (isOpen) {
+            // FECHAR
+            menu.classList.remove('opacity-100', 'translate-y-0');
+            menu.classList.add('opacity-0', '-translate-y-5', 'pointer-events-none', 'ease-in');
+            document.body.classList.remove('overflow-hidden');
+        } else {
+            // ABRIR
+            menu.classList.remove('opacity-0', '-translate-y-5', 'pointer-events-none');
+            menu.classList.add('opacity-100', 'translate-y-0');
+            document.body.classList.add('overflow-hidden');
+        }
+
+        button.setAttribute('aria-expanded', String(!isOpen));
+    });
+})();
 </script>
