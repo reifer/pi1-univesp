@@ -19,6 +19,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     let currentFetchToken = 0;
     function showCepError() {
         if (cepError) {
+            cepError.textContent = 'CEP INVÁLIDO';
             cepError.classList.remove('hidden');
             cepError.classList.add('block');
             cepError.style.setProperty('display', 'block', 'important');

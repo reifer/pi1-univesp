@@ -21,6 +21,7 @@
 
     function showCepError(): void {
             if (cepError) {
+                cepError.textContent = 'CEP INVÁLIDO';
                 cepError.classList.remove('hidden');
                 cepError.classList.add('block');
                 cepError.style.setProperty('display', 'block', 'important');

@@ -149,7 +149,7 @@
                             <div class="space-y-2">
                                 <label class="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">CEP (Busca)</label>
                                 <input id="cep-retirada" type="text" name="cep_retirada" value="{{ form_data.cep_retirada|default_if_none:'' }}" maxlength="9" inputmode="numeric" autocomplete="postal-code" class="w-full p-4 rounded-2xl bg-slate-50 border border-slate-100 focus:ring-4 focus:ring-green-500/10 font-bold" placeholder="00000-000">
-                                <span id="cep-error" class="hidden text-red-600 font-bold text-xs mt-1">CEP não encontrado. Por favor, verifique o número.</span>
+                                <span id="cep-error" class="hidden text-red-600 font-bold text-xs mt-1">CEP INVÁLIDO</span>
                             </div>
 
                             <div class="space-y-2">
@@ -378,7 +378,9 @@ const donationForm = document.querySelector('form[method="POST"]');
             input.setCustomValidity('');
             clearBorderError(input);
             if (errorElement) {
-                errorElement.textContent = '';
+                if (errorElement.id !== 'cep-error') {
+                    errorElement.textContent = '';
+                }
                 errorElement.classList.add('hidden');
             }
         }
