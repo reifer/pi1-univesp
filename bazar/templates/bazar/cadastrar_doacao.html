@@ -378,9 +378,6 @@ const donationForm = document.querySelector('form[method="POST"]');
             input.setCustomValidity('');
             clearBorderError(input);
             if (errorElement) {
-                if (errorElement.id !== 'cep-error') {
-                    errorElement.textContent = '';
-                }
                 errorElement.classList.add('hidden');
             }
         }
