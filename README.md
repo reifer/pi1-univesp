@@ -94,3 +94,48 @@ Para manter o fluxo de desenvolvimento ativo sem se preocupar com compilação m
 tsc --watch
 ```
 Isso vai assegurar que qualquer update feito em `horario.ts` ou `cep.ts` reflita instantaneamente sobre os arquivos que o navegador vai enxergar.
+
+---
+
+## 7. 🧪 Guia de Testes e Qualidade
+
+### Como executar os testes
+
+Rodar a suíte completa com saída detalhada:
+
+```bash
+python manage.py test -v 2
+```
+
+Rodar apenas o arquivo de integração em modo auditoria:
+
+```bash
+python manage.py test bazar.testes_completos -v 2
+```
+
+### O que os 18 testes validam
+
+| Teste | Validação |
+|---|---|
+| `test_acesso_negado_ao_painel_sem_login` | Bloqueia acesso ao painel para visitante não autenticado. |
+| `test_acesso_negado_ao_painel_sem_staff` | Bloqueia acesso ao painel para usuário comum autenticado. |
+| `test_usuario_comum_nao_exclui_doacao_de_terceiro` | Previne IDOR em exclusão via URL. |
+| `test_usuario_comum_nao_altera_status_de_doacao` | Previne alteração indevida de status via URL. |
+| `test_usuario_comum_nao_da_baixa_em_doacao_de_terceiro` | Previne baixa indevida de estoque via URL. |
+| `test_campo_legado_e_scripts_sao_escapados_no_detalhe` | Garante escape de scripts e ignora campo legado `tamanho`. |
+| `test_cadastro_rejeita_cep_invalido_no_backend` | Valida rejeição de CEP inválido no backend. |
+| `test_cadastro_aceita_horario_coleta_no_formato_hh_mm` | Confirma persistência de horário válido em `HH:MM`. |
+| `test_cadastro_rejeita_horario_coleta_fora_do_padrao` | Rejeita horário fora do padrão esperado. |
+| `test_fluxo_completo_exibe_dados_corretos_no_painel` | Valida o fluxo feliz até o painel com descrição, quantidade e categoria. |
+| `test_modelo_rejeita_doacao_sem_doador` | Previne criação de doação sem doador. |
+| `test_modelo_rejeita_doacao_sem_descricao` | Previne criação de doação sem descrição. |
+| `test_modelo_define_status_padrao_pendente` | Confirma o status padrão `PENDENTE`. |
+| `test_fluxo_pendente_permanece_com_status_padrao_no_cadastro_publico` | Garante que o cadastro público salva com status padrão. |
+| `test_staff_pode_concluir_doacao` | Verifica a conclusão de doação pelo staff. |
+| `test_staff_pode_dar_baixa_em_doacao_concluida` | Verifica a baixa de estoque pelo staff. |
+| `test_validacao_endereco_retirada_sem_campos_obrigatorios` | Valida endereço obrigatório no fluxo de retirada. |
+| `test_rollback_total_quando_agendamento_falha` | Garante rollback total quando o agendamento falha. |
+
+### Leitura do relatório no terminal
+
+Ao executar com `-v 2`, o Django exibirá cada teste em português e marcará o resultado com `... ok` ou `... FAIL`, deixando a auditoria de qualidade fácil de acompanhar no terminal.
