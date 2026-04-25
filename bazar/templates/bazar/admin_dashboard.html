@@ -183,7 +183,7 @@
                             type="text"
                             name="estoque_q"
                             value="{{ estoque_q }}"
-                            placeholder="Buscar: calças tamanho 40"
+                            placeholder="Buscar: calças jeans azul"
                             class="w-full md:w-80 p-3 rounded-xl border border-slate-200 bg-white text-sm font-semibold focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-500"
                         >
                         </form>
@@ -196,7 +196,7 @@
                             <tr>
                                 <th class="px-4 py-3 text-left">Item</th>
                                 <th class="px-4 py-3 text-left">Categoria</th>
-                                <th class="px-4 py-3 text-left">Tamanho</th>
+                                <th class="px-4 py-3 text-left">Descrição</th>
                                 <th class="px-4 py-3 text-left">Quantidade Total</th>
                                 <th class="px-4 py-3 text-left">Data de Entrada</th>
                                 <th class="px-4 py-3 text-left">Situação</th>
@@ -207,7 +207,7 @@
                             <tr class="hover:bg-slate-50/70">
                                 <td class="px-4 py-3 font-semibold text-slate-800">{{ item.nome_item|default:'Item sem nome' }}</td>
                                 <td class="px-4 py-3 text-slate-700">{{ item.categoria|default:'Não informada' }}</td>
-                                <td class="px-4 py-3 text-slate-700">{{ item.tamanho|default:'Único' }}</td>
+                                <td class="px-4 py-3 text-slate-700">{{ item.descricao|default:'Sem descrição' }}</td>
                                 <td class="px-4 py-3 text-slate-700 font-black">{{ item.quantidade_total }}</td>
                                 <td class="px-4 py-3 text-slate-700">{{ item.data_entrada|date:'d/m/Y H:i' }}</td>
                                 <td class="px-4 py-3">
@@ -232,7 +232,7 @@
                                     <th class="px-4 py-3 text-left">Doação</th>
                                     <th class="px-4 py-3 text-left">Item</th>
                                     <th class="px-4 py-3 text-left">Categoria</th>
-                                    <th class="px-4 py-3 text-left">Tamanho</th>
+                                    <th class="px-4 py-3 text-left">Descrição</th>
                                     <th class="px-4 py-3 text-left">Qtd</th>
                                     <th class="px-4 py-3 text-left">Entrada</th>
                                     <th class="px-4 py-3 text-left">Endereço / CEP</th>
@@ -245,7 +245,7 @@
                                     <td class="px-4 py-3 font-black text-slate-700">#{{ d.id }}</td>
                                     <td class="px-4 py-3 text-slate-800 font-semibold">{{ d.nome_item|default:d.descricao|truncatechars:35 }}</td>
                                     <td class="px-4 py-3 text-slate-700">{{ d.categoria|default:'Não informada' }}</td>
-                                    <td class="px-4 py-3 text-slate-700">{{ d.tamanho|default:'Único' }}</td>
+                                    <td class="px-4 py-3 text-slate-700">{{ d.descricao|default:'Sem descrição'|truncatechars:45 }}</td>
                                     <td class="px-4 py-3 text-slate-700 font-black">{{ d.quantidade }}</td>
                                     <td class="px-4 py-3 text-slate-700">{{ d.data_criacao|date:'d/m/Y H:i' }}</td>
                                     <td class="px-4 py-3 text-slate-700">

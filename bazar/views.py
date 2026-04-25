@@ -102,7 +102,6 @@ def cadastrar_doacao(request):
         nome_item = (request.POST.get('nome_item') or '').strip()
         categorias_selecionadas = request.POST.getlist('categoria')
         categoria_item = ', '.join(categorias_selecionadas) if categorias_selecionadas else ''
-        tamanho_item = (request.POST.get('tamanho_item') or '').strip()
         descricao = (request.POST.get('descricao') or '').strip()
 
         doador_form = DoadorForm(data={
@@ -115,7 +114,6 @@ def cadastrar_doacao(request):
         doacao_form = DoacaoForm(data={
             'nome_item': nome_item,
             'categoria': categoria_item,
-            'tamanho': tamanho_item,
             'descricao': descricao_completa,
             'quantidade': request.POST.get('quantidade', '1'),
             'tipo_entrega': tipo_entrega,
@@ -308,23 +306,22 @@ def admin_dashboard(request):
         estoque_disponivel = estoque_disponivel.filter(
             Q(nome_item__icontains=estoque_q)
             | Q(categoria__icontains=estoque_q)
-            | Q(tamanho__icontains=estoque_q)
             | Q(descricao__icontains=estoque_q)
         )
 
-    estoque_resumo = estoque_disponivel.values('nome_item', 'categoria', 'tamanho').annotate(
+    estoque_resumo = estoque_disponivel.values('nome_item', 'categoria', 'descricao').annotate(
         quantidade_total=Sum('quantidade'),
         data_entrada=Max('data_criacao'),
-    ).order_by('nome_item', 'categoria', 'tamanho')
+    ).order_by('nome_item', 'categoria', 'descricao')
 
     estoque_total_disponivel = estoque_disponivel.count()
 
     doacoes_concluidas = estoque_disponivel.select_related('doador').order_by('-data_criacao')
 
-    estoque_baixado = Doacao.objects.filter(status='BAIXADA').values('nome_item', 'categoria', 'tamanho').annotate(
+    estoque_baixado = Doacao.objects.filter(status='BAIXADA').values('nome_item', 'categoria', 'descricao').annotate(
         quantidade_total=Sum('quantidade'),
         data_entrada=Max('data_criacao'),
-    ).order_by('nome_item', 'categoria', 'tamanho')[:10]
+    ).order_by('nome_item', 'categoria', 'descricao')[:10]
 
     return render(
         request,
