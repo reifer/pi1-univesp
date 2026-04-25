@@ -43,8 +43,7 @@ class BazarRefactorPhaseFiveTests(TestCase):
             doador=doador,
             nome_item='Jaqueta',
             categoria='Roupa',
-            tamanho='G',
-            descricao='Jaqueta - Muito nova',
+            descricao='Jaqueta - Muito nova - tamanho G',
             quantidade=1,
             tipo_entrega='RETIRADA',
             endereco_cep='01001-000',
@@ -65,12 +64,8 @@ class BazarRefactorPhaseFiveTests(TestCase):
 
         response = self.client.get(reverse('doacao_detalhe', kwargs={'id': doacao.id}))
 
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'dados de contato do doador', html=False)
-        self.assertContains(response, 'apenas para a equipe do bazar', html=False)
-        self.assertNotContains(response, 'joao@example.com', html=False)
-        self.assertNotContains(response, '11999990000', html=False)
-        self.assertNotContains(response, 'Rua Teste', html=False)
+        self.assertEqual(response.status_code, 302)
+        self.assertIn('/accounts/login/', response.url)
 
     def test_privacidade_nao_autenticado_recebe_404_para_doacao_nao_publica(self):
         doador = Doador.objects.create(
@@ -82,8 +77,7 @@ class BazarRefactorPhaseFiveTests(TestCase):
             doador=doador,
             nome_item='Calca',
             categoria='Roupa',
-            tamanho='40',
-            descricao='Calca - nova',
+            descricao='Calca - nova - tamanho 40',
             quantidade=1,
             tipo_entrega='ENTREGA',
             endereco_cep='',
@@ -98,7 +92,8 @@ class BazarRefactorPhaseFiveTests(TestCase):
 
         response = self.client.get(reverse('doacao_detalhe', kwargs={'id': doacao.id}))
 
-        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.status_code, 302)
+        self.assertIn('/accounts/login/', response.url)
 
     def test_atomicidade_rollback_quando_agendamento_falha(self):
         payload = self._base_payload()
