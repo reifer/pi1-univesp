@@ -150,6 +150,11 @@ class ExecutorDeTestesAuditoria(DiscoverRunner):
         sucessos = sum(1 for t in testes if t["resultado"] == "SUCESSO")
         falhas = sum(1 for t in testes if t["resultado"] == "FALHA")
         pulados = sum(1 for t in testes if t["resultado"] == "PULADO")
+        testes_com_falha = [
+            (indice, teste)
+            for indice, teste in enumerate(testes, start=1)
+            if teste["resultado"] == "FALHA"
+        ]
 
         db_engine = settings.DATABASES["default"]["ENGINE"]
         data_execucao = datetime.now()
@@ -173,15 +178,32 @@ class ExecutorDeTestesAuditoria(DiscoverRunner):
             "\n",
         ]
 
+        if testes:
+            linhas.append("<a id=\"indice-testes\"></a>\n")
+            linhas.append("## 🗂️ Índice dos Testes\n")
+            linhas.append("\n")
+            for indice, teste in enumerate(testes, start=1):
+                linhas.append(f"- [{indice}. {teste['nome']}](#teste-{indice})\n")
+            linhas.append("\n")
+
+        if testes_com_falha:
+            linhas.append("## 🚨 Painel de Falhas\n")
+            linhas.append("\n")
+            for indice, teste in testes_com_falha:
+                linhas.append(f"- [{teste['nome']}](#teste-{indice})\n")
+            linhas.append("\n")
+
         if not testes:
             linhas.append("Nenhum resultado individual foi capturado.\n\n")
 
         for indice, teste in enumerate(testes, start=1):
+            linhas.append(f"<a id=\"teste-{indice}\"></a>\n")
             linhas.append(f"### {indice}. {teste['id']}\n")
             linhas.append(f"- **Nome do Teste:** {teste['nome']}\n")
             linhas.append(f"- **Objetivo:** {teste['objetivo']}\n")
             linhas.append(f"- **Resultado:** {teste['icone']} {teste['resultado']}\n")
             linhas.append(f"- **Tempo:** {teste['tempo']:.3f}s\n")
+            linhas.append("- [Voltar ao índice](#indice-testes)\n")
             linhas.append("- **Logs Técnicos:**\n")
             if teste["traceback"]:
                 linhas.append("```text\n")
@@ -215,3 +237,5 @@ class ExecutorDeTestesAuditoria(DiscoverRunner):
 
         for arquivo_antigo in arquivos[3:]:
             arquivo_antigo.unlink(missing_ok=True)
+
+
