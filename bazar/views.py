@@ -1,5 +1,7 @@
 from datetime import datetime
 
+from django.conf import settings
+from django.core.mail import send_mail
 from django.shortcuts import render, get_object_or_404, redirect
 from django.db import transaction
 from django.db.models import Q, Sum, Max
@@ -31,6 +33,7 @@ def contato(request):
     if request.method == 'POST':
         nome = (request.POST.get('nome') or '').strip()
         email = (request.POST.get('email') or '').strip()
+        telefone = (request.POST.get('telefone') or '').strip()
         assunto = (request.POST.get('assunto') or '').strip()
         mensagem = (request.POST.get('mensagem') or '').strip()
 
@@ -38,7 +41,29 @@ def contato(request):
             messages.error(request, 'Preencha todos os campos obrigatórios para enviar sua mensagem.')
             return render(request, 'bazar/contato.html')
 
-        messages.success(request, 'Mensagem enviada! Entraremos em contato em breve.')
+        assunto_email = f'[Bazar Solidário] Novo contato: {assunto}'
+        corpo_email = (
+            f'Novo contato recebido de: {nome} <{email}>\n'
+            f'Telefone: {telefone or "Não informado"}\n'
+            f'Assunto: {assunto}\n\n'
+            f'Mensagem:\n{mensagem}'
+        )
+
+        try:
+            if settings.EMAIL_RECEPTOR:
+                send_mail(
+                    subject=assunto_email,
+                    message=corpo_email,
+                    from_email=settings.EMAIL_HOST_USER or settings.DEFAULT_FROM_EMAIL,
+                    recipient_list=[settings.EMAIL_RECEPTOR],
+                    fail_silently=False,
+                )
+                messages.success(request, 'Mensagem enviada! Entraremos em contato em breve.')
+            else:
+                messages.error(request, 'Mensagem recebida, mas o e-mail de destino não está configurado no ambiente.')
+        except Exception:
+            messages.error(request, 'Mensagem recebida, mas houve falha temporária no envio de e-mail. Tente novamente.')
+
         return redirect('contato')
 
     return render(request, 'bazar/contato.html')

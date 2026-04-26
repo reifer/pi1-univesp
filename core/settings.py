@@ -8,6 +8,9 @@ load_dotenv()
 
 WHATSAPP_NUMERO = os.getenv('WHATSAPP_NUMERO', '').strip()
 WHATSAPP_MENSAGEM_PADRAO = os.getenv('WHATSAPP_MENSAGEM_PADRAO', '').strip()
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', '').strip()
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', '').strip()
+EMAIL_RECEPTOR = os.getenv('EMAIL_RECEPTOR', '').strip()
 
 
 def env_bool(name, default=False):
@@ -85,6 +88,13 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'core.wsgi.application'
+
+# Configurações de comunicação por e-mail
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 # Configuração do banco por ambiente (PostgreSQL ou SQLite)
 db_engine = os.getenv('DB_ENGINE', 'postgresql').strip().lower()

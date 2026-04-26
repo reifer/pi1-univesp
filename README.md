@@ -113,7 +113,7 @@ Rodar apenas o arquivo de integração em modo auditoria:
 python manage.py test bazar.testes_completos -v 2
 ```
 
-### O que os 18 testes validam
+### O que os 21 testes validam
 
 | Teste | Validação |
 |---|---|
@@ -135,7 +135,48 @@ python manage.py test bazar.testes_completos -v 2
 | `test_staff_pode_dar_baixa_em_doacao_concluida` | Verifica a baixa de estoque pelo staff. |
 | `test_validacao_endereco_retirada_sem_campos_obrigatorios` | Valida endereço obrigatório no fluxo de retirada. |
 | `test_rollback_total_quando_agendamento_falha` | Garante rollback total quando o agendamento falha. |
+| `test_configuracao_whatsapp_valida` | Garante que o link de WhatsApp é dinâmico e seguro no contexto global. |
+| `test_configuracao_email_valida` | Valida se as chaves de e-mail obrigatórias estão carregadas no settings. |
+| `test_contato_envia_email_com_dados_formatados` | Garante envio de e-mail do contato com conteúdo formatado e destinatário correto. |
 
 ### Leitura do relatório no terminal
 
 Ao executar com `-v 2`, o Django exibirá cada teste em português e marcará o resultado com `... ok` ou `... FAIL`, deixando a auditoria de qualidade fácil de acompanhar no terminal.
+
+---
+
+## 8. ⚙️ Configuração de Comunicação
+
+Use o arquivo [.env.example](.env.example) como base para montar seu [.env](.env).
+
+### WhatsApp dinâmico
+
+Configure as variáveis abaixo no `.env`:
+
+```dotenv
+WHATSAPP_NUMERO=5511999999999
+WHATSAPP_MENSAGEM_PADRAO=Olá! Gostaria de falar com a equipe do Bazar Solidário.
+```
+
+- `WHATSAPP_NUMERO`: use no formato `DDI + DDD + Numero`, sem espaços e sem caracteres especiais.
+- `WHATSAPP_MENSAGEM_PADRAO`: texto inicial que será codificado e enviado no link `wa.me`.
+
+### E-mail (SMTP Gmail)
+
+Configure as variáveis abaixo no `.env`:
+
+```dotenv
+EMAIL_HOST_USER=seuemail@gmail.com
+EMAIL_HOST_PASSWORD=sua_senha_de_app
+EMAIL_RECEPTOR=contato@bazar-solidario.org
+```
+
+Passo rápido para gerar a senha de app no Google:
+
+1. Acesse sua Conta Google.
+2. Entre em `Segurança`.
+3. Ative `Verificação em 2 etapas` (se ainda não estiver ativa).
+4. Acesse `Senhas de app`.
+5. Gere uma senha para este projeto e use o valor em `EMAIL_HOST_PASSWORD`.
+
+Observação: o backend já está preparado com `smtp.gmail.com`, porta `587` e `TLS` ativo.

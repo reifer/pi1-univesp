@@ -717,3 +717,57 @@ class TestesCompletosDoBazar(TestCase):
             html=False,
             msg_prefix='FALHA: o link do WhatsApp não possui rel seguro.',
         )
+
+    def test_configuracao_email_valida(self):
+        """Valida se as chaves de e-mail obrigatórias estão configuradas no settings."""
+        self.assertTrue(
+            bool(settings.EMAIL_HOST_USER),
+            'FALHA: EMAIL_HOST_USER está vazio no settings. Configure a variável no .env.',
+        )
+        self.assertTrue(
+            bool(settings.EMAIL_HOST_PASSWORD),
+            'FALHA: EMAIL_HOST_PASSWORD está vazio no settings. Configure a senha de app no .env.',
+        )
+        self.assertTrue(
+            bool(settings.EMAIL_RECEPTOR),
+            'FALHA: EMAIL_RECEPTOR está vazio no settings. Configure o destinatário no .env.',
+        )
+
+    def test_contato_envia_email_com_dados_formatados(self):
+        """Garante que o formulário de contato aciona send_mail com conteúdo formatado."""
+        payload = {
+            'nome': 'Maria Silva',
+            'email': 'maria@example.com',
+            'telefone': '(11) 98888-7777',
+            'assunto': 'duvida',
+            'mensagem': 'Gostaria de entender o processo de doação.',
+        }
+
+        with patch('bazar.views.send_mail', return_value=1) as mock_send_mail:
+            resposta = self.cliente_visitante.post(reverse('contato'), data=payload)
+
+        self.assertEqual(
+            resposta.status_code,
+            302,
+            'FALHA: o envio do formulário de contato não redirecionou corretamente.',
+        )
+        self.assertTrue(
+            resposta.url.endswith(reverse('contato')),
+            'FALHA: o formulário de contato não redirecionou para a própria página após envio.',
+        )
+        self.assertTrue(
+            mock_send_mail.called,
+            'FALHA: send_mail não foi chamado na submissão do contato.',
+        )
+
+        kwargs = mock_send_mail.call_args.kwargs
+        self.assertEqual(
+            kwargs['recipient_list'],
+            [settings.EMAIL_RECEPTOR],
+            'FALHA: o e-mail de contato não foi direcionado para EMAIL_RECEPTOR.',
+        )
+        self.assertIn(
+            'Novo contato recebido de: Maria Silva <maria@example.com>',
+            kwargs['message'],
+            'FALHA: o corpo do e-mail não contém o identificador esperado do remetente.',
+        )
