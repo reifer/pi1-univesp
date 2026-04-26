@@ -224,7 +224,7 @@
 
                             <div class="space-y-2">
                                 <label class="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Horário Sugerido</label>
-                                <select id="horario-sugerido" name="horario_sugerido" class="w-full p-4 rounded-2xl bg-slate-50 border border-slate-100 focus:ring-4 focus:ring-green-500/10 font-bold">
+                                <select id="horario-sugerido" name="horario_sugerido" class="w-full p-4 rounded-2xl bg-slate-50 border border-slate-100 focus:ring-4 focus:ring-green-500/10 font-bold appearance-none">
                                     <option value="" {% if not form_data.horario_sugerido %}selected{% endif %}>Selecione um horário</option>
                                     <option value="20:00" {% if form_data.horario_sugerido == '20:00' %}selected{% endif %}>Terças e Quintas: 20:00 - 21:30</option>
                                     <option value="10:00" {% if form_data.horario_sugerido == '10:00' %}selected{% endif %}>Domingos: 10:00 - 13:00</option>
@@ -483,10 +483,13 @@ const donationForm = document.querySelector('form[method="POST"]');
             if (weekDay === 2 || weekDay === 4) {
                 const weekdayOption = document.createElement('option');
                 weekdayOption.value = '20:00';
-                weekdayOption.textContent = '20:00 - 21:30';
+                weekdayOption.textContent = 'Somente às 20:00 - 21:30';
                 inputHorario.appendChild(weekdayOption);
                 inputHorario.value = '20:00';
-                inputHorario.disabled = true;
+
+                inputHorario.classList.add('appearance-none');
+                inputHorario.setAttribute('readonly', true);
+
                 return true;
             }
 
@@ -500,6 +503,10 @@ const donationForm = document.querySelector('form[method="POST"]');
 
             inputHorario.appendChild(sundayMorning);
             inputHorario.appendChild(sundayEvening);
+
+            inputHorario.classList.remove('appearance-none');
+            inputHorario.removeAttribute('readonly');
+
             inputHorario.disabled = false;
 
             if (keepSelectedHorario && (previousHorario === '10:00' || previousHorario === '18:00')) {
