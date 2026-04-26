@@ -1,6 +1,8 @@
 from datetime import date, timedelta
+from urllib.parse import quote
 from unittest.mock import patch
 
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.test import Client, TestCase
@@ -667,4 +669,51 @@ class TestesCompletosDoBazar(TestCase):
             Agendamento.objects.count(),
             0,
             'FALHA: o rollback não removeu o agendamento após a falha simulada. Verifique transaction.atomic.',
+        )
+
+    def test_configuracao_whatsapp_valida(self):
+        """Valida se o contexto expõe a URL dinâmica do WhatsApp nas páginas públicas."""
+        mensagem_codificada = quote(settings.WHATSAPP_MENSAGEM_PADRAO)
+        url_esperada = f'https://wa.me/{settings.WHATSAPP_NUMERO}?text={mensagem_codificada}'
+
+        resposta_contato = self.cliente_visitante.get(reverse('contato'))
+        resposta_inicio = self.cliente_visitante.get(reverse('index'))
+
+        self.assertIn(
+            'WHATSAPP_URL',
+            resposta_contato.context,
+            'FALHA: o contexto da página de contato não expôs WHATSAPP_URL. Verifique o context processor.',
+        )
+        self.assertIn(
+            'WHATSAPP_URL',
+            resposta_inicio.context,
+            'FALHA: o contexto da página inicial não expôs WHATSAPP_URL. Verifique o context processor global.',
+        )
+        self.assertEqual(
+            resposta_contato.context['WHATSAPP_URL'],
+            url_esperada,
+            'FALHA: a URL do WhatsApp no contexto da página de contato não foi montada com o número do .env.',
+        )
+        self.assertEqual(
+            resposta_inicio.context['WHATSAPP_URL'],
+            url_esperada,
+            'FALHA: a URL do WhatsApp no contexto da página inicial não foi montada corretamente.',
+        )
+        self.assertContains(
+            resposta_contato,
+            f'href="{url_esperada}"',
+            html=False,
+            msg_prefix='FALHA: a página de contato não renderizou o link dinâmico do WhatsApp.',
+        )
+        self.assertContains(
+            resposta_contato,
+            'target="_blank"',
+            html=False,
+            msg_prefix='FALHA: o link do WhatsApp não abre em nova aba.',
+        )
+        self.assertContains(
+            resposta_contato,
+            'rel="noopener noreferrer"',
+            html=False,
+            msg_prefix='FALHA: o link do WhatsApp não possui rel seguro.',
         )

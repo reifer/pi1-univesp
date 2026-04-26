@@ -1,9 +1,13 @@
 import os
+import sys
 from pathlib import Path
 from dotenv import load_dotenv
 
 # Carrega as variáveis do seu arquivo .env que já existe na raiz
 load_dotenv()
+
+WHATSAPP_NUMERO = os.getenv('WHATSAPP_NUMERO', '').strip()
+WHATSAPP_MENSAGEM_PADRAO = os.getenv('WHATSAPP_MENSAGEM_PADRAO', '').strip()
 
 
 def env_bool(name, default=False):
@@ -74,6 +78,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'bazar.context_processors.whatsapp_context',
             ],
         },
     },
@@ -83,6 +88,10 @@ WSGI_APPLICATION = 'core.wsgi.application'
 
 # Configuração do banco por ambiente (PostgreSQL ou SQLite)
 db_engine = os.getenv('DB_ENGINE', 'postgresql').strip().lower()
+running_tests = len(sys.argv) > 1 and sys.argv[1] == 'test'
+
+if running_tests:
+    db_engine = 'sqlite'
 
 if db_engine == 'sqlite':
     DATABASES = {
