@@ -12,7 +12,7 @@ COPY . /app
 
 EXPOSE 10000
 
-# Executa as migrações, coleta os estáticos e inicia o Gunicorn quando o container subir
+# Executa as migrações, coleta os estáticos e inicia o Gunicorn
 CMD python manage.py migrate --noinput && \
     python manage.py collectstatic --noinput && \
     gunicorn core.wsgi:application --bind 0.0.0.0:10000
