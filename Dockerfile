@@ -10,6 +10,9 @@ RUN pip install --no-cache-dir --upgrade pip && pip install --no-cache-dir -r /a
 
 COPY . /app
 
-EXPOSE 8000
+# Coleta os arquivos estáticos para produção (corrige o problema do alto contraste e CSS)
+RUN python manage.py collectstatic --noinput
 
-CMD ["gunicorn", "core.wsgi:application", "--bind", "0.0.0.0:8000"]
+EXPOSE 10000
+
+CMD ["gunicorn", "core.wsgi:application", "--bind", "0.0.0.0:10000"]
