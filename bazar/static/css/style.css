@@ -1,0 +1,413 @@
+/* ==========================================================================
+   Estilos personalizados e Acessibilidade - Conexão Solidária (WCAG 2.1 AA)
+   ========================================================================== */
+
+/* Garante que o corpo da página ocupe sempre a altura total */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex: 1;
+}
+
+/* Link de Salto para Conteúdo Principal (Acessibilidade pelo Teclado) */
+.skip-link {
+    position: absolute;
+    top: -100px;
+    left: 1rem;
+    background: #166534;
+    color: #ffffff !important;
+    padding: 0.75rem 1.5rem;
+    z-index: 9999;
+    font-weight: 800;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: top 0.2s ease-in-out;
+}
+
+.skip-link:focus,
+.skip-link:focus-visible {
+    top: 1rem;
+    outline: 3px solid #facc15;
+    outline-offset: 2px;
+}
+
+/* Indicador de Foco Visível para Navegação Acessível por Teclado */
+:focus-visible {
+    outline: 3px solid #15803d !important;
+    outline-offset: 2px !important;
+}
+
+/* Ajuste para imagens de doação ficarem uniformes */
+.card-img-top {
+    height: 200px;
+    object-fit: cover;
+    width: 100%;
+}
+
+/* Animação dos Blobs decorativos no fundo do Hero */
+@keyframes blob {
+    0% { transform: translate(0px, 0px) scale(1); }
+    33% { transform: translate(30px, -50px) scale(1.1); }
+    66% { transform: translate(-20px, 20px) scale(0.9); }
+    100% { transform: translate(0px, 0px) scale(1); }
+}
+
+.animate-blob {
+    animation: blob 7s infinite;
+}
+
+/* Respeitar preferência do usuário por redução de movimento */
+@media (prefers-reduced-motion: reduce) {
+    *, ::before, ::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* Animação de entrada suave dos elementos */
+.fade-in-element {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeIn 0.8s ease-out forwards;
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in-element:nth-child(2) { animation-delay: 0.2s; }
+.fade-in-element:nth-child(3) { animation-delay: 0.4s; }
+
+/* Estilização da scrollbar */
+.scrollbar-thin::-webkit-scrollbar {
+    height: 4px;
+}
+.scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb {
+    background: #e2e8f0;
+    border-radius: 10px;
+}
+
+/* Padronização Visual para Inputs */
+input:focus, textarea:focus, select:focus {
+    outline: none !important;
+    border-color: #166534 !important;
+    box-shadow: 0 0 0 2px #166534 !important;
+}
+
+/* ==========================================================================
+   MODO DE ALTO CONTRASTE (WCAG AAA Contrast Ratio >= 7:1)
+   Ativado via classe .alto-contraste na tag html / body
+   ========================================================================== */
+
+html.alto-contraste,
+body.alto-contraste {
+    background-color: #000000 !important;
+    color: #ffffff !important;
+}
+
+/* Foco em Alto Contraste */
+html.alto-contraste :focus-visible,
+body.alto-contraste :focus-visible {
+    outline: 3px solid #ffff00 !important;
+    outline-offset: 3px !important;
+}
+
+/* Skip link em Alto Contraste */
+html.alto-contraste .skip-link,
+body.alto-contraste .skip-link {
+    background: #000000 !important;
+    color: #ffff00 !important;
+    border: 2px solid #ffff00 !important;
+}
+
+/* Headers, Navbars e Footers */
+html.alto-contraste nav,
+body.alto-contraste nav,
+html.alto-contraste footer,
+body.alto-contraste footer,
+html.alto-contraste header,
+body.alto-contraste header {
+    background-color: #000000 !important;
+    border-color: #ffffff !important;
+    color: #ffffff !important;
+}
+
+/* Contêineres, Cards, Seções e Artigos */
+html.alto-contraste section,
+body.alto-contraste section,
+html.alto-contraste article,
+body.alto-contraste article,
+html.alto-contraste main,
+body.alto-contraste main,
+html.alto-contraste div[class*="bg-"],
+body.alto-contraste div[class*="bg-"],
+html.alto-contraste form,
+body.alto-contraste form,
+html.alto-contraste .bg-white,
+body.alto-contraste .bg-white,
+html.alto-contraste .bg-slate-50,
+body.alto-contraste .bg-slate-50,
+html.alto-contraste .bg-slate-100,
+body.alto-contraste .bg-slate-100,
+html.alto-contraste .bg-green-50,
+body.alto-contraste .bg-green-50,
+html.alto-contraste .bg-yellow-50,
+body.alto-contraste .bg-yellow-50,
+html.alto-contraste .bg-blue-50,
+body.alto-contraste .bg-blue-50,
+html.alto-contraste .bg-amber-50,
+body.alto-contraste .bg-amber-50 {
+    background-color: #000000 !important;
+    border-color: #ffffff !important;
+    color: #ffffff !important;
+}
+
+/* Textos e Títulos */
+html.alto-contraste h1,
+body.alto-contraste h1,
+html.alto-contraste h2,
+body.alto-contraste h2,
+html.alto-contraste h3,
+body.alto-contraste h3,
+html.alto-contraste h4,
+body.alto-contraste h4,
+html.alto-contraste p,
+body.alto-contraste p,
+html.alto-contraste span,
+body.alto-contraste span,
+html.alto-contraste label,
+body.alto-contraste label,
+html.alto-contraste legend,
+body.alto-contraste legend,
+html.alto-contraste li,
+body.alto-contraste li,
+html.alto-contraste td,
+body.alto-contraste td,
+html.alto-contraste th,
+body.alto-contraste th {
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+    text-shadow: none !important;
+}
+
+/* Destaques e Palavras-chave */
+html.alto-contraste .text-green-800,
+body.alto-contraste .text-green-800,
+html.alto-contraste .text-green-700,
+body.alto-contraste .text-green-700,
+html.alto-contraste .text-yellow-400,
+body.alto-contraste .text-yellow-400,
+html.alto-contraste .text-blue-600,
+body.alto-contraste .text-blue-600,
+html.alto-contraste strong,
+body.alto-contraste strong {
+    color: #ffff00 !important;
+    -webkit-text-fill-color: #ffff00 !important;
+}
+
+/* Links */
+html.alto-contraste a,
+body.alto-contraste a {
+    color: #ffff00 !important;
+    text-decoration: underline !important;
+}
+
+html.alto-contraste a:hover,
+body.alto-contraste a:hover,
+html.alto-contraste a:focus,
+body.alto-contraste a:focus {
+    color: #00ffff !important;
+    text-decoration: underline !important;
+}
+
+/* Botões */
+html.alto-contraste button,
+body.alto-contraste button,
+html.alto-contraste .btn,
+body.alto-contraste .btn,
+html.alto-contraste a[class*="bg-green-800"],
+body.alto-contraste a[class*="bg-green-800"],
+html.alto-contraste a[class*="bg-slate-900"],
+body.alto-contraste a[class*="bg-slate-900"],
+html.alto-contraste a[class*="bg-blue-600"],
+body.alto-contraste a[class*="bg-blue-600"] {
+    background-color: #000000 !important;
+    color: #ffff00 !important;
+    border: 2px solid #ffff00 !important;
+    box-shadow: none !important;
+    text-decoration: none !important;
+}
+
+html.alto-contraste button:hover,
+body.alto-contraste button:hover,
+html.alto-contraste button:focus,
+body.alto-contraste button:focus,
+html.alto-contraste a[class*="bg-green-800"]:hover,
+body.alto-contraste a[class*="bg-green-800"]:hover,
+html.alto-contraste a[class*="bg-slate-900"]:hover,
+body.alto-contraste a[class*="bg-slate-900"]:hover {
+    background-color: #ffff00 !important;
+    color: #000000 !important;
+    border: 2px solid #ffffff !important;
+}
+
+/* Inputs, Textareas e Selects */
+html.alto-contraste input[type="text"],
+body.alto-contraste input[type="text"],
+html.alto-contraste input[type="email"],
+body.alto-contraste input[type="email"],
+html.alto-contraste input[type="tel"],
+body.alto-contraste input[type="tel"],
+html.alto-contraste input[type="number"],
+body.alto-contraste input[type="number"],
+html.alto-contraste input[type="date"],
+body.alto-contraste input[type="date"],
+html.alto-contraste input[type="password"],
+body.alto-contraste input[type="password"],
+html.alto-contraste textarea,
+body.alto-contraste textarea,
+html.alto-contraste select,
+body.alto-contraste select {
+    background-color: #000000 !important;
+    color: #ffffff !important;
+    border: 2px solid #ffffff !important;
+}
+
+html.alto-contraste input:focus,
+body.alto-contraste input:focus,
+html.alto-contraste textarea:focus,
+body.alto-contraste textarea:focus,
+html.alto-contraste select:focus,
+body.alto-contraste select:focus {
+    border-color: #ffff00 !important;
+    box-shadow: 0 0 0 3px #ffff00 !important;
+    outline: 2px solid #ffff00 !important;
+}
+
+html.alto-contraste ::placeholder {
+    color: #cbd5e1 !important;
+    opacity: 1 !important;
+}
+
+/* Bordas e Divisores */
+html.alto-contraste [class*="border"],
+body.alto-contraste [class*="border"],
+html.alto-contraste fieldset,
+body.alto-contraste fieldset,
+html.alto-contraste hr,
+body.alto-contraste hr {
+    border-color: #ffffff !important;
+}
+
+/* Tabelas */
+html.alto-contraste table,
+body.alto-contraste table {
+    background-color: #000000 !important;
+    border: 2px solid #ffffff !important;
+}
+
+html.alto-contraste thead,
+body.alto-contraste thead,
+html.alto-contraste thead tr,
+body.alto-contraste thead tr {
+    background-color: #1a1a1a !important;
+    border-bottom: 2px solid #ffffff !important;
+}
+
+html.alto-contraste tr,
+body.alto-contraste tr {
+    border-color: #ffffff !important;
+}
+
+html.alto-contraste tr:hover,
+body.alto-contraste tr:hover {
+    background-color: #1f2937 !important;
+}
+
+/* Mensagens de Alerta e Erros */
+html.alto-contraste [role="alert"],
+body.alto-contraste [role="alert"],
+html.alto-contraste .bg-red-50,
+body.alto-contraste .bg-red-50,
+html.alto-contraste .text-red-600,
+body.alto-contraste .text-red-600,
+html.alto-contraste .text-red-700,
+body.alto-contraste .text-red-700 {
+    background-color: #000000 !important;
+    color: #ff6b6b !important;
+    border: 2px solid #ff6b6b !important;
+}
+
+/* Badges e Tags */
+html.alto-contraste [class*="rounded-full"],
+body.alto-contraste [class*="rounded-full"],
+html.alto-contraste [class*="rounded-xl"],
+body.alto-contraste [class*="rounded-xl"] {
+    border-color: #ffffff !important;
+}
+
+/* Desabilitar efeitos de desfoque e sombras no modo alto contraste */
+html.alto-contraste .backdrop-blur-md,
+body.alto-contraste .backdrop-blur-md,
+html.alto-contraste [class*="shadow"],
+body.alto-contraste [class*="shadow"],
+html.alto-contraste .animate-blob,
+body.alto-contraste .animate-blob {
+    backdrop-filter: none !important;
+    box-shadow: none !important;
+    animation: none !important;
+}
+
+/* Botão de Toggle de Alto Contraste - Estilo Específico */
+.btn-alto-contraste {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.85rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-radius: 0.75rem;
+    border: 1.5px solid #cbd5e1;
+    background-color: #ffffff;
+    color: #1e293b;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-alto-contraste:hover {
+    background-color: #f1f5f9;
+    border-color: #94a3b8;
+}
+
+.btn-alto-contraste:focus-visible {
+    outline: 3px solid #166534;
+    outline-offset: 2px;
+}
+
+html.alto-contraste .btn-alto-contraste,
+body.alto-contraste .btn-alto-contraste {
+    background-color: #000000 !important;
+    color: #ffff00 !important;
+    border: 2px solid #ffff00 !important;
+}
+
+html.alto-contraste .btn-alto-contraste:hover,
+body.alto-contraste .btn-alto-contraste:hover {
+    background-color: #ffff00 !important;
+    color: #000000 !important;
+}

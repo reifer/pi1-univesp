@@ -1,0 +1,142 @@
+{% load static %}
+
+<nav class="fixed top-0 left-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-slate-100" role="navigation" aria-label="Navegação Principal">
+    <div class="container mx-auto px-8 max-w-7xl h-20 flex items-center justify-between">
+
+        <div class="flex items-center gap-2">
+            <a href="{% url 'index' %}" class="flex items-center gap-2" aria-label="Conexão Solidária - Página Inicial">
+                <div class="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-white shadow-sm">
+                    <img src="{% static 'images/logov2.svg' %}" alt="Logotipo Conexão Solidária" class="w-10 h-10 object-contain">
+                </div>
+                <span class="text-xl font-black tracking-tighter text-green-800 uppercase">Conexão Solidária</span>
+            </a>
+        </div>
+
+        <div class="hidden md:flex items-center gap-8">
+            <a href="{% url 'index' %}" class="text-sm font-bold {% if request.resolver_match.url_name == 'index' %}text-green-800 border-b-2 border-green-800{% else %}text-slate-500 hover:text-green-800{% endif %} pb-1 transition-all">Início</a>
+            <a href="{% url 'cadastrar_doacao' %}" class="text-sm font-bold {% if request.resolver_match.url_name == 'cadastrar_doacao' %}text-green-800 border-b-2 border-green-800{% else %}text-slate-500 hover:text-green-800{% endif %} pb-1 transition-all">Doar</a>
+            <a href="{% url 'sobre' %}" class="text-sm font-bold {% if request.resolver_match.url_name == 'sobre' %}text-green-800 border-b-2 border-green-800{% else %}text-slate-500 hover:text-green-800{% endif %} pb-1 transition-all">Sobre</a>
+            <a href="{% url 'contato' %}" class="text-sm font-bold {% if request.resolver_match.url_name == 'contato' %}text-green-800 border-b-2 border-green-800{% else %}text-slate-500 hover:text-green-800{% endif %} pb-1 transition-all">Contato</a>
+        </div>
+
+        <div class="flex items-center gap-3">
+            <!-- Botão de Alto Contraste (Desktop) -->
+            <button type="button"
+                    class="toggle-alto-contraste btn-alto-contraste hidden sm:inline-flex"
+                    aria-pressed="false"
+                    title="Ativar modo de alto contraste (Atalho: Alt + C)">
+                <i class="fa-solid fa-circle-half-stroke text-sm" aria-hidden="true"></i>
+                <span class="texto-contraste">Alto Contraste</span>
+            </button>
+
+            <!-- Botão Menu Mobile -->
+            <button id="mobile-menu-button" type="button" class="block md:hidden p-2 rounded-lg border border-slate-200 text-slate-700 hover:bg-slate-100 transition-all" aria-controls="mobile-menu" aria-expanded="false" aria-label="Abrir menu de navegação">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
+
+            <a href="{% if user.is_authenticated %}{% url 'admin_dashboard' %}{% else %}{% url 'login' %}{% endif %}" class="hidden md:flex bg-green-800 text-white px-5 py-2.5 rounded-xl text-sm font-bold items-center gap-2 hover:bg-green-950 transition-all shadow-lg">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" />
+                </svg>
+                <span>Área Restrita</span>
+            </a>
+            {% if user.is_authenticated %}
+                <form action="{% url 'logout' %}" method="POST" class="hidden md:inline">
+                    {% csrf_token %}
+                    <button type="submit" class="px-5 py-2.5 rounded-xl text-sm font-bold border border-red-200 text-red-600 hover:bg-red-50 transition-all" aria-label="Encerrar sessão de usuário">
+                        Sair
+                    </button>
+                </form>
+            {% endif %}
+        </div>
+    </div>
+</nav>
+
+<div id="mobile-menu" class="fixed top-20 left-0 w-full bottom-0 z-40 overflow-y-auto md:hidden border-t border-slate-100 bg-white/95 backdrop-blur-md 
+opacity-0 -translate-y-5 pointer-events-none transition-all duration-300 ease-out" role="dialog" aria-label="Menu Mobile" aria-modal="true">
+    <div class="container mx-auto px-8 py-4 flex flex-col gap-3">
+
+        <!-- Botão de Alto Contraste no Mobile -->
+        <button type="button"
+                class="toggle-alto-contraste w-full flex items-center justify-between gap-3 text-base font-bold px-4 py-3 rounded-xl bg-slate-100 border border-slate-200 text-slate-800 transition-all"
+                aria-pressed="false"
+                title="Ativar modo de alto contraste">
+            <span class="flex items-center gap-3">
+                <i class="fa-solid fa-circle-half-stroke text-lg" aria-hidden="true"></i>
+                <span class="texto-contraste">Modo Alto Contraste</span>
+            </span>
+            <span class="text-xs uppercase tracking-wider text-slate-500 font-extrabold">Acessibilidade</span>
+        </button>
+
+        <a href="{% url 'index' %}" 
+        class="w-full flex items-center gap-3 text-lg font-bold px-4 py-3 rounded-xl bg-gray-100 {% if request.resolver_match.url_name == 'index' %}text-green-800 border-2 border-green-800{% else %}text-slate-600 hover:bg-gray-200 hover:text-green-800{% endif %} transition-all">
+        <svg class="w-5 h-5 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m4 12 8-8 8 8M6 10.5V19a1 1 0 0 0 1 1h3v-3a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3h3a1 1 0 0 0 1-1v-8.5"/></svg>
+        <span>Início</span>
+        </a>
+
+        <a href="{% url 'cadastrar_doacao' %}" 
+        class="w-full flex items-center gap-3 text-lg font-bold px-4 py-3 rounded-xl bg-gray-100 {% if request.resolver_match.url_name == 'cadastrar_doacao' %}text-green-800 border-2 border-green-800{% else %}text-slate-600 hover:bg-gray-200 hover:text-green-800{% endif %} transition-all">
+        <svg class="w-5 h-5 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 21v-9m3-4H7.5a2.5 2.5 0 1 1 0-5c1.5 0 2.875 1.25 3.875 2.5M14 21v-9m-9 0h14v8a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-8ZM4 8h16a1 1 0 0 1 1 1v3H3V9a1 1 0 0 1 1-1Zm12.155-5c-3 0-5.5 5-5.5 5h5.5a2.5 2.5 0 0 0 0-5Z"/></svg>
+        <span>Doar</span>
+        </a>
+
+        <a href="{% url 'sobre' %}" 
+        class="w-full flex items-center gap-3 text-lg font-bold px-4 py-3 rounded-xl bg-gray-100 {% if request.resolver_match.url_name == 'sobre' %}text-green-800 border-2 border-green-800{% else %}text-slate-600 hover:bg-gray-200 hover:text-green-800{% endif %} transition-all">
+        <svg class="w-5 h-5 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11h2v5m-2 0h4m-2.592-8.5h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg> 
+        <span>Sobre</span>
+        </a>
+
+        <a href="{% url 'contato' %}" 
+        class="w-full flex items-center gap-3 text-lg font-bold px-4 py-3 rounded-xl bg-gray-100 {% if request.resolver_match.url_name == 'contato' %}text-green-800 border-2 border-green-800{% else %}text-slate-600 hover:bg-gray-200 hover:text-green-800{% endif %} transition-all">
+        <svg class="w-5 h-5 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 15h12M6 6h12m-6 12h.01M7 21h10a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1Z"/></svg>
+        <span>Contato</span>
+        </a>
+
+        <a href="{% if user.is_authenticated %}{% url 'admin_dashboard' %}{% else %}{% url 'login' %}{% endif %}" 
+        class="mt-2 w-full bg-green-800 text-white px-4 py-3 rounded-xl text-lg text-center font-bold hover:bg-green-950 transition-all">
+        Área Restrita
+        </a>
+
+        {% if user.is_authenticated %}
+        <form action="{% url 'logout' %}" method="POST" class="mt-1">
+            {% csrf_token %}
+            <button type="submit" 
+            class="w-full px-4 py-3 rounded-xl text-lg font-bold border border-red-200 text-red-600 hover:bg-red-50 transition-all" aria-label="Encerrar sessão de usuário">
+            Sair
+            </button>
+        </form>
+        {% endif %}
+
+    </div>
+</div>
+
+<script>
+(function () {
+    const button = document.getElementById('mobile-menu-button');
+    const menu = document.getElementById('mobile-menu');
+
+    if (!button || !menu) return;
+
+    button.addEventListener('click', function () {
+        const isOpen = menu.classList.contains('opacity-100');
+
+        if (isOpen) {
+            // FECHAR
+            menu.classList.remove('opacity-100', 'translate-y-0');
+            menu.classList.add('opacity-0', '-translate-y-5', 'pointer-events-none', 'ease-in');
+            document.body.classList.remove('overflow-hidden');
+            button.setAttribute('aria-label', 'Abrir menu de navegação');
+        } else {
+            // ABRIR
+            menu.classList.remove('opacity-0', '-translate-y-5', 'pointer-events-none');
+            menu.classList.add('opacity-100', 'translate-y-0');
+            document.body.classList.add('overflow-hidden');
+            button.setAttribute('aria-label', 'Fechar menu de navegação');
+        }
+
+        button.setAttribute('aria-expanded', String(!isOpen));
+    });
+})();
+</script>

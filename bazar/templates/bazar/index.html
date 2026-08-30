@@ -1,0 +1,78 @@
+{% extends 'bazar/base.html' %}
+{% load static %}
+
+{% block title %}DOE! - Conexão Solidária{% endblock %}
+
+{% block content %}
+<div class="flex flex-col w-full">
+
+    <section class="min-h-[90vh] flex items-center justify-center bg-slate-50 relative overflow-hidden pt-32 md:pt-20 transition-colors duration-500" aria-label="Apresentação do Bazar Solidário">
+        <div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none" aria-hidden="true">
+            <div class="absolute top-[-10%] right-[20%] w-[500px] h-[500px] bg-green-400/10 rounded-full blur-[100px] animate-blob"></div>
+            <div class="absolute bottom-[10%] left-[20%] w-[400px] h-[400px] bg-yellow-400/10 rounded-full blur-[100px] animate-blob" style="animation-delay: 2s;"></div>
+        </div>
+
+        <div class="container mx-auto px-8 max-w-5xl text-center z-10 relative">
+            <div class="fade-in-element">
+                <h1 class="text-5xl md:text-6xl lg:text-7xl font-black mb-10 leading-tight text-slate-900 tracking-tight uppercase">
+                    Bazar Solidário<br>
+                    <span class="text-green-800 font-extrabold">
+                        Conexão Solidária
+                    </span>
+                </h1>
+            </div>
+
+            <div class="fade-in-element max-w-3xl mx-auto w-full mt-10">
+                <p class="text-lg text-slate-600 leading-relaxed font-medium max-w-2xl mx-auto">
+                    Transformando doações em esperança. O fluxo foi modernizado para conectar Doador, Doação e Agendamento com total rastreabilidade logística.
+                </p>
+
+                <div class="mt-12 flex justify-center">
+                    <a href="{% url 'cadastrar_doacao' %}" class="bg-green-800 hover:bg-green-950 text-white px-10 py-4 rounded-2xl font-black text-xs uppercase tracking-[0.25em] flex items-center justify-center gap-3 hover:shadow-xl hover:shadow-green-950/40 transition-all active:scale-95" aria-label="Ir para a página de cadastro de doação">
+                        <span>Doar Agora</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="pb-32 pt-20 bg-white relative border-t border-slate-100" aria-label="Como Funciona o Bazar Solidário">
+        <div class="container mx-auto px-8 max-w-7xl">
+            <div class="fade-in-element text-center max-w-3xl mx-auto mb-12 px-4">
+                <span class="text-[20px] font-black uppercase tracking-[0.3em] text-green-800 mb-4 block">Como Funciona</span>
+                <h2 class="text-3xl md:text-4xl font-black text-slate-900 tracking-tighter uppercase">Impacto real para as famílias</h2>
+                <div class="h-1.5 w-20 bg-green-700 mx-auto mt-6 rounded-full" aria-hidden="true"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <article class="fade-in-element bg-white p-8 rounded-[2rem] border border-slate-100 shadow-sm hover:shadow-xl transition-all">
+                    <h3 class="text-xl font-black text-slate-900 uppercase tracking-tight">1. Cadastro da doação</h3>
+                    <p class="text-slate-600 font-medium mt-4 leading-relaxed">
+                        O doador preenche os dados do item e escolhe entre entrega na igreja ou retirada no local, com agendamento logístico.
+                    </p>
+                </article>
+
+                <article class="fade-in-element bg-white p-8 rounded-[2rem] border border-slate-100 shadow-sm hover:shadow-xl transition-all">
+                    <h3 class="text-xl font-black text-slate-900 uppercase tracking-tight">2. Triagem e organização</h3>
+                    <p class="text-slate-600 font-medium mt-4 leading-relaxed">
+                        A equipe da igreja acompanha tudo pela central logística para organizar coletas e recebimentos de forma segura e eficiente.
+                    </p>
+                </article>
+
+                <article class="fade-in-element bg-white p-8 rounded-[2rem] border border-slate-100 shadow-sm hover:shadow-xl transition-all">
+                    <h3 class="text-xl font-black text-slate-900 uppercase tracking-tight">3. Destinação solidária</h3>
+                    <p class="text-slate-600 font-medium mt-4 leading-relaxed">
+                        Cada item recebido segue para ações sociais e apoio a famílias em situação de vulnerabilidade no sertão paraibano.
+                    </p>
+                </article>
+
+                <div class="md:col-span-3 text-center py-10 bg-green-50 rounded-[2rem] border border-green-200 fade-in-element">
+                    <p class="text-slate-700 font-bold uppercase tracking-widest text-xs">
+                        Privacidade em primeiro lugar: informações sensíveis são protegidas por controle de acesso.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}
