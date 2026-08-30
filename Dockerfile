@@ -10,9 +10,9 @@ RUN pip install --no-cache-dir --upgrade pip && pip install --no-cache-dir -r /a
 
 COPY . /app
 
-# Coleta os arquivos estáticos para produção (corrige o problema do alto contraste e CSS)
-RUN python manage.py collectstatic --noinput
-
 EXPOSE 10000
 
-CMD ["gunicorn", "core.wsgi:application", "--bind", "0.0.0.0:10000"]
+# Executa as migrações, coleta os estáticos e inicia o Gunicorn quando o container subir
+CMD python manage.py migrate --noinput && \
+    python manage.py collectstatic --noinput && \
+    gunicorn core.wsgi:application --bind 0.0.0.0:10000
