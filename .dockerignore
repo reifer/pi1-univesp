@@ -7,5 +7,5 @@ __pycache__/
 .gitignore
 .idea/
 .vscode/
-staticfiles/
+# staticfiles/  <-- Testenado o Alto Contraste na web
 .env
