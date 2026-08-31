@@ -486,9 +486,29 @@ html.alto-contraste .toggle-alto-contraste:hover,
 body.alto-contraste .toggle-alto-contraste:hover {
     background-color: #ffff00 !important;
     color: #000000 !important;
+    border-color: #ffff00 !important;
 }
 
 html.alto-contraste .toggle-alto-contraste span,
 body.alto-contraste .toggle-alto-contraste span {
     color: inherit !important;
+}
+
+/* Regras de estado Normal (sem Alto Contraste) para forçar o reset instantâneo ao alternar */
+html:not(.alto-contraste) .btn-alto-contraste,
+body:not(.alto-contraste) .btn-alto-contraste,
+html:not(.alto-contraste) .toggle-alto-contraste,
+body:not(.alto-contraste) .toggle-alto-contraste {
+    background-color: #ffffff !important;
+    color: #1e293b !important;
+    border: 1.5px solid #cbd5e1 !important;
+}
+
+html:not(.alto-contraste) .btn-alto-contraste:hover,
+body:not(.alto-contraste) .btn-alto-contraste:hover,
+html:not(.alto-contraste) .toggle-alto-contraste:hover,
+body:not(.alto-contraste) .toggle-alto-contraste:hover {
+    background-color: #f1f5f9 !important;
+    border-color: #94a3b8 !important;
+    color: #1e293b !important;
 }
