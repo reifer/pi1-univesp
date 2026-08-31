@@ -51,10 +51,21 @@ main {
 
 /* Animação dos Blobs decorativos no fundo do Hero */
 @keyframes blob {
-    0% { transform: translate(0px, 0px) scale(1); }
-    33% { transform: translate(30px, -50px) scale(1.1); }
-    66% { transform: translate(-20px, 20px) scale(0.9); }
-    100% { transform: translate(0px, 0px) scale(1); }
+    0% {
+        transform: translate(0px, 0px) scale(1);
+    }
+
+    33% {
+        transform: translate(30px, -50px) scale(1.1);
+    }
+
+    66% {
+        transform: translate(-20px, 20px) scale(0.9);
+    }
+
+    100% {
+        transform: translate(0px, 0px) scale(1);
+    }
 }
 
 .animate-blob {
@@ -63,7 +74,10 @@ main {
 
 /* Respeitar preferência do usuário por redução de movimento */
 @media (prefers-reduced-motion: reduce) {
-    *, ::before, ::after {
+
+    *,
+    ::before,
+    ::after {
         animation-duration: 0.01ms !important;
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
@@ -85,23 +99,32 @@ main {
     }
 }
 
-.fade-in-element:nth-child(2) { animation-delay: 0.2s; }
-.fade-in-element:nth-child(3) { animation-delay: 0.4s; }
+.fade-in-element:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.fade-in-element:nth-child(3) {
+    animation-delay: 0.4s;
+}
 
 /* Estilização da scrollbar */
 .scrollbar-thin::-webkit-scrollbar {
     height: 4px;
 }
+
 .scrollbar-thin::-webkit-scrollbar-track {
     background: transparent;
 }
+
 .scrollbar-thin::-webkit-scrollbar-thumb {
     background: #e2e8f0;
     border-radius: 10px;
 }
 
 /* Padronização Visual para Inputs */
-input:focus, textarea:focus, select:focus {
+input:focus,
+textarea:focus,
+select:focus {
     outline: none !important;
     border-color: #166534 !important;
     box-shadow: 0 0 0 2px #166534 !important;
@@ -369,6 +392,37 @@ body.alto-contraste .animate-blob {
     backdrop-filter: none !important;
     box-shadow: none !important;
     animation: none !important;
+}
+
+/* Correção específica para o menu sanduíche e mobile em Alto Contraste */
+html.alto-contraste #mobile-menu,
+body.alto-contraste #mobile-menu,
+html.alto-contraste [id*="mobile-menu"],
+body.alto-contraste [id*="mobile-menu"],
+html.alto-contraste .mobile-menu,
+body.alto-contraste .mobile-menu {
+    background-color: #000000 !important;
+    border: 2px solid #ffff00 !important;
+    color: #ffff00 !important;
+}
+
+html.alto-contraste #mobile-menu a,
+body.alto-contraste #mobile-menu a,
+html.alto-contraste [id*="mobile-menu"] a,
+body.alto-contraste [id*="mobile-menu"] a,
+html.alto-contraste .mobile-menu a,
+body.alto-contraste .mobile-menu a {
+    background-color: #000000 !important;
+    color: #ffff00 !important;
+    border: 1px solid #ffff00 !important;
+}
+
+html.alto-contraste #mobile-menu a:hover,
+body.alto-contraste #mobile-menu a:hover,
+html.alto-contraste .mobile-menu a:hover,
+body.alto-contraste .mobile-menu a:hover {
+    background-color: #ffff00 !important;
+    color: #000000 !important;
 }
 
 /* Botão de Toggle de Alto Contraste - Estilo Específico */
