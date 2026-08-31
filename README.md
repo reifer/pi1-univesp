@@ -21,11 +21,11 @@ O projeto foi construído atendendo rigorosamente ao enunciado oficial do tema d
 | Requisito do Tema | Tecnologia / Recurso Utilizado | Descrição da Implementação |
 | :--- | :--- | :--- |
 | **Framework Web** | **Django (Python 3.13+)** | Arquitetura Model-View-Template (MVT), tratamento seguro de rotas, formulários tipados com sanitização e autenticação robusta. |
-| **Banco de Dados** | **PostgreSQL (Produção/Docker) & SQLite3 (Dev/Testes)** | Modelagem relacional (`Doador`, `Doacao`, `Agendamento`) com chaves estrangeiras, transações atômicas e *CheckConstraints* de integridade. |
+| **Banco de Dados** | **PostgreSQL (Produção/Docker) & SQLite3 (Dev/Testes/Nuvem)** | Modelagem relacional (`Doador`, `Doacao`, `Agendamento`) com chaves estrangeiras, transações atômicas e suporte flexível via `DB_ENGINE`. |
 | **Script Web (JavaScript)** | **TypeScript & JavaScript Moderno (ES2017)** | Scripts assíncronos para consulta de CEP, geração dinâmica de horários, alternância condicional de formulários e controle de acessibilidade (`acessibilidade.js`). |
-| **Nuvem (Cloud-Ready)** | **Docker & Docker Compose** | Arquitetura conteinerizada em conformidade com a metodologia *12-Factor App*, preparada para deploy escalável em provedores de nuvem (AWS, GCP, Azure, Render, Fly.io). |
+| **Nuvem (Cloud-Ready)** | **Docker, Docker Compose & Render** | Arquitetura conteinerizada em conformidade com a metodologia *12-Factor App*, preparada para deploy escalável em provedores de nuvem com execução automatizada no Render. |
 | **Uso de APIs** | **ViaCEP API & Google Maps API** | Consumo assíncrono da API REST do ViaCEP para preenchimento de endereços e integração com Google Maps para geração de rotas de coleta. |
-| **Acessibilidade** | **Diretrizes WCAG 2.1 (AA/AAA) & WAI-ARIA** | Modo de Alto Contraste com persistência em `localStorage`, atalho `Alt + C`, Skip Links de navegação por teclado, rótulos explícitos e leituras semânticas para leitores de tela. |
+| **Acessibilidade** | **Diretrizes WCAG 2.1 (AA/AAA) & WAI-ARIA** | Modo de Alto Contraste com persistência em `localStorage`, atalho `Alt + C`, Skip Links de navegação por teclado, rótulos explícitos e adaptação avançada para menu mobile (sanduíche). |
 | **Controle de Versão** | **Git & GitHub** | Controle de versão distribuído, histórico de commits semântico e rastreabilidade de código. |
 | **Testes Automatizados** | **Django Test Framework** | Suíte de testes automatizados com relatório de auditoria detalhado, validando regras de negócio, segurança (IDOR, CSRF, Staff) e integridade de dados. |
 
@@ -41,6 +41,7 @@ A acessibilidade digital foi tratada como requisito arquitetural de primeira cla
 - **Prevenção de FOUC:** Um script síncrono no `<head>` do `base.html` aplica a classe `.alto-contraste` imediatamente antes do render, eliminando cintilação (*Flash of Unstyled Content*).
 - **Atalho de Teclado:** O usuário pode alternar o modo a qualquer momento pressionando `Alt + C`.
 - **Atributos Dinâmicos:** Os botões de alternância sincronizam o atributo `aria-pressed="true|false"` e títulos de acessibilidade em tempo real.
+- **Adaptação Mobile (Menu Sanduíche):** Regras avançadas no CSS asseguram que o menu responsivo de navegação em dispositivos móveis mantenha fundo totalmente escuro (`#000000`), bordas de destaque e textos em amarelo vivo (`#ffff00`), garantindo legibilidade irrestrita em telas menores.
 
 #### 💡 Justificativa Social e Ergonômica
 O Alto Contraste eleva o contraste de cores para a proporção **7:1+** (padrão WCAG AAA), sendo fundamental para:
@@ -100,70 +101,3 @@ O Alto Contraste eleva o contraste de cores para a proporção **7:1+** (padrão
    ```bash
    git clone <URL_DO_REPOSITORIO>
    cd pi1-univesp-main
-   ```
-
-2. **Configurar as Variáveis de Ambiente:**
-   Copie o arquivo de exemplo para criar o `.env`:
-   ```bash
-   cp .env.example .env
-   ```
-
-3. **Subir os Contêineres da Aplicação e do Banco de Dados:**
-   ```bash
-   docker compose up -d --build
-   ```
-
-4. **Aplicar as Migrações do Banco de Dados:**
-   ```bash
-   docker compose exec web python manage.py migrate
-   ```
-
-5. **Criar o Superusuário Administrador:**
-   ```bash
-   docker compose exec web python manage.py createsuperuser
-   ```
-   *(Informe o nome de usuário, e-mail e senha desejados)*
-
-6. **Acessar a Aplicação:**
-   - **Aplicação Principal:** [http://localhost:8000](http://localhost:8000)
-   - **Central Logística:** [http://localhost:8000/admin-dashboard/](http://localhost:8000/admin-dashboard/)
-   - **Painel Django Admin:** [http://localhost:8000/admin/](http://localhost:8000/admin/)
-
----
-
-### Execução de Testes Automatizados
-
-Para executar toda a suíte de testes de integração e auditoria:
-
-```bash
-docker compose exec web python manage.py test -v 2
-```
-
-Ou no ambiente Python local (virtualenv):
-
-```bash
-python manage.py test -v 2
-```
-
----
-
-### Compilação do Frontend (TypeScript)
-
-A lógica de scripts client-side está modularizada na pasta `bazar/static/js/src/`. Para compilar automaticamente em caso de novas alterações:
-
-```bash
-npm install -g typescript
-tsc --watch
-```
-
----
-
-## 7. 👥 Informações Acadêmicas
-
-- **Instituição:** Universidade Virtual do Estado de São Paulo (UNIVESP)
-- **Curso:** Bacharelado em Ciência de Dados / Tecnologia da Informação / Engenharia de Computação
-- **Disciplina:** Projeto Integrador em Computação I (PI-1)
-- **Ano / Semestre:** 2026
-
----
-*Conexão Solidária — Transformando doações em esperança para o sertão paraibano.*

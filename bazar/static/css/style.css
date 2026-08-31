@@ -406,12 +406,25 @@ body.alto-contraste .mobile-menu {
     color: #ffff00 !important;
 }
 
+/* Links e Botões dentro do Menu Mobile */
+html.alto-contraste #mobile-menu *,
+body.alto-contraste #mobile-menu * {
+    background-color: #000000 !important;
+    color: #ffff00 !important;
+}
+
 html.alto-contraste #mobile-menu a,
 body.alto-contraste #mobile-menu a,
+html.alto-contraste #mobile-menu button,
+body.alto-contraste #mobile-menu button,
 html.alto-contraste [id*="mobile-menu"] a,
 body.alto-contraste [id*="mobile-menu"] a,
+html.alto-contraste [id*="mobile-menu"] button,
+body.alto-contraste [id*="mobile-menu"] button,
 html.alto-contraste .mobile-menu a,
-body.alto-contraste .mobile-menu a {
+body.alto-contraste .mobile-menu a,
+html.alto-contraste .mobile-menu button,
+body.alto-contraste .mobile-menu button {
     background-color: #000000 !important;
     color: #ffff00 !important;
     border: 1px solid #ffff00 !important;
@@ -419,8 +432,12 @@ body.alto-contraste .mobile-menu a {
 
 html.alto-contraste #mobile-menu a:hover,
 body.alto-contraste #mobile-menu a:hover,
+html.alto-contraste #mobile-menu button:hover,
+body.alto-contraste #mobile-menu button:hover,
 html.alto-contraste .mobile-menu a:hover,
-body.alto-contraste .mobile-menu a:hover {
+body.alto-contraste .mobile-menu a:hover,
+html.alto-contraste .mobile-menu button:hover,
+body.alto-contraste .mobile-menu button:hover {
     background-color: #ffff00 !important;
     color: #000000 !important;
 }
@@ -453,15 +470,25 @@ body.alto-contraste .mobile-menu a:hover {
     outline-offset: 2px;
 }
 
+/* Regras de Alto Contraste para os botões de alternância (Desktop e Mobile) */
 html.alto-contraste .btn-alto-contraste,
-body.alto-contraste .btn-alto-contraste {
+body.alto-contraste .btn-alto-contraste,
+html.alto-contraste .toggle-alto-contraste,
+body.alto-contraste .toggle-alto-contraste {
     background-color: #000000 !important;
     color: #ffff00 !important;
     border: 2px solid #ffff00 !important;
 }
 
 html.alto-contraste .btn-alto-contraste:hover,
-body.alto-contraste .btn-alto-contraste:hover {
+body.alto-contraste .btn-alto-contraste:hover,
+html.alto-contraste .toggle-alto-contraste:hover,
+body.alto-contraste .toggle-alto-contraste:hover {
     background-color: #ffff00 !important;
     color: #000000 !important;
+}
+
+html.alto-contraste .toggle-alto-contraste span,
+body.alto-contraste .toggle-alto-contraste span {
+    color: inherit !important;
 }
