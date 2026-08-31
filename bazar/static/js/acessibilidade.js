@@ -17,6 +17,9 @@
             if (body) body.classList.remove('alto-contraste');
         }
 
+        // Força o reflow imediato do navegador (redesenho do DOM) para atualizar estilos reativamente
+        void root.offsetWidth;
+
         // Atualizar estado de todos os botões de alternância na página
         const botoesContraste = document.querySelectorAll('.toggle-alto-contraste');
         botoesContraste.forEach(function (btn) {
