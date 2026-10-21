@@ -221,8 +221,8 @@ def cadastrar_doacao(request):
                 messages.error(request, 'Para preparo da equipe, a retirada deve ser agendada para pelo menos amanhã (D+1).')
                 return render(request, 'bazar/cadastrar_doacao.html', {'doador_form': doador_form, 'doacao_form': doacao_form, 'form_data': request.POST})
 
-            if data_agendamento.weekday() not in {0, 2}:
-                messages.error(request, 'Nossa equipe realiza coletas apenas às Segundas e Quartas-feiras.')
+            if data_agendamento.weekday() not in {0, 1, 2, 3, 4, 5}:  # Seg a Sáb
+                messages.error(request, 'Nossa equipe atende de Segunda a Sábado. Por favor, escolha um dia válido.')
                 return render(request, 'bazar/cadastrar_doacao.html', {'doador_form': doador_form, 'doacao_form': doacao_form, 'form_data': request.POST})
 
             try:
@@ -253,11 +253,11 @@ def cadastrar_doacao(request):
                 messages.error(request, 'Formato de data/horário inválido.')
                 return render(request, 'bazar/cadastrar_doacao.html', {'doador_form': doador_form, 'doacao_form': doacao_form, 'form_data': request.POST})
 
-            # Segurança contra bypass de frontend: apenas terça, quinta e domingo.
-            if data_agendamento.weekday() not in {1, 3, 6}:
+            # Segurança contra bypass de frontend: apenas Segunda a Sábado.
+            if data_agendamento.weekday() not in {0, 1, 2, 3, 4, 5}:
                 messages.error(
                     request,
-                    'Ops! Entregas apenas às Terças, Quintas e Domingos. Por favor, escolha um desses dias no calendário.'
+                    'Entregas disponíveis de Segunda a Sábado. Por favor, escolha um dia válido no calendário.'
                 )
                 return render(request, 'bazar/cadastrar_doacao.html', {'doador_form': doador_form, 'doacao_form': doacao_form, 'form_data': request.POST})
 

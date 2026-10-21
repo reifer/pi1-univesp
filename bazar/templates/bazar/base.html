@@ -16,6 +16,79 @@
             darkMode: 'class',
             theme: {
                 extend: {
+                    colors: {
+                        amber: {
+                            50: '#fffbeb',
+                            100: '#fef3c7',
+                            200: '#fde68a',
+                            300: '#fcd34d',
+                            400: '#fbbf24',
+                            500: '#f59e0b', // Amarelo/Dourado oficial 
+                            600: '#d97706', // Dourado corporativo para botões e CTAs
+                            700: '#b45309', // Dourado escuro para hover
+                            800: '#92400e', // Texto escuro institucional
+                            900: '#78350f',
+                            950: '#451a03',
+                        },
+                        gold: {
+                            50: '#fffbeb',
+                            100: '#fef3c7',
+                            200: '#fde68a',
+                            300: '#fcd34d',
+                            400: '#fbbf24',
+                            500: '#f59e0b',
+                            600: '#d97706',
+                            700: '#b45309',
+                            800: '#92400e',
+                            900: '#78350f',
+                        },
+                        blue: {
+                            50: '#f0f7ff',
+                            100: '#e0effe',
+                            200: '#bae0fd',
+                            300: '#7dd3fc',
+                            400: '#38bdf8',
+                            500: '#0284c7',
+                            600: '#0275b1',
+                            700: '#005691', // Azul institucional corporativo
+                            800: '#054673',
+                            900: '#07385c',
+                            950: '#032036',
+                        },
+                        slate: {
+                            50: '#f8fafc',  // Fundo neutro claro ultra suave
+                            100: '#f1f5f9', // Cinza suave para blocos de conteúdo
+                            200: '#e2e8f0', // Bordas sutis corporativas
+                            300: '#cbd5e1',
+                            400: '#94a3b8',
+                            500: '#64748b',
+                            600: '#475569',
+                            700: '#333333', // Cinza-chumbo institucional de alta legibilidade
+                            800: '#262626',
+                            900: '#222222', // Preto suave institucional
+                            950: '#111111',
+                        },
+                        ipvss: {
+                            gold: '#D97706',
+                            'gold-light': '#F59E0B',
+                            'gold-dark': '#B45309',
+                            'gold-subtle': '#FFFBEB',
+                            'gold-border': '#FDE68A',
+                            blue: '#005691',
+                            'blue-dark': '#07385C',
+                            'blue-light': '#0284C7',
+                            'blue-subtle': '#F0F7FF',
+                            dark: '#222222',
+                            charcoal: '#333333',
+                            bg: '#FFFFFF',
+                            surface: '#F8FAFC',
+                            'surface-alt': '#F1F5F9',
+                            border: '#E2E8F0',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+                    },
                     animation: { blob: "blob 7s infinite" },
                     keyframes: {
                         blob: {
@@ -31,20 +104,21 @@
     </script>
     <!-- Script de inicialização rápida para evitar FOUC no modo de alto contraste -->
     <script>
-        (function() {
-            try {
-                if (localStorage.getItem('conexao_solidaria_alto_contraste') === 'true') {
-                    document.documentElement.classList.add('alto-contraste');
-                }
-            } catch (e) {}
-        })();
+            (function () {
+                try {
+                    if (localStorage.getItem('conexao_solidaria_alto_contraste') === 'true') {
+                        document.documentElement.classList.add('alto-contraste');
+                    }
+                } catch (e) { }
+            })();
     </script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             -webkit-font-smoothing: antialiased;
+            color: #222222;
         }
     </style>
 </head>
@@ -60,32 +134,108 @@
         {% block content %}{% endblock %}
     </main>
 
-    <footer class="bg-white text-slate-600 pt-8 pb-6 mt-auto border-t border-slate-200" role="contentinfo">
-        <div class="container mx-auto px-8 max-w-7xl flex flex-col items-center justify-center gap-4">
-            <div class="flex items-center gap-2">
-                <div class="w-8 h-8 bg-green-50 rounded-lg flex items-center justify-center text-white shadow-sm">
-                    <img src="{% static 'images/logov2.svg' %}" alt="Logotipo Conexão Solidária" class="w-5 h-5 object-contain">
+    <footer class="bg-white text-slate-700 pt-14 pb-8 mt-auto border-t border-slate-200 shadow-inner"
+        role="contentinfo">
+        <div class="container mx-auto px-6 max-w-7xl">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 pb-12 border-b border-slate-200">
+                <!-- Coluna 1: Institucional -->
+                <div class="space-y-4">
+                    <div class="flex items-center gap-3">
+                        <div
+                            class="w-10 h-10 bg-white rounded-xl flex items-center justify-center p-1.5 shadow-sm border border-slate-200">
+                            <img src="{% static 'images/logov2.svg' %}" alt="Logotipo Conexão Solidária"
+                                class="w-full h-full object-contain">
+                        </div>
+                        <div>
+                            <span
+                                class="text-base font-black tracking-tight text-amber-800 uppercase block leading-none">Conexão
+                                Solidária</span>
+                        </div>
+                    </div>
+                    <p class="text-xs text-slate-600 leading-relaxed font-medium">
+                        Iniciativa vinculada ao <strong>Instituto</strong>. Conectando solidariedade e transparência na
+                        arrecadação e destinação de doações para o amparo de famílias em situação de vulnerabilidade.
+                    </p>
                 </div>
-                <span class="text-lg font-bold tracking-tight text-green-800 uppercase">Conexão Solidária</span>
+
+                <!-- Coluna 2: Navegação Rápida -->
+                <div class="space-y-3">
+                    <h2 class="text-xs font-black uppercase tracking-widest text-slate-900">Acesso Rápido</h2>
+                    <ul class="space-y-2 text-xs font-bold">
+                        <li>
+                            <a href="{% url 'index' %}"
+                                class="text-slate-600 hover:text-amber-700 transition-colors flex items-center gap-1.5">
+                                <span class="text-amber-600">›</span> Início
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'cadastrar_doacao' %}"
+                                class="text-slate-600 hover:text-amber-700 transition-colors flex items-center gap-1.5">
+                                <span class="text-amber-600">›</span> Quero Doar
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'sobre' %}"
+                                class="text-slate-600 hover:text-amber-700 transition-colors flex items-center gap-1.5">
+                                <span class="text-amber-600">›</span> Sobre o Projeto
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'contato' %}"
+                                class="text-slate-600 hover:text-amber-700 transition-colors flex items-center gap-1.5">
+                                <span class="text-amber-600">›</span> Fale Conosco
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Coluna 3: Horários Oficiais -->
+                <div class="space-y-3">
+                    <h2 class="text-xs font-black uppercase tracking-widest text-slate-900">Horários Oficiais</h2>
+                    <div
+                        class="space-y-2 text-xs text-slate-600 font-medium bg-slate-50 p-4 rounded-xl border border-slate-200">
+                        <p class="flex items-start gap-2">
+                            <span class="text-amber-700 font-bold" aria-hidden="true">📅</span>
+                            <span><strong>Segunda à Quinta:</strong> 9h às 17h</span>
+                        </p>
+                        <p class="flex items-start gap-2">
+                            <span class="text-amber-700 font-bold" aria-hidden="true">📅</span>
+                            <span><strong>Sexta:</strong> 9h às 16h15</span>
+                        </p>
+                        <p class="flex items-start gap-2">
+                            <span class="text-blue-700 font-bold" aria-hidden="true">📅</span>
+                            <span><strong>Sábados:</strong> 8h às 12h</span>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Coluna 4: Atendimento & WhatsApp -->
+                <div class="space-y-3">
+                    <h2 class="text-xs font-black uppercase tracking-widest text-slate-900">Atendimento</h2>
+                    <p class="text-xs text-slate-600 leading-relaxed font-medium">
+                        Dúvidas sobre doações, entregas ou coletas? Entre em contato diretamente com nossa equipe de
+                        atendimento.
+                    </p>
+                    {% if WHATSAPP_URL %}
+                    <a href="{{ WHATSAPP_URL }}" target="_blank" rel="noopener noreferrer"
+                        class="inline-flex items-center justify-center gap-2 w-full px-4 py-3 rounded-xl bg-amber-50 text-amber-900 font-bold text-xs uppercase tracking-wider hover:bg-amber-600 hover:text-white transition-all border border-amber-200 shadow-sm"
+                        aria-label="Falar com a equipe no WhatsApp (abre em nova aba)">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path
+                                d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.72.94 3.659 1.437 5.634 1.437h.005c6.515 0 11.849-5.334 11.851-11.893 0-3.18-1.233-6.171-3.475-8.417" />
+                        </svg>
+                        <span>WhatsApp Oficial</span>
+                    </a>
+                    {% endif %}
+                </div>
             </div>
-            <div class="text-xs text-slate-500 text-center flex flex-col sm:flex-row items-center gap-2">
-                <span>Bazar Solidário</span>
-                <span class="hidden sm:inline" aria-hidden="true">•</span>
-                <span>Projeto Integrador II - Univesp</span>
-                <span class="hidden sm:inline" aria-hidden="true">•</span>
-                <span>© 2026 • v2.0</span>
+
+            <!-- Faixa Inferior de Direitos e Créditos -->
+            <div
+                class="pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 font-medium gap-3 text-center sm:text-left">
+                <p>© 2026 <strong>Bazar Solidário</strong> • Conexão Solidária</p>
+                <p>Projeto Integrador - Univesp • Versão 2.0</p>
             </div>
-            {% if WHATSAPP_URL %}
-            <a href="{{ WHATSAPP_URL }}" target="_blank" rel="noopener noreferrer"
-                class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-green-50 text-green-800 font-bold text-sm hover:bg-green-100 transition-colors"
-                aria-label="Abrir WhatsApp da Conexão Solidária em nova aba">
-                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                    <path
-                        d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.72.94 3.659 1.437 5.634 1.437h.005c6.515 0 11.849-5.334 11.851-11.893 0-3.18-1.233-6.171-3.475-8.417" />
-                </svg>
-                <span>WhatsApp</span>
-            </a>
-            {% endif %}
         </div>
     </footer>
 

@@ -9,7 +9,7 @@
 
         <div class="fade-in-element">
             <a href="{% url 'doacoes_list' %}"
-               class="flex items-center gap-2 text-slate-700 hover:text-green-800 transition-colors mb-8 font-bold uppercase text-xs tracking-widest"
+               class="flex items-center gap-2 text-slate-700 hover:text-amber-700 transition-colors mb-8 font-bold uppercase text-xs tracking-widest"
                aria-label="Voltar para a lista de doações">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5" aria-hidden="true"><path d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"/></svg>
                 <span>Voltar para a lista</span>
@@ -25,13 +25,13 @@
                     {{ doacao.descricao }}
                 </p>
                 <div class="flex justify-center items-center gap-3 flex-wrap">
-                    <span class="text-[10px] font-black uppercase tracking-[0.2em] px-4 py-2 rounded-xl bg-green-100 text-green-800 shadow-sm border border-green-200">
+                    <span class="text-[10px] font-black uppercase tracking-[0.2em] px-4 py-2 rounded-xl bg-amber-50 text-amber-800 shadow-sm border border-amber-200">
                         Doação
                     </span>
-                    <span class="text-[10px] font-black uppercase tracking-[0.2em] px-4 py-2 rounded-xl bg-slate-200 text-slate-800 shadow-sm">
+                    <span class="text-[10px] font-black uppercase tracking-[0.2em] px-4 py-2 rounded-xl bg-slate-100 text-slate-700 shadow-sm border border-slate-200/80">
                         {{ doacao.get_tipo_entrega_display }}
                     </span>
-                    <span class="text-[10px] font-black uppercase tracking-[0.2em] px-4 py-2 rounded-xl bg-slate-200 text-slate-800 shadow-sm">
+                    <span class="text-[10px] font-black uppercase tracking-[0.2em] px-4 py-2 rounded-xl bg-slate-100 text-slate-700 shadow-sm border border-slate-200/80">
                         {{ doacao.get_status_display }}
                     </span>
                 </div>
@@ -41,7 +41,7 @@
 
                 <div class="bg-white rounded-[2.5rem] p-10 shadow-sm border border-slate-100 hover:shadow-xl transition-all duration-500 h-full flex flex-col items-center group">
                     <h2 class="text-xl font-black text-slate-900 mb-8 flex flex-col items-center gap-4 text-center uppercase tracking-tighter">
-                        <div class="w-14 h-14 rounded-2xl bg-green-50 text-green-800 flex items-center justify-center group-hover:bg-green-800 group-hover:text-white transition-colors duration-500 shadow-inner" aria-hidden="true">
+                        <div class="w-14 h-14 rounded-2xl bg-amber-50 text-amber-800 flex items-center justify-center group-hover:bg-amber-600 group-hover:text-white transition-colors duration-500 shadow-inner" aria-hidden="true">
                             <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M20 12V8H4v4m16 0v8H4v-8m16 0h-3V8m-9 4H4m3-4h3m4 0h3m-9 4V8"/></svg>
                         </div>
                         Detalhes do Item
@@ -56,7 +56,7 @@
                         </div>
 
                         <div class="bg-slate-50 p-6 rounded-3xl border border-slate-100 flex flex-col gap-3 items-center text-center">
-                            <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-green-800 shadow-sm" aria-hidden="true">
+                            <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-amber-700 shadow-sm" aria-hidden="true">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                             </div>
                             <span class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Método de Entrega</span>
@@ -71,7 +71,7 @@
                     </div>
 
                     <h2 class="text-xl font-black text-slate-900 mb-8 flex flex-col items-center gap-4 text-center relative z-10 uppercase tracking-tighter">
-                        <div class="w-14 h-14 rounded-2xl bg-green-50 text-green-800 flex items-center justify-center group-hover:bg-green-800 group-hover:text-white transition-colors duration-500 shadow-inner" aria-hidden="true">
+                        <div class="w-14 h-14 rounded-2xl bg-blue-50 text-blue-700 flex items-center justify-center group-hover:bg-blue-700 group-hover:text-white transition-colors duration-500 shadow-inner" aria-hidden="true">
                             <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
                         </div>
                         Canais de Contato
@@ -93,9 +93,9 @@
 
                         {% if doacao.doador.email %}
                         <a href="mailto:{{ doacao.doador.email }}?subject=Interesse na doação #{{ doacao.id }}"
-                           class="flex flex-col items-center gap-4 p-6 rounded-3xl bg-slate-50 border border-slate-100 hover:bg-green-50 hover:border-green-200 transition-all group/mail text-center"
+                           class="flex flex-col items-center gap-4 p-6 rounded-3xl bg-slate-50 border border-slate-100 hover:bg-blue-50 hover:border-blue-200 transition-all group/mail text-center"
                            aria-label="Enviar e-mail para o doador sobre a doação #{{ doacao.id }}">
-                            <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-green-800 shadow-sm group-hover/mail:scale-110 transition-transform" aria-hidden="true">
+                            <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-blue-700 shadow-sm group-hover/mail:scale-110 transition-transform" aria-hidden="true">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
                             </div>
                             <div class="min-w-0 flex-1 w-full">
@@ -139,12 +139,12 @@
                 <div class="bg-slate-900 text-white rounded-[2.5rem] p-10 shadow-2xl flex flex-col justify-center items-center relative overflow-hidden">
                     <div class="relative z-10 flex flex-col items-center text-center">
                         <div class="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center mb-6 backdrop-blur-md" aria-hidden="true">
-                            <svg class="w-6 h-6 text-green-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                            <svg class="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
                         </div>
                         <h2 class="text-xl font-black mb-4 uppercase tracking-tighter">Dica de Segurança</h2>
                         <p class="text-slate-100 font-medium leading-relaxed text-lg">
                             Combine a entrega em locais públicos e movimentados. <br class="hidden md:block">
-                            <span class="text-white font-black underline decoration-green-400 underline-offset-4">Nunca faça pagamentos antecipados</span> para frete ou reserva.
+                            <span class="text-white font-black underline decoration-amber-400 underline-offset-4">Nunca faça pagamentos antecipados</span> para frete ou reserva.
                         </p>
                     </div>
                 </div>
@@ -152,10 +152,11 @@
 
             {% if doacao.tipo_entrega == 'ENTREGA' %}
             <div class="max-w-3xl mx-auto mt-8">
-                <div class="bg-purple-900 text-white rounded-[2.5rem] p-10 shadow-2xl text-center">
-                    <h2 class="text-xl font-black mb-4 uppercase tracking-tighter">Horários da Igreja para Entrega</h2>
-                    <p class="text-purple-100 font-medium text-lg">Terças e Quintas: 20h - 21h30</p>
-                    <p class="text-purple-100 font-medium text-lg">Domingos: 10h - 13h ou 18h - 21h30</p>
+                <div class="bg-blue-800 text-white rounded-[2.5rem] p-10 shadow-2xl text-center">
+                    <h2 class="text-xl font-black mb-4 uppercase tracking-tighter">Horários de Funcionamento para Entrega</h2>
+                    <p class="text-blue-100 font-medium text-lg">Segunda à Quinta: 9h às 17h</p>
+                    <p class="text-blue-100 font-medium text-lg">Sexta: 9h às 16h15</p>
+                    <p class="text-blue-100 font-medium text-lg">Sábados: 8h às 12h</p>
                 </div>
             </div>
             {% endif %}
