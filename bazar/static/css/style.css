@@ -362,10 +362,14 @@ body.alto-contraste a[class*="bg-blue-900"] {
     text-decoration: none !important;
 }
 
-html.alto-contraste button:hover,
-body.alto-contraste button:hover,
-html.alto-contraste button:focus,
-body.alto-contraste button:focus,
+html.alto-contraste button:not(.btn-alto-contraste):not(.toggle-alto-contraste):hover,
+body.alto-contraste button:not(.btn-alto-contraste):not(.toggle-alto-contraste):hover,
+html.high-contrast button:not(.btn-alto-contraste):not(.toggle-alto-contraste):hover,
+body.high-contrast button:not(.btn-alto-contraste):not(.toggle-alto-contraste):hover,
+html.alto-contraste button:not(.btn-alto-contraste):not(.toggle-alto-contraste):focus,
+body.alto-contraste button:not(.btn-alto-contraste):not(.toggle-alto-contraste):focus,
+html.high-contrast button:not(.btn-alto-contraste):not(.toggle-alto-contraste):focus,
+body.high-contrast button:not(.btn-alto-contraste):not(.toggle-alto-contraste):focus,
 html.alto-contraste a[class*="bg-amber-600"]:hover,
 body.alto-contraste a[class*="bg-amber-600"]:hover,
 html.alto-contraste a[class*="bg-green-800"]:hover,
@@ -532,7 +536,105 @@ body.alto-contraste .mobile-menu button:hover {
     color: #000000 !important;
 }
 
-/* Botão de Toggle de Alto Contraste - Estilo Específico */
+/* ==========================================================================
+   Destaque e Alternância do Logotipo no Alto Contraste (.alto-contraste / .high-contrast)
+   ========================================================================== */
+.logo-contraste {
+    display: none !important;
+}
+
+.logo-normal {
+    display: block !important;
+}
+
+/* Modo Alto Contraste Ativo */
+body.alto-contraste .logo-normal,
+body.high-contrast .logo-normal,
+html.alto-contraste .logo-normal,
+html.high-contrast .logo-normal,
+.alto-contraste .logo-normal,
+.high-contrast .logo-normal {
+    display: none !important;
+}
+
+body.alto-contraste .logo-contraste,
+body.high-contrast .logo-contraste,
+html.alto-contraste .logo-contraste,
+html.high-contrast .logo-contraste,
+.alto-contraste .logo-contraste,
+.high-contrast .logo-contraste {
+    display: block !important;
+}
+
+/* Modo Normal (sem Alto Contraste) */
+html:not(.alto-contraste):not(.high-contrast) .logo-normal,
+body:not(.alto-contraste):not(.high-contrast) .logo-normal {
+    display: block !important;
+}
+
+html:not(.alto-contraste):not(.high-contrast) .logo-contraste,
+body:not(.alto-contraste):not(.high-contrast) .logo-contraste {
+    display: none !important;
+}
+
+html.alto-contraste .navbar-logo-container,
+body.alto-contraste .navbar-logo-container,
+html.high-contrast .navbar-logo-container,
+body.high-contrast .navbar-logo-container,
+html.alto-contraste .logo-container,
+body.alto-contraste .logo-container,
+html.high-contrast .logo-container,
+body.high-contrast .logo-container {
+    background-color: #000000 !important;
+    border: 2px solid #ffff00 !important;
+    border-radius: 0.75rem !important;
+    padding: 0.375rem !important;
+    box-shadow: none !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+html.alto-contraste .navbar-logo-container img,
+body.alto-contraste .navbar-logo-container img,
+html.high-contrast .navbar-logo-container img,
+body.high-contrast .navbar-logo-container img,
+html.alto-contraste .logo-container img,
+body.alto-contraste .logo-container img,
+html.high-contrast .logo-container img,
+body.high-contrast .logo-container img {
+    background-color: transparent !important;
+    filter: none !important;
+}
+
+html.alto-contraste .navbar-logo-link,
+body.alto-contraste .navbar-logo-link,
+html.high-contrast .navbar-logo-link,
+body.high-contrast .navbar-logo-link {
+    text-decoration: none !important;
+}
+
+html.alto-contraste .navbar-logo-title,
+body.alto-contraste .navbar-logo-title,
+html.high-contrast .navbar-logo-title,
+body.high-contrast .navbar-logo-title {
+    color: #ffff00 !important;
+    -webkit-text-fill-color: #ffff00 !important;
+    text-decoration: none !important;
+}
+
+html.alto-contraste .navbar-logo-subtitle,
+body.alto-contraste .navbar-logo-subtitle,
+html.high-contrast .navbar-logo-subtitle,
+body.high-contrast .navbar-logo-subtitle {
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+    text-decoration: none !important;
+}
+
+/* ==========================================================================
+   Botão de Toggle de Alto Contraste (.btn-alto-contraste / .toggle-alto-contraste)
+   ========================================================================== */
 .btn-alto-contraste {
     display: inline-flex;
     align-items: center;
@@ -560,44 +662,118 @@ body.alto-contraste .mobile-menu button:hover {
     outline-offset: 2px;
 }
 
-/* Regras de Alto Contraste para os botões de alternância (Desktop e Mobile) */
+/* Estado de Alto Contraste (Normal, Foco e Ativo) */
 html.alto-contraste .btn-alto-contraste,
 body.alto-contraste .btn-alto-contraste,
 html.alto-contraste .toggle-alto-contraste,
-body.alto-contraste .toggle-alto-contraste {
+body.alto-contraste .toggle-alto-contraste,
+html.high-contrast .btn-alto-contraste,
+body.high-contrast .btn-alto-contraste,
+html.high-contrast .toggle-alto-contraste,
+body.high-contrast .toggle-alto-contraste,
+html.alto-contraste .btn-alto-contraste:focus,
+body.alto-contraste .btn-alto-contraste:focus,
+html.alto-contraste .toggle-alto-contraste:focus,
+body.alto-contraste .toggle-alto-contraste:focus,
+html.high-contrast .btn-alto-contraste:focus,
+body.high-contrast .btn-alto-contraste:focus,
+html.high-contrast .toggle-alto-contraste:focus,
+body.high-contrast .toggle-alto-contraste:focus,
+html.alto-contraste .btn-alto-contraste:active,
+body.alto-contraste .btn-alto-contraste:active,
+html.alto-contraste .toggle-alto-contraste:active,
+body.alto-contraste .toggle-alto-contraste:active,
+html.high-contrast .btn-alto-contraste:active,
+body.high-contrast .btn-alto-contraste:active,
+html.high-contrast .toggle-alto-contraste:active,
+body.high-contrast .toggle-alto-contraste:active {
     background-color: #000000 !important;
     color: #ffff00 !important;
     border: 2px solid #ffff00 !important;
+    outline: none !important;
+    box-shadow: none !important;
 }
 
+/* Remover anel de foco travado no clique com mouse/touch */
+html.alto-contraste .btn-alto-contraste:focus:not(:focus-visible),
+body.alto-contraste .btn-alto-contraste:focus:not(:focus-visible),
+html.alto-contraste .toggle-alto-contraste:focus:not(:focus-visible),
+body.alto-contraste .toggle-alto-contraste:focus:not(:focus-visible),
+html.high-contrast .btn-alto-contraste:focus:not(:focus-visible),
+body.high-contrast .btn-alto-contraste:focus:not(:focus-visible),
+html.high-contrast .toggle-alto-contraste:focus:not(:focus-visible),
+body.high-contrast .toggle-alto-contraste:focus:not(:focus-visible) {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+/* Foco via teclado (Acessibilidade) */
+html.alto-contraste .btn-alto-contraste:focus-visible,
+body.alto-contraste .btn-alto-contraste:focus-visible,
+html.alto-contraste .toggle-alto-contraste:focus-visible,
+body.alto-contraste .toggle-alto-contraste:focus-visible,
+html.high-contrast .btn-alto-contraste:focus-visible,
+body.high-contrast .btn-alto-contraste:focus-visible,
+html.high-contrast .toggle-alto-contraste:focus-visible,
+body.high-contrast .toggle-alto-contraste:focus-visible {
+    outline: 2px solid #ffffff !important;
+    outline-offset: 2px !important;
+}
+
+/* Hover no Modo Alto Contraste */
 html.alto-contraste .btn-alto-contraste:hover,
 body.alto-contraste .btn-alto-contraste:hover,
 html.alto-contraste .toggle-alto-contraste:hover,
-body.alto-contraste .toggle-alto-contraste:hover {
+body.alto-contraste .toggle-alto-contraste:hover,
+html.high-contrast .btn-alto-contraste:hover,
+body.high-contrast .btn-alto-contraste:hover,
+html.high-contrast .toggle-alto-contraste:hover,
+body.high-contrast .toggle-alto-contraste:hover {
     background-color: #ffff00 !important;
     color: #000000 !important;
-    border-color: #ffff00 !important;
+    border: 2px solid #ffff00 !important;
 }
 
-html.alto-contraste .toggle-alto-contraste span,
-body.alto-contraste .toggle-alto-contraste span {
+/* Elementos e textos internos do botão de alternância */
+html.alto-contraste .btn-alto-contraste *,
+body.alto-contraste .btn-alto-contraste *,
+html.alto-contraste .toggle-alto-contraste *,
+body.alto-contraste .toggle-alto-contraste *,
+html.high-contrast .btn-alto-contraste *,
+body.high-contrast .btn-alto-contraste *,
+html.high-contrast .toggle-alto-contraste *,
+body.high-contrast .toggle-alto-contraste * {
     color: inherit !important;
+    -webkit-text-fill-color: currentColor !important;
+    background: transparent !important;
 }
 
-/* Regras de estado Normal (sem Alto Contraste) para forçar o reset instantâneo ao alternar */
-html:not(.alto-contraste) .btn-alto-contraste,
-body:not(.alto-contraste) .btn-alto-contraste,
-html:not(.alto-contraste) .toggle-alto-contraste,
-body:not(.alto-contraste) .toggle-alto-contraste {
+html.alto-contraste .btn-alto-contraste:hover *,
+body.alto-contraste .btn-alto-contraste:hover *,
+html.alto-contraste .toggle-alto-contraste:hover *,
+body.alto-contraste .toggle-alto-contraste:hover *,
+html.high-contrast .btn-alto-contraste:hover *,
+body.high-contrast .btn-alto-contraste:hover *,
+html.high-contrast .toggle-alto-contraste:hover *,
+body.high-contrast .toggle-alto-contraste:hover * {
+    color: #000000 !important;
+    -webkit-text-fill-color: #000000 !important;
+}
+
+/* Regras de estado Normal (sem Alto Contraste) para reset instantâneo */
+html:not(.alto-contraste):not(.high-contrast) .btn-alto-contraste,
+body:not(.alto-contraste):not(.high-contrast) .btn-alto-contraste,
+html:not(.alto-contraste):not(.high-contrast) .toggle-alto-contraste,
+body:not(.alto-contraste):not(.high-contrast) .toggle-alto-contraste {
     background-color: #ffffff !important;
     color: #1e293b !important;
     border: 1.5px solid #cbd5e1 !important;
 }
 
-html:not(.alto-contraste) .btn-alto-contraste:hover,
-body:not(.alto-contraste) .btn-alto-contraste:hover,
-html:not(.alto-contraste) .toggle-alto-contraste:hover,
-body:not(.alto-contraste) .toggle-alto-contraste:hover {
+html:not(.alto-contraste):not(.high-contrast) .btn-alto-contraste:hover,
+body:not(.alto-contraste):not(.high-contrast) .btn-alto-contraste:hover,
+html:not(.alto-contraste):not(.high-contrast) .toggle-alto-contraste:hover,
+body:not(.alto-contraste):not(.high-contrast) .toggle-alto-contraste:hover {
     background-color: #f1f5f9 !important;
     border-color: #94a3b8 !important;
     color: #1e293b !important;

@@ -6,7 +6,7 @@
 
 ## 1. 📌 Apresentação do Projeto
 
-O **Conexão Solidária** é uma aplicação web desenvolvida como solução tecnológica para o Projeto Integrador em Computação I da UNIVESP. O sistema tem como objetivo principal apoiar e otimizar a gestão de doações e a operação logística do **Bazar Solidário**, cuja renda é revertida integralmente para ações sociais e amparo a famílias em situação de vulnerabilidade no sertão paraibano.
+O **Conexão Solidária** é uma aplicação web desenvolvida como solução tecnológica para o Projeto Integrador em Computação I da UNIVESP. O sistema tem como objetivo principal apoiar e otimizar a gestão de doações e a operação logística do **Bazar Solidário**, cuja renda é revertida integralmente para o acolhimento, assistência e cuidados aos idosos no **Lar de Idosos**.
 
 A plataforma conecta **doadores**, **voluntários** e a **administração da igreja**, oferecendo rastreabilidade completa desde o cadastro de donativos (com modalidades de retirada no local ou entrega presencial), triagem e organização de coletas, até a gestão do estoque de itens disponíveis no bazar.
 
@@ -101,3 +101,6 @@ O Alto Contraste eleva o contraste de cores para a proporção **7:1+** (padrão
    ```bash
    git clone <URL_DO_REPOSITORIO>
    cd pi1-univesp-main
+
+   source venv/bin/activate
+   python manage.py runserver

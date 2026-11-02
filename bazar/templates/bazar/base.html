@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Conexão Solidária | Rede Solidária de Apoio ao Sertão{% endblock %}</title>
+    <title>{% block title %}Conexão Solidária | Apoio ao Lar de Idosos{% endblock %}</title>
     <link rel="icon" type="image/svg+xml" href="{% static 'images/logocomfundov2.svg' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
@@ -107,7 +107,7 @@
             (function () {
                 try {
                     if (localStorage.getItem('conexao_solidaria_alto_contraste') === 'true') {
-                        document.documentElement.classList.add('alto-contraste');
+                        document.documentElement.classList.add('alto-contraste', 'high-contrast');
                     }
                 } catch (e) { }
             })();
@@ -142,9 +142,11 @@
                 <div class="space-y-4">
                     <div class="flex items-center gap-3">
                         <div
-                            class="w-10 h-10 bg-white rounded-xl flex items-center justify-center p-1.5 shadow-sm border border-slate-200">
+                            class="logo-container w-10 h-10 bg-white rounded-xl flex items-center justify-center p-1.5 shadow-sm border border-slate-200">
                             <img src="{% static 'images/logov2.svg' %}" alt="Logotipo Conexão Solidária"
-                                class="w-full h-full object-contain">
+                                class="logo-normal w-full h-full object-contain">
+                            <img src="{% static 'images/logobranco.svg' %}" alt="Logotipo Conexão Solidária Alto Contraste"
+                                class="logo-contraste w-full h-full object-contain hidden">
                         </div>
                         <div>
                             <span
@@ -154,7 +156,7 @@
                     </div>
                     <p class="text-xs text-slate-600 leading-relaxed font-medium">
                         Iniciativa vinculada ao <strong>Instituto</strong>. Conectando solidariedade e transparência na
-                        arrecadação e destinação de doações para o amparo de famílias em situação de vulnerabilidade.
+                        arrecadação e destinação de doações para o amparo e cuidado dos idosos acolhidos no Lar de Idosos.
                     </p>
                 </div>
 
