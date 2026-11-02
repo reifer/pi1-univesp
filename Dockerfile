@@ -12,7 +12,8 @@ COPY . /app
 
 EXPOSE 10000
 
-# Executa as migrações, coleta os estáticos e inicia o Gunicorn
+# Executa as migrações, cria o admin padrão, coleta os estáticos e inicia o Gunicorn
 CMD python manage.py migrate --noinput && \
+    python manage.py criar_admin_padrao && \
     python manage.py collectstatic --noinput && \
     gunicorn core.wsgi:application --bind 0.0.0.0:10000
