@@ -1,5 +1,5 @@
 # Conexão Solidária (Bazar Solidário)
-### Documentação Técnica e Acadêmica do Projeto Integrador I (PI-1)
+### Documentação Técnica e Acadêmica do Projeto Integrador I (PI-2)
 **Universidade Virtual do Estado de São Paulo — UNIVESP**
 
 ---
@@ -68,7 +68,7 @@ O Alto Contraste eleva o contraste de cores para a proporção **7:1+** (padrão
 2. **Cadastro Inteligente de Doação:**
    - Formulário em etapas lógicas (Doador, Detalhes do Item e Método de Logística).
    - **Consulta de CEP (ViaCEP):** Preenchimento automático de logradouro, bairro, cidade e UF em tempo real.
-   - **Horários Condicionais:** Definição de coletas (Segundas e Quartas) ou entregas na igreja (Terças, Quintas e Domingos).
+   - **Horários Condicionais:** Definição de coletas  ou entregas na igreja.
 3. **Painel Administrativo Logístico (Área Restrita / Staff):**
    - Central de Coletas com endereço completo, telefone do doador e link direto para rota no Google Maps.
    - Central de Recebimentos na igreja.
