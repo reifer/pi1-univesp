@@ -72,35 +72,47 @@
         const salvo = localStorage.getItem(STORAGE_KEY) === 'true';
         aplicarAltoContraste(salvo);
 
-        function handleBtnClick(e) {
-            toggleAltoContraste();
-            // requestAnimationFrame duplo: garante blur() após o navegador mobile
-            // atribuir o foco ao elemento (o toque em iOS/Android foca o btn
-            // de forma assíncrona, após o callback do click)
-            var self = this;
-            requestAnimationFrame(function () {
-                requestAnimationFrame(function () {
-                    self.blur();
-                    // Retira o foco de qualquer elemento que possa tê-lo recebido
-                    if (document.activeElement && document.activeElement !== document.body) {
-                        document.activeElement.blur();
-                    }
-                });
-            });
-        }
-
         const botoesContraste = document.querySelectorAll('.toggle-alto-contraste');
         botoesContraste.forEach(function (btn) {
-            btn.removeEventListener('click', handleBtnClick);
-            btn.addEventListener('click', handleBtnClick);
 
-            // Fallback para iOS Safari: touchend libera o foco antes mesmo do click
-            btn.addEventListener('touchend', function () {
-                var touchedBtn = this;
-                requestAnimationFrame(function () {
-                    touchedBtn.blur();
-                });
-            }, { passive: true });
+            /**
+             * ESTRATÉGIA: pointerdown + preventDefault()
+             *
+             * O navegador mobile atribui o foco ao elemento no momento do toque
+             * (pointerdown), antes de qualquer outro evento (click, touchend).
+             * Ao chamar e.preventDefault() em pointerdown, impedimos que o browser
+             * crie o estado de foco nativo, eliminando a borda presa na tela.
+             *
+             * - pointer.pointerType === 'touch' | 'pen': toque/caneta → intercepta
+             * - pointer.pointerType === 'mouse' | '':    mouse/teclado → deixa click agir
+             *
+             * A flag _pendingToggle evita dupla execução caso o browser ainda
+             * dispare o evento 'click' após o pointerdown interceptado.
+             */
+            btn.addEventListener('pointerdown', function (e) {
+                if (e.pointerType === 'touch' || e.pointerType === 'pen') {
+                    // Bloqueia o foco nativo ANTES de ele ser atribuído
+                    e.preventDefault();
+                    // Executa o toggle imediatamente
+                    toggleAltoContraste();
+                    // Marca para que o click subsequente seja ignorado
+                    btn._pendingToggle = true;
+                }
+            });
+
+            /**
+             * Listener de click: cobre mouse e teclado (Enter/Space via Tab).
+             * É ignorado se o toggle já foi executado via pointerdown (toque).
+             */
+            btn.addEventListener('click', function (e) {
+                if (btn._pendingToggle) {
+                    // Toggle já feito via pointerdown (toque) — apenas limpa a flag
+                    btn._pendingToggle = false;
+                    return;
+                }
+                // Origem: mouse ou teclado — executa normalmente
+                toggleAltoContraste();
+            });
         });
 
         // Atalho de teclado: Alt + C para alternar Alto Contraste
