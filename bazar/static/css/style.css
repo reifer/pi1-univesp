@@ -778,3 +778,37 @@ body:not(.alto-contraste):not(.high-contrast) .toggle-alto-contraste:hover {
     border-color: #94a3b8 !important;
     color: #1e293b !important;
 }
+
+/* ==========================================================================
+   Correção: Foco/Ativo preso no toque mobile (.toggle-alto-contraste no menu)
+   Suprime outline e box-shadow em :focus, :active e :focus:not(:focus-visible)
+   para ambos os modos (normal e alto contraste). aria-pressed preserva a
+   semântica para leitores de tela.
+   ========================================================================== */
+
+/* Modo normal — botão mobile (apenas toggle-alto-contraste, sem btn-alto-contraste) */
+.toggle-alto-contraste:focus:not(:focus-visible),
+.toggle-alto-contraste:active {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+/* Modo alto contraste — botão mobile touch focus */
+html.alto-contraste .toggle-alto-contraste:focus:not(:focus-visible),
+body.alto-contraste .toggle-alto-contraste:focus:not(:focus-visible),
+html.high-contrast .toggle-alto-contraste:focus:not(:focus-visible),
+body.high-contrast .toggle-alto-contraste:focus:not(:focus-visible),
+html.alto-contraste .toggle-alto-contraste:active,
+body.alto-contraste .toggle-alto-contraste:active,
+html.high-contrast .toggle-alto-contraste:active,
+body.high-contrast .toggle-alto-contraste:active {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+/* Suprime -webkit-tap-highlight (halo azul/laranja nativo do iOS/Android) */
+.toggle-alto-contraste,
+.btn-alto-contraste {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+}
