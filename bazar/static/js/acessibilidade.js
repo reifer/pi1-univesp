@@ -74,13 +74,33 @@
 
         function handleBtnClick(e) {
             toggleAltoContraste();
-            this.blur();
+            // requestAnimationFrame duplo: garante blur() após o navegador mobile
+            // atribuir o foco ao elemento (o toque em iOS/Android foca o btn
+            // de forma assíncrona, após o callback do click)
+            var self = this;
+            requestAnimationFrame(function () {
+                requestAnimationFrame(function () {
+                    self.blur();
+                    // Retira o foco de qualquer elemento que possa tê-lo recebido
+                    if (document.activeElement && document.activeElement !== document.body) {
+                        document.activeElement.blur();
+                    }
+                });
+            });
         }
 
         const botoesContraste = document.querySelectorAll('.toggle-alto-contraste');
         botoesContraste.forEach(function (btn) {
             btn.removeEventListener('click', handleBtnClick);
             btn.addEventListener('click', handleBtnClick);
+
+            // Fallback para iOS Safari: touchend libera o foco antes mesmo do click
+            btn.addEventListener('touchend', function () {
+                var touchedBtn = this;
+                requestAnimationFrame(function () {
+                    touchedBtn.blur();
+                });
+            }, { passive: true });
         });
 
         // Atalho de teclado: Alt + C para alternar Alto Contraste

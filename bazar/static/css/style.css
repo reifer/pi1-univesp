@@ -780,29 +780,50 @@ body:not(.alto-contraste):not(.high-contrast) .toggle-alto-contraste:hover {
 }
 
 /* ==========================================================================
-   Correção: Foco/Ativo preso no toque mobile (.toggle-alto-contraste no menu)
-   Suprime outline e box-shadow em :focus, :active e :focus:not(:focus-visible)
-   para ambos os modos (normal e alto contraste). aria-pressed preserva a
-   semântica para leitores de tela.
+   Correção definitiva: Foco preso no toque mobile (.toggle-alto-contraste)
+   Suprime :focus e :active DIRETAMENTE — sem :not(:focus-visible) — pois
+   em Android/Chrome o toque pode ativar :focus-visible, tornando a regra
+   anterior ineficaz. A acessibilidade via teclado é preservada pelo bloco
+   :focus-visible abaixo, que reintroduz o anel de foco visível.
    ========================================================================== */
 
-/* Modo normal — botão mobile (apenas toggle-alto-contraste, sem btn-alto-contraste) */
-.toggle-alto-contraste:focus:not(:focus-visible),
-.toggle-alto-contraste:active {
+/* Suprime foco visual em toque (mobile) — cobre todos os modos */
+.toggle-alto-contraste:focus,
+.toggle-alto-contraste:active,
+.btn-alto-contraste:focus,
+.btn-alto-contraste:active {
     outline: none !important;
     box-shadow: none !important;
+    border-color: inherit !important;
 }
 
-/* Modo alto contraste — botão mobile touch focus */
-html.alto-contraste .toggle-alto-contraste:focus:not(:focus-visible),
-body.alto-contraste .toggle-alto-contraste:focus:not(:focus-visible),
-html.high-contrast .toggle-alto-contraste:focus:not(:focus-visible),
-body.high-contrast .toggle-alto-contraste:focus:not(:focus-visible),
+/* Alto contraste: mantém a borda amarela mas sem anel/glow extra no toque */
+html.alto-contraste .toggle-alto-contraste:focus,
+body.alto-contraste .toggle-alto-contraste:focus,
+html.high-contrast .toggle-alto-contraste:focus,
+body.high-contrast .toggle-alto-contraste:focus,
 html.alto-contraste .toggle-alto-contraste:active,
 body.alto-contraste .toggle-alto-contraste:active,
 html.high-contrast .toggle-alto-contraste:active,
 body.high-contrast .toggle-alto-contraste:active {
     outline: none !important;
+    box-shadow: none !important;
+}
+
+/* Reintroduz anel de foco APENAS para navegação via teclado (:focus-visible) */
+.toggle-alto-contraste:focus-visible,
+.btn-alto-contraste:focus-visible {
+    outline: 3px solid #166534 !important;
+    outline-offset: 2px !important;
+    box-shadow: none !important;
+}
+
+html.alto-contraste .toggle-alto-contraste:focus-visible,
+body.alto-contraste .toggle-alto-contraste:focus-visible,
+html.high-contrast .toggle-alto-contraste:focus-visible,
+body.high-contrast .toggle-alto-contraste:focus-visible {
+    outline: 3px solid #ffff00 !important;
+    outline-offset: 2px !important;
     box-shadow: none !important;
 }
 
