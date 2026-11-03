@@ -833,3 +833,31 @@ body.high-contrast .toggle-alto-contraste:focus-visible {
     -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;
 }
+/* Cards de passos (fade-in) permanecem visíveis em Alto Contraste */
+html.alto-contraste .fade-in-element,
+body.alto-contraste .fade-in-element {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+    visibility: visible !important;
+}
+
+html.alto-contraste article,
+body.alto-contraste article {
+    border: 2px solid #ffffff !important;
+}
+
+html.alto-contraste article div[class*="bg-"],
+body.alto-contraste article div[class*="bg-"] {
+    background-color: #000000 !important;
+    color: #ffff00 !important;
+    border: 2px solid #ffff00 !important;
+}
+
+html.alto-contraste article h3,
+body.alto-contraste article h3,
+html.alto-contraste article p,
+body.alto-contraste article p {
+    color: #ffffff !important;
+    opacity: 1 !important;
+}

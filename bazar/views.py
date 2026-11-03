@@ -113,7 +113,7 @@ def cadastrar_doacao(request):
     View pública para cadastro de doações.
     Aceita método RETIRADA e ENTREGA.
     Para retirada, coleta endereço estruturado via CEP, data e horário.
-    Para entrega, valida janela da igreja (terça, quinta e domingo).
+    Para entrega, valida janela da Instituição (terça, quinta e domingo).
     """
     doador_form = DoadorForm()
     doacao_form = DoacaoForm()

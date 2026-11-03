@@ -8,103 +8,159 @@
     <div class="container mx-auto px-6 max-w-5xl">
 
         {% if messages %}
-            {% for message in messages %}
-                <div class="mb-6 p-4 rounded-2xl {% if message.tags == 'success' %}bg-green-50 text-green-700 border border-green-100{% else %}bg-red-50 text-red-700 border border-red-100{% endif %} font-bold text-sm text-center animate-bounce">
-                    {{ message }}
-                </div>
-            {% endfor %}
+        {% for message in messages %}
+        <div
+            class="mb-6 p-4 rounded-2xl {% if message.tags == 'success' %}bg-green-50 text-green-700 border border-green-100{% else %}bg-red-50 text-red-700 border border-red-100{% endif %} font-bold text-sm text-center animate-bounce">
+            {{ message }}
+        </div>
+        {% endfor %}
         {% endif %}
 
         <div class="fade-in-element mb-10">
-            <h1 class="text-3xl md:text-4xl font-black text-green-800 flex items-center gap-3 uppercase tracking-tighter text-center justify-center">
-                <svg class="w-8 h-8 text-green-800" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+            <h1
+                class="text-3xl md:text-4xl font-black text-green-800 flex items-center gap-3 uppercase tracking-tighter text-center justify-center">
+                <svg class="w-8 h-8 text-green-800" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    stroke-width="2.5">
+                    <path
+                        d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                </svg>
                 Fazer uma Doa├º├úo
-                <svg class="w-8 h-8 text-green-800" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+                <svg class="w-8 h-8 text-green-800" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    stroke-width="2.5">
+                    <path
+                        d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                </svg>
             </h1>
             <p class="text-center text-slate-600 mt-4 max-w-2xl mx-auto font-medium">
-                Sua doa├º├úo ├⌐ importante e ajuda fam├¡lias necessitadas na Para├¡ba. Preencha o formul├írio abaixo com as informa├º├╡es do item que deseja doar.
+                Sua doa├º├úo ├⌐ importante e ajuda fam├¡lias necessitadas na Para├¡ba. Preencha o formul├írio abaixo com
+                as informa├º├╡es do item que deseja doar.
             </p>
         </div>
 
         <div class="fade-in-element">
-            <form method="POST" action="{% url 'cadastrar_doacao' %}" class="bg-white p-8 md:p-10 rounded-[2.5rem] shadow-xl border border-slate-100 space-y-8">
+            <form method="POST" action="{% url 'cadastrar_doacao' %}"
+                class="bg-white p-8 md:p-10 rounded-[2.5rem] shadow-xl border border-slate-100 space-y-8">
                 {% csrf_token %}
 
                 <!-- Se├º├úo: Informa├º├╡es do Doador -->
                 <fieldset class="border-b border-slate-100 pb-8">
-                    <legend class="text-lg font-black text-green-800 uppercase tracking-tighter mb-6 flex items-center gap-2">
-                        <svg class="w-6 h-6 text-green-800" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                    <legend
+                        class="text-lg font-black text-green-800 uppercase tracking-tighter mb-6 flex items-center gap-2">
+                        <svg class="w-6 h-6 text-green-800" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                            stroke-width="2">
+                            <path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
                         Informa├º├╡es do Doador
                     </legend>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div class="space-y-2">
-                            <label class="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Nome Completo *</label>
-                            <input type="text" name="nome_doador" value="{{ form_data.nome_doador|default_if_none:'' }}" required class="w-full p-4 rounded-2xl bg-slate-50 border border-slate-100 focus:ring-4 focus:ring-green-500/10 font-bold" placeholder="Seu nome completo">
+                            <label class="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Nome
+                                Completo *</label>
+                            <input type="text" name="nome_doador" value="{{ form_data.nome_doador|default_if_none:'' }}"
+                                required
+                                class="w-full p-4 rounded-2xl bg-slate-50 border border-slate-100 focus:ring-4 focus:ring-green-500/10 font-bold"
+                                placeholder="Seu nome completo">
                         </div>
 
                         <div class="space-y-2">
-                            <label class="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">E-mail *</label>
-                            <input type="email" name="email_doador" value="{{ form_data.email_doador|default_if_none:'' }}" required class="w-full p-4 rounded-2xl bg-slate-50 border border-slate-100 focus:ring-4 focus:ring-green-500/10 font-bold" placeholder="seu@email.com">
+                            <label class="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">E-mail
+                                *</label>
+                            <input type="email" name="email_doador"
+                                value="{{ form_data.email_doador|default_if_none:'' }}" required
+                                class="w-full p-4 rounded-2xl bg-slate-50 border border-slate-100 focus:ring-4 focus:ring-green-500/10 font-bold"
+                                placeholder="seu@email.com">
                         </div>
 
                         <div class="space-y-2">
-                            <label class="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Telefone</label>
-                            <input type="tel" name="telefone_doador" value="{{ form_data.telefone_doador|default_if_none:'' }}" class="w-full p-4 rounded-2xl bg-slate-50 border border-slate-100 focus:ring-4 focus:ring-green-500/10 font-bold" placeholder="(11) 98765-4321" inputmode="tel" maxlength="15">
+                            <label
+                                class="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Telefone</label>
+                            <input type="tel" name="telefone_doador"
+                                value="{{ form_data.telefone_doador|default_if_none:'' }}"
+                                class="w-full p-4 rounded-2xl bg-slate-50 border border-slate-100 focus:ring-4 focus:ring-green-500/10 font-bold"
+                                placeholder="(11) 98765-4321" inputmode="tel" maxlength="15">
                         </div>
                     </div>
                 </fieldset>
 
                 <!-- Se├º├úo: Informa├º├╡es do Item -->
                 <fieldset class="border-b border-slate-100 pb-8">
-                    <legend class="text-lg font-black text-green-800 uppercase tracking-tighter mb-6 flex items-center gap-2">
-                        <svg class="w-6 h-6 text-green-800" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+                    <legend
+                        class="text-lg font-black text-green-800 uppercase tracking-tighter mb-6 flex items-center gap-2">
+                        <svg class="w-6 h-6 text-green-800" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                            stroke-width="2">
+                            <path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                        </svg>
                         Informa├º├╡es do Item
                     </legend>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div class="space-y-2">
-                            <label class="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Nome do Item *</label>
-                            <input type="text" name="nome_item" maxlength="100" maxlength="100" value="{{ form_data.nome_item|default_if_none:'' }}" required class="w-full p-4 rounded-2xl bg-slate-50 border border-slate-100 focus:ring-4 focus:ring-green-500/10 font-bold" placeholder="Ex: Camiseta branca">
+                            <label class="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Nome do Item
+                                *</label>
+                            <input type="text" name="nome_item" maxlength="100" maxlength="100"
+                                value="{{ form_data.nome_item|default_if_none:'' }}" required
+                                class="w-full p-4 rounded-2xl bg-slate-50 border border-slate-100 focus:ring-4 focus:ring-green-500/10 font-bold"
+                                placeholder="Ex: Camiseta branca">
                         </div>
 
                         <div class="space-y-3">
-                            <label class="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Categoria</label>
+                            <label
+                                class="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Categoria</label>
                             <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-                                <label class="flex items-center gap-3 p-3 rounded-xl border border-slate-200 hover:border-green-800 hover:bg-green-800/10 transition-all cursor-pointer">
-                                    <input type="checkbox" name="categoria" value="Roupa" class="w-5 h-5 rounded accent-green-800 cursor-pointer">
+                                <label
+                                    class="flex items-center gap-3 p-3 rounded-xl border border-slate-200 hover:border-green-800 hover:bg-green-800/10 transition-all cursor-pointer">
+                                    <input type="checkbox" name="categoria" value="Roupa"
+                                        class="w-5 h-5 rounded accent-green-800 cursor-pointer">
                                     <span class="font-semibold text-slate-700">Roupa</span>
                                 </label>
-                                <label class="flex items-center gap-3 p-3 rounded-xl border border-slate-200 hover:border-green-800 hover:bg-green-800/10 transition-all cursor-pointer">
-                                    <input type="checkbox" name="categoria" value="Cal├ºados" class="w-5 h-5 rounded accent-green-800 cursor-pointer">
+                                <label
+                                    class="flex items-center gap-3 p-3 rounded-xl border border-slate-200 hover:border-green-800 hover:bg-green-800/10 transition-all cursor-pointer">
+                                    <input type="checkbox" name="categoria" value="Cal├ºados"
+                                        class="w-5 h-5 rounded accent-green-800 cursor-pointer">
                                     <span class="font-semibold text-slate-700">Cal├ºados</span>
                                 </label>
-                                <label class="flex items-center gap-3 p-3 rounded-xl border border-slate-200 hover:border-green-800 hover:bg-green-800/10 transition-all cursor-pointer">
-                                    <input type="checkbox" name="categoria" value="Acess├│rios" class="w-5 h-5 rounded accent-green-800 cursor-pointer">
+                                <label
+                                    class="flex items-center gap-3 p-3 rounded-xl border border-slate-200 hover:border-green-800 hover:bg-green-800/10 transition-all cursor-pointer">
+                                    <input type="checkbox" name="categoria" value="Acess├│rios"
+                                        class="w-5 h-5 rounded accent-green-800 cursor-pointer">
                                     <span class="font-semibold text-slate-700">Acess├│rios</span>
                                 </label>
-                                <label class="flex items-center gap-3 p-3 rounded-xl border border-slate-200 hover:border-green-800 hover:bg-green-800/10 transition-all cursor-pointer">
-                                    <input type="checkbox" name="categoria" value="Brinquedos" class="w-5 h-5 rounded accent-green-800 cursor-pointer">
+                                <label
+                                    class="flex items-center gap-3 p-3 rounded-xl border border-slate-200 hover:border-green-800 hover:bg-green-800/10 transition-all cursor-pointer">
+                                    <input type="checkbox" name="categoria" value="Brinquedos"
+                                        class="w-5 h-5 rounded accent-green-800 cursor-pointer">
                                     <span class="font-semibold text-slate-700">Brinquedos</span>
                                 </label>
-                                <label class="flex items-center gap-3 p-3 rounded-xl border border-slate-200 hover:border-green-800 hover:bg-green-800/10 transition-all cursor-pointer">
-                                    <input type="checkbox" name="categoria" value="Outros" class="w-5 h-5 rounded accent-green-800 cursor-pointer">
+                                <label
+                                    class="flex items-center gap-3 p-3 rounded-xl border border-slate-200 hover:border-green-800 hover:bg-green-800/10 transition-all cursor-pointer">
+                                    <input type="checkbox" name="categoria" value="Outros"
+                                        class="w-5 h-5 rounded accent-green-800 cursor-pointer">
                                     <span class="font-semibold text-slate-700">Outros</span>
                                 </label>
                             </div>
-                            <p class="text-xs text-slate-500 mt-2">≡ƒÆí <strong>Dica:</strong> Selecione uma ou mais categorias marcando os checkboxes.</p>
+                            <p class="text-xs text-slate-500 mt-2">≡ƒÆí <strong>Dica:</strong> Selecione uma ou mais
+                                categorias marcando os checkboxes.</p>
                         </div>
 
-                        
+
 
                         <div class="space-y-2">
-                            <label class="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Quantidade *</label>
-                            <input type="number" name="quantidade" min="1" max="999" oninput="this.value=this.value.slice(0,3)" min="1" max="999" oninput="this.value=this.value.slice(0,3)" value="{{ form_data.quantidade|default:'1' }}" min="1" required class="w-full p-4 rounded-2xl bg-slate-50 border border-slate-100 focus:ring-4 focus:ring-green-500/10 font-bold">
+                            <label class="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Quantidade
+                                *</label>
+                            <input type="number" name="quantidade" min="1" max="999"
+                                oninput="this.value=this.value.slice(0,3)" min="1" max="999"
+                                oninput="this.value=this.value.slice(0,3)"
+                                value="{{ form_data.quantidade|default:'1' }}" min="1" required
+                                class="w-full p-4 rounded-2xl bg-slate-50 border border-slate-100 focus:ring-4 focus:ring-green-500/10 font-bold">
                         </div>
 
                         <div class="md:col-span-2 space-y-2">
-                            <label class="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Descri├º├úo do Item *</label>
-                            <textarea name="descricao" maxlength="200" maxlength="200" rows="3" required class="w-full p-4 rounded-2xl bg-slate-50 border border-slate-100 focus:ring-4 focus:ring-green-500/10 font-bold" placeholder="Descreva o estado, tamanho, cor e outras caracter├¡sticas do item...">{{ form_data.descricao|default_if_none:'' }}</textarea>
+                            <label class="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Descri├º├úo
+                                do Item *</label>
+                            <textarea name="descricao" maxlength="200" maxlength="200" rows="3" required
+                                class="w-full p-4 rounded-2xl bg-slate-50 border border-slate-100 focus:ring-4 focus:ring-green-500/10 font-bold"
+                                placeholder="Descreva o estado, tamanho, cor e outras caracter├¡sticas do item...">{{ form_data.descricao|default_if_none:'' }}</textarea>
                         </div>
 
                     </div>
@@ -112,82 +168,136 @@
 
                 <!-- Se├º├úo: M├⌐todo de Entrega -->
                 <fieldset class="border-b border-slate-100 pb-8">
-                    <legend class="text-lg font-black text-green-800 uppercase tracking-tighter mb-6 flex items-center gap-2">
-                        <svg class="w-6 h-6 text-green-800" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                    <legend
+                        class="text-lg font-black text-green-800 uppercase tracking-tighter mb-6 flex items-center gap-2">
+                        <svg class="w-6 h-6 text-green-800" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                            stroke-width="2">
+                            <path d="M13 10V3L4 14h7v7l9-11h-7z" />
+                        </svg>
                         M├⌐todo de Entrega
                     </legend>
 
                     <div class="space-y-4">
-                        <label id="label-retirada" class="flex items-center gap-4 p-4 rounded-2xl border-2 border-slate-200 has-[:checked]:border-green-800 hover:border-green-800 cursor-pointer transition-all">
-                            <input type="radio" name="metodo_entrega" value="RETIRADA" {% if form_data.metodo_entrega == 'RETIRADA' or not form_data.metodo_entrega %}checked{% endif %} class="w-5 h-5 accent-green-800">
+                        <label id="label-retirada"
+                            class="flex items-center gap-4 p-4 rounded-2xl border-2 border-slate-200 has-[:checked]:border-green-800 hover:border-green-800 cursor-pointer transition-all">
+                            <input type="radio" name="metodo_entrega" value="RETIRADA" {% if
+                                form_data.metodo_entrega=='RETIRADA' or not form_data.metodo_entrega %}checked{% endif
+                                %} class="w-5 h-5 accent-green-800">
                             <div class="flex-grow">
-                                <p class="font-black text-green-800 text-slate-900 uppercase tracking-tight">Retirada no Local</p>
-                                <p class="text-sm text-slate-500 font-medium">Voc├¬ nos fornece o endere├ºo e data/hora, e o benefici├írio retira o item</p>
+                                <p class="font-black text-green-800 text-slate-900 uppercase tracking-tight">Retirada no
+                                    Local</p>
+                                <p class="text-sm text-slate-500 font-medium">Voc├¬ nos fornece o endere├ºo e data/hora,
+                                    e o benefici├írio retira o item</p>
                             </div>
                         </label>
 
-                        <label id="label-entrega" class="flex items-center gap-4 p-4 rounded-2xl border-2 border-slate-200 has-[:checked]:border-green-800 hover:border-green-800 cursor-pointer transition-all">
-                            <input type="radio" name="metodo_entrega" value="ENTREGA" {% if form_data.metodo_entrega == 'ENTREGA' %}checked{% endif %} class="w-5 h-5 accent-green-800">
+                        <label id="label-entrega"
+                            class="flex items-center gap-4 p-4 rounded-2xl border-2 border-slate-200 has-[:checked]:border-green-800 hover:border-green-800 cursor-pointer transition-all">
+                            <input type="radio" name="metodo_entrega" value="ENTREGA" {% if
+                                form_data.metodo_entrega=='ENTREGA' %}checked{% endif %}
+                                class="w-5 h-5 accent-green-800">
                             <div class="flex-grow">
-                                <p class="font-black text-green-800 text-slate-900 uppercase tracking-tight">Entrega na Igreja</p>
-                                <p class="text-sm text-slate-500 font-medium">Voc├¬ entrega o item pessoalmente em um de nossos hor├írios de atendimento</p>
+                                <p class="font-black text-green-800 text-slate-900 uppercase tracking-tight">Entrega na
+                                    Instituição</p>
+                                <p class="text-sm text-slate-500 font-medium">Voc├¬ entrega o item pessoalmente em um de
+                                    nossos hor├írios de atendimento</p>
                             </div>
                         </label>
                     </div>
 
                     <!-- Campos condicionais para RETIRADA -->
                     <div id="retirada-fields" class="mt-8 space-y-6 block transition-all duration-300">
-                        <p class="text-sm text-slate-600 bg-yellow-50 p-4 rounded-2xl border border-yellow-200 font-medium">
-                            ≡ƒÆí <strong>Dica:</strong> Forne├ºa um local de f├ícil acesso para que nossos volunt├írios possam retirar o item.
+                        <p
+                            class="text-sm text-slate-600 bg-yellow-50 p-4 rounded-2xl border border-yellow-200 font-medium">
+                            ≡ƒÆí <strong>Dica:</strong> Forne├ºa um local de f├ícil acesso para que nossos volunt├írios
+                            possam retirar o item.
                         </p>
-                        
+
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div class="space-y-2">
-                                <label class="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">CEP (Busca)</label>
-                                <input id="cep-retirada" type="text" name="cep_retirada" value="{{ form_data.cep_retirada|default_if_none:'' }}" maxlength="9" inputmode="numeric" autocomplete="postal-code" class="w-full p-4 rounded-2xl bg-slate-50 border border-slate-100 focus:ring-4 focus:ring-green-500/10 font-bold" placeholder="00000-000">
+                                <label class="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">CEP
+                                    (Busca)</label>
+                                <input id="cep-retirada" type="text" name="cep_retirada"
+                                    value="{{ form_data.cep_retirada|default_if_none:'' }}" maxlength="9"
+                                    inputmode="numeric" autocomplete="postal-code"
+                                    class="w-full p-4 rounded-2xl bg-slate-50 border border-slate-100 focus:ring-4 focus:ring-green-500/10 font-bold"
+                                    placeholder="00000-000">
                                 <span id=\"cep-error\" class=\"hidden text-red-500 text-xs mt-1\">CEP inv├ílido</span>
                             </div>
 
                             <div class="space-y-2">
-                                <label class="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Endere├ºo (Auto)</label>
-                                <input id="endereco-retirada" type="text" name="endereco_retirada" value="{{ form_data.endereco_retirada|default_if_none:'' }}" readonly class="w-full p-4 rounded-2xl bg-slate-100 border border-slate-200 focus:ring-4 focus:ring-green-500/10 font-bold" placeholder="Preenchido automaticamente pelo CEP">
+                                <label
+                                    class="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Endere├ºo
+                                    (Auto)</label>
+                                <input id="endereco-retirada" type="text" name="endereco_retirada"
+                                    value="{{ form_data.endereco_retirada|default_if_none:'' }}" readonly
+                                    class="w-full p-4 rounded-2xl bg-slate-100 border border-slate-200 focus:ring-4 focus:ring-green-500/10 font-bold"
+                                    placeholder="Preenchido automaticamente pelo CEP">
                             </div>
 
                             <div class="space-y-2">
-                                <label class="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">N├║mero</label>
-                                <input id="numero-retirada" type="text" name="numero_retirada" value="{{ form_data.numero_retirada|default_if_none:'' }}" class="w-full p-4 rounded-2xl bg-slate-50 border border-slate-100 focus:ring-4 focus:ring-green-500/10 font-bold" placeholder="Ex: 123">
+                                <label
+                                    class="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">N├║mero</label>
+                                <input id="numero-retirada" type="text" name="numero_retirada"
+                                    value="{{ form_data.numero_retirada|default_if_none:'' }}"
+                                    class="w-full p-4 rounded-2xl bg-slate-50 border border-slate-100 focus:ring-4 focus:ring-green-500/10 font-bold"
+                                    placeholder="Ex: 123">
                             </div>
 
                             <div class="space-y-2">
-                                <label class="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Complemento</label>
-                                <input id="complemento-retirada" type="text" name="complemento_retirada" value="{{ form_data.complemento_retirada|default_if_none:'' }}" class="w-full p-4 rounded-2xl bg-slate-50 border border-slate-100 focus:ring-4 focus:ring-green-500/10 font-bold" placeholder="Ex: Apto 201 (opcional)">
+                                <label
+                                    class="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Complemento</label>
+                                <input id="complemento-retirada" type="text" name="complemento_retirada"
+                                    value="{{ form_data.complemento_retirada|default_if_none:'' }}"
+                                    class="w-full p-4 rounded-2xl bg-slate-50 border border-slate-100 focus:ring-4 focus:ring-green-500/10 font-bold"
+                                    placeholder="Ex: Apto 201 (opcional)">
                             </div>
 
                             <div class="space-y-2">
-                                <label class="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Bairro (Auto)</label>
-                                <input id="bairro-retirada" type="text" name="bairro_retirada" value="{{ form_data.bairro_retirada|default_if_none:'' }}" readonly class="w-full p-4 rounded-2xl bg-slate-100 border border-slate-200 focus:ring-4 focus:ring-green-500/10 font-bold" placeholder="Preenchido automaticamente pelo CEP">
+                                <label class="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Bairro
+                                    (Auto)</label>
+                                <input id="bairro-retirada" type="text" name="bairro_retirada"
+                                    value="{{ form_data.bairro_retirada|default_if_none:'' }}" readonly
+                                    class="w-full p-4 rounded-2xl bg-slate-100 border border-slate-200 focus:ring-4 focus:ring-green-500/10 font-bold"
+                                    placeholder="Preenchido automaticamente pelo CEP">
                             </div>
 
                             <div class="space-y-2">
-                                <label class="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Cidade/UF (Auto)</label>
+                                <label
+                                    class="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Cidade/UF
+                                    (Auto)</label>
                                 <div class="grid grid-cols-3 gap-3">
-                                    <input id="cidade-retirada" type="text" name="cidade_retirada" value="{{ form_data.cidade_retirada|default_if_none:'' }}" readonly class="col-span-2 w-full p-4 rounded-2xl bg-slate-100 border border-slate-200 focus:ring-4 focus:ring-green-500/10 font-bold" placeholder="Cidade">
-                                    <input id="uf-retirada" type="text" name="uf_retirada" value="{{ form_data.uf_retirada|default_if_none:'' }}" readonly class="w-full p-4 rounded-2xl bg-slate-100 border border-slate-200 focus:ring-4 focus:ring-green-500/10 font-bold text-center" placeholder="UF">
+                                    <input id="cidade-retirada" type="text" name="cidade_retirada"
+                                        value="{{ form_data.cidade_retirada|default_if_none:'' }}" readonly
+                                        class="col-span-2 w-full p-4 rounded-2xl bg-slate-100 border border-slate-200 focus:ring-4 focus:ring-green-500/10 font-bold"
+                                        placeholder="Cidade">
+                                    <input id="uf-retirada" type="text" name="uf_retirada"
+                                        value="{{ form_data.uf_retirada|default_if_none:'' }}" readonly
+                                        class="w-full p-4 rounded-2xl bg-slate-100 border border-slate-200 focus:ring-4 focus:ring-green-500/10 font-bold text-center"
+                                        placeholder="UF">
                                 </div>
                             </div>
 
                             <div class="space-y-2">
-                                <label class="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Data Sugerida da Coleta</label>
-                                <input id="data-retirada" type="date" name="data_retirada" value="{{ form_data.data_retirada|default_if_none:'' }}" class="w-full p-4 rounded-2xl bg-slate-50 border border-slate-100 focus:ring-4 focus:ring-green-500/10 font-bold">
-                                <p id="pickup-day-feedback" class="hidden mt-2 rounded-xl border border-red-100 bg-red-50 px-3 py-2 text-sm font-semibold text-red-700">
+                                <label class="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Data
+                                    Sugerida da Coleta</label>
+                                <input id="data-retirada" type="date" name="data_retirada"
+                                    value="{{ form_data.data_retirada|default_if_none:'' }}"
+                                    class="w-full p-4 rounded-2xl bg-slate-50 border border-slate-100 focus:ring-4 focus:ring-green-500/10 font-bold">
+                                <p id="pickup-day-feedback"
+                                    class="hidden mt-2 rounded-xl border border-red-100 bg-red-50 px-3 py-2 text-sm font-semibold text-red-700">
                                     Nossa equipe realiza coletas apenas ├ás Segundas e Quartas-feiras.
                                 </p>
                             </div>
 
                             <div class="space-y-2">
-                                <label class="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Hor├írio para Coleta</label>
-                                <input type="text" id="horario_coleta" readonly readonly name="horario_retirada" list="opcoes-horario" placeholder="Ex: 10:30 ou escolha..." value="{{ form_data.horario_retirada|default_if_none:'' }}" class="w-full p-4 rounded-2xl bg-slate-50 border border-slate-100 focus:ring-4 focus:ring-green-500/10 font-bold">
+                                <label class="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Hor├írio
+                                    para Coleta</label>
+                                <input type="text" id="horario_coleta" readonly readonly name="horario_retirada"
+                                    list="opcoes-horario" placeholder="Ex: 10:30 ou escolha..."
+                                    value="{{ form_data.horario_retirada|default_if_none:'' }}"
+                                    class="w-full p-4 rounded-2xl bg-slate-50 border border-slate-100 focus:ring-4 focus:ring-green-500/10 font-bold">
                                 <datalist id="opcoes-horario"></datalist>
                             </div>
                         </div>
@@ -195,8 +305,9 @@
 
                     <div id="dica-de-coleta" class="mt-8 space-y-6 block transition-all duration-300">
 
-                        <p class="text-sm text-slate-600 bg-yellow-50 p-4 rounded-2xl border border-yellow-200 font-semibold">
-                                Nossa equipe realiza coletas apenas ├ás Segundas e Quartas-feiras, das 09:00 ├ás 17:00.
+                        <p
+                            class="text-sm text-slate-600 bg-yellow-50 p-4 rounded-2xl border border-yellow-200 font-semibold">
+                            Nossa equipe realiza coletas apenas ├ás Segundas e Quartas-feiras, das 09:00 ├ás 17:00.
                         </p>
 
                     </div>
@@ -205,20 +316,31 @@
                     <div id="entrega-fields" class="mt-8 hidden transition-all duration-300">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div class="space-y-2">
-                                <label class="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Data Sugerida</label>
-                                <input id="data-sugerida" type="date" name="data_sugerida" value="{{ form_data.data_sugerida|default_if_none:'' }}" class="w-full p-4 rounded-2xl bg-slate-50 border border-slate-100 focus:ring-4 focus:ring-green-500/10 font-bold">
-                                <p id="data-day-feedback" class="hidden mt-2 rounded-xl border border-red-100 bg-red-50 px-3 py-2 text-sm font-semibold text-red-700">
-                                    Ops! Entregas apenas ├ás Ter├ºas, Quintas e Domingos. Por favor, escolha um desses dias no calend├írio.
+                                <label class="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Data
+                                    Sugerida</label>
+                                <input id="data-sugerida" type="date" name="data_sugerida"
+                                    value="{{ form_data.data_sugerida|default_if_none:'' }}"
+                                    class="w-full p-4 rounded-2xl bg-slate-50 border border-slate-100 focus:ring-4 focus:ring-green-500/10 font-bold">
+                                <p id="data-day-feedback"
+                                    class="hidden mt-2 rounded-xl border border-red-100 bg-red-50 px-3 py-2 text-sm font-semibold text-red-700">
+                                    Ops! Entregas apenas ├ás Ter├ºas, Quintas e Domingos. Por favor, escolha um desses
+                                    dias no calend├írio.
                                 </p>
                             </div>
 
                             <div class="space-y-2">
-                                <label class="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Hor├írio Sugerido</label>
-                                <select id="horario-sugerido" name="horario_sugerido" class="w-full p-4 rounded-2xl bg-slate-50 border border-slate-100 focus:ring-4 focus:ring-green-500/10 font-bold">
-                                    <option value="" {% if not form_data.horario_sugerido %}selected{% endif %}>Selecione um hor├írio</option>
-                                    <option value="20:00" {% if form_data.horario_sugerido == '20:00' %}selected{% endif %}>Ter├ºas e Quintas: 20:00 - 21:30</option>
-                                    <option value="10:00" {% if form_data.horario_sugerido == '10:00' %}selected{% endif %}>Domingos: 10:00 - 13:00</option>
-                                    <option value="18:00" {% if form_data.horario_sugerido == '18:00' %}selected{% endif %}>Domingos: 18:00 - 21:30</option>
+                                <label class="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Hor├írio
+                                    Sugerido</label>
+                                <select id="horario-sugerido" name="horario_sugerido"
+                                    class="w-full p-4 rounded-2xl bg-slate-50 border border-slate-100 focus:ring-4 focus:ring-green-500/10 font-bold">
+                                    <option value="" {% if not form_data.horario_sugerido %}selected{% endif %}>
+                                        Selecione um hor├írio</option>
+                                    <option value="20:00" {% if form_data.horario_sugerido=='20:00' %}selected{% endif
+                                        %}>Ter├ºas e Quintas: 20:00 - 21:30</option>
+                                    <option value="10:00" {% if form_data.horario_sugerido=='10:00' %}selected{% endif
+                                        %}>Domingos: 10:00 - 13:00</option>
+                                    <option value="18:00" {% if form_data.horario_sugerido=='18:00' %}selected{% endif
+                                        %}>Domingos: 18:00 - 21:30</option>
                                 </select>
                             </div>
                         </div>
@@ -226,10 +348,14 @@
 
                     <!-- Informa├º├╡es para ENTREGA -->
                     <div id="entrega-info" class="mt-8 hidden transition-all duration-300">
-                        <div class="bg-gradient-to-br from-yellow-50 to-yellow-100 p-6 rounded-2xl border border-purple-200">
+                        <div
+                            class="bg-gradient-to-br from-yellow-50 to-yellow-100 p-6 rounded-2xl border border-purple-200">
                             <h4 class="font-black text-slate-600 uppercase tracking-tight mb-4 flex items-center gap-2">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                                Hor├írios da Igreja para Entrega
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                    stroke-width="2">
+                                    <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                Hor├írios do Instituto para Entrega
                             </h4>
                             <ul class="space-y-2 text-slate-600 font-bold text-sm">
                                 <li>≡ƒôà <strong>Ter├ºas e Quintas:</strong> 20h - 21h30</li>
@@ -242,15 +368,19 @@
                     </div>
                 </fieldset>
 
-                <div id="form-alert" class="hidden my-4 p-4 rounded-2xl border border-red-100 bg-red-50 text-red-700 font-bold text-sm text-center"></div>
+                <div id="form-alert"
+                    class="hidden my-4 p-4 rounded-2xl border border-red-100 bg-red-50 text-red-700 font-bold text-sm text-center">
+                </div>
 
                 <!-- Bot├úo de Submit -->
-                <button type="submit" class="w-full bg-green-800 hover:bg-green-950 text-white font-black py-5 rounded-2xl transition-all shadow-xl shadow-green-950/40 flex items-center justify-center gap-3 uppercase tracking-[0.2em] text-sm">
+                <button type="submit"
+                    class="w-full bg-green-800 hover:bg-green-950 text-white font-black py-5 rounded-2xl transition-all shadow-xl shadow-green-950/40 flex items-center justify-center gap-3 uppercase tracking-[0.2em] text-sm">
                     Registrar Doa├º├úo
                 </button>
 
                 <p class="text-xs text-slate-500 text-center font-medium">
-                    ≡ƒÆÜ Sua doa├º├úo ├⌐ fundamental para transformar vidas! Obrigado por fazer parte da Conex├úo Solid├íria.
+                    ≡ƒÆÜ Sua doa├º├úo ├⌐ fundamental para transformar vidas! Obrigado por fazer parte da Conex├úo
+                    Solid├íria.
                 </p>
             </form>
         </div>
@@ -414,13 +544,13 @@
         }
 
         inputCepRetirada.setCustomValidity('');
-        
+
         if (inputEndereco) {
             inputEndereco.value = 'Buscando...';
             inputBairroRetirada.value = 'Buscando...';
             inputCidadeRetirada.value = 'Buscando...';
             inputUfRetirada.value = '...';
-            
+
             // UX de Feedback: desabilita campos temporariamente
             inputEndereco.disabled = true;
             inputBairroRetirada.disabled = true;
@@ -635,7 +765,7 @@
             if (inputUfRetirada) inputUfRetirada.value = '';
             if (inputDataRetirada) inputDataRetirada.value = '';
             if (inputHorarioRetirada) inputHorarioRetirada.value = '';
-            
+
             if (inputData) inputData.required = true;
             if (inputHorario) inputHorario.required = true;
 
@@ -664,7 +794,7 @@
             inputCepRetirada.value = formatCep(inputCepRetirada.value);
 
             const cepDigits = inputCepRetirada.value.replace(/\D/g, '');
-            
+
             if (cepDigits.length === 0) {
                 clearAddressFields();
             }
@@ -834,4 +964,3 @@
     });
 </script>
 {% endblock %}
-

@@ -8,7 +8,7 @@
 
 O **Conexão Solidária** é uma aplicação web desenvolvida como solução tecnológica para o Projeto Integrador em Computação I da UNIVESP. O sistema tem como objetivo principal apoiar e otimizar a gestão de doações e a operação logística do **Bazar Solidário**, cuja renda é revertida integralmente para o acolhimento, assistência e cuidados aos idosos no **Lar de Idosos**.
 
-A plataforma conecta **doadores**, **voluntários** e a **administração da igreja**, oferecendo rastreabilidade completa desde o cadastro de donativos (com modalidades de retirada no local ou entrega presencial), triagem e organização de coletas, até a gestão do estoque de itens disponíveis no bazar.
+A plataforma conecta **doadores**, **voluntários** e a **administração do Instituto**, oferecendo rastreabilidade completa desde o cadastro de donativos (com modalidades de retirada no local ou entrega presencial), triagem e organização de coletas, até a gestão do estoque de itens disponíveis no bazar.
 
 ---
 
@@ -68,10 +68,10 @@ O Alto Contraste eleva o contraste de cores para a proporção **7:1+** (padrão
 2. **Cadastro Inteligente de Doação:**
    - Formulário em etapas lógicas (Doador, Detalhes do Item e Método de Logística).
    - **Consulta de CEP (ViaCEP):** Preenchimento automático de logradouro, bairro, cidade e UF em tempo real.
-   - **Horários Condicionais:** Definição de coletas  ou entregas na igreja.
+   - **Horários Condicionais:** Definição de coletas  ou entregas na Instituição.
 3. **Painel Administrativo Logístico (Área Restrita / Staff):**
    - Central de Coletas com endereço completo, telefone do doador e link direto para rota no Google Maps.
-   - Central de Recebimentos na igreja.
+   - Central de Recebimentos na Instituição.
    - Gestão de Estoque/Inventário com busca dinâmica e funcionalidade de dar baixa nos itens já destinados.
 4. **Catálogo de Itens do Bazar:** Vitrine com os produtos cadastrados e quantidades disponíveis.
 5. **Canais de Contato Integrados:** Envio de formulário de contato com disparo de e-mail via SMTP e botão direto para atendimento WhatsApp dinâmico.
